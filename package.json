@@ -1,0 +1,38 @@
+{
+  "name": "pocket-lisp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --require ts-node/register test/**/*.spec.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chai": "4.1.7",
+    "@types/mocha": "5.2.6",
+    "@types/node": "11.13.4",
+    "chai": "4.2.0",
+    "mocha": "^6.1.4",
+    "prettier": "1.17.0",
+    "ts-node": "^8.1.0",
+    "typescript": "3.4.3"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "printWidth": 100,
+    "overrides": [
+      {
+        "files": "*.css",
+        "options": {
+          "semi": true,
+          "printWidth": 120
+        }
+      }
+    ]
+  }
+}
