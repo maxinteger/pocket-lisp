@@ -3,6 +3,8 @@
 Pocket lisp is a Closure like programming language.
 
 [![Build Status](https://travis-ci.com/maxinteger/pocket-lisp.svg?branch=master)](https://travis-ci.com/maxinteger/pocket-lisp)
+[![codecov](https://codecov.io/gh/maxinteger/pocket-lisp/branch/master/graph/badge.svg)](https://codecov.io/gh/maxinteger/pocket-lisp)
+
 
 ## Why
 
