@@ -4,7 +4,7 @@ export enum TokenType {
   LEFT_PAREN,
   RIGHT_PAREN,
   IDENTIFIER,
-  SYMBOL,
+  KEYWORD,
   STRING,
   INTEGER_NUMBER,
   FLOAT_NUMBER,
@@ -59,9 +59,9 @@ export class Scanner {
     return this.makeToken(TokenType.IDENTIFIER)
   }
 
-  private symbol() {
+  private keyword() {
     while (isAlpha(this.peek()) || isDigit(this.peek())) this.advance()
-    return this.makeToken(TokenType.SYMBOL)
+    return this.makeToken(TokenType.KEYWORD)
   }
 
   private number() {
@@ -130,7 +130,7 @@ export class Scanner {
       case ')':
         return this.makeToken(TokenType.RIGHT_PAREN)
       case ':':
-        return this.symbol()
+        return this.keyword()
       case '"':
         return this.string()
     }

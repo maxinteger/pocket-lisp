@@ -1,8 +1,7 @@
-import {expect} from 'chai'
-import {Scanner, Token, TokenType} from '../src/scanner'
+import { expect } from 'chai'
+import { Scanner, Token, TokenType } from '../src/scanner'
 
 describe('Scanner', () => {
-
   it('should scan EOF on empty source', () => {
     const scanner = new Scanner('')
     const actual = scanner.scanToken()
@@ -24,7 +23,7 @@ describe('Scanner', () => {
     expect(actual).deep.equal(expected)
   })
 
-  describe('should scan FLOAT_NUMBER token from', () => {
+  describe('should scan proper number token from', () => {
     it('integer', () => {
       const actual = new Scanner('42').scanToken()
       const expected = new Token(TokenType.INTEGER_NUMBER, '42', 1)
@@ -60,5 +59,27 @@ describe('Scanner', () => {
       const expected = new Token(TokenType.FRACTION_NUMBER, '-1/2', 1)
       expect(actual).deep.equals(expected)
     })
+  })
+
+  describe('should scan string', () => {
+    it('successfully', () => {
+      const scanner = new Scanner('"hello world"')
+      const actual = scanner.scanToken()
+      const expected = new Token(TokenType.STRING, '"hello world"', 1)
+      expect(actual).deep.equal(expected)
+    })
+    it('with error if it is not terminated', () => {
+      const scanner = new Scanner('"unterminated string')
+      const actual = scanner.scanToken()
+      const expected = new Token(TokenType.ERROR, 'Unterminated string', 1)
+      expect(actual).deep.equal(expected)
+    })
+  })
+
+  it('should scan keyword', () => {
+    const scanner = new Scanner(':keyword"')
+    const actual = scanner.scanToken()
+    const expected = new Token(TokenType.KEYWORD, ':keyword', 1)
+    expect(actual).deep.equal(expected)
   })
 })
