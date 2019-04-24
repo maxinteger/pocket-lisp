@@ -9,6 +9,13 @@ describe('Scanner', () => {
     expect(actual).deep.equal(expected)
   })
 
+  it('should trow error token when find an unexpected char', () => {
+    const scanner = new Scanner('Á')
+    const actual = scanner.scanToken()
+    const expected = new Token(TokenType.ERROR, 'Unexpected character.', 1)
+    expect(actual).deep.equal(expected)
+  })
+
   it('should ignore whitespaces', () => {
     const scanner = new Scanner('   \t \n , , \n')
     const actual = scanner.scanToken()
@@ -21,6 +28,15 @@ describe('Scanner', () => {
     const actual = scanner.scanToken()
     const expected = new Token(TokenType.EOF, '', 1)
     expect(actual).deep.equal(expected)
+  })
+
+  it('should scan identifier ', () => {
+    ;['x', 'hello', '+', '/', '_'].map(src => {
+      const scanner = new Scanner(src)
+      const actual = scanner.scanToken()
+      const expected = new Token(TokenType.IDENTIFIER, src, 1)
+      expect(actual).deep.equal(expected)
+    })
   })
 
   describe('should scan proper number token from', () => {
@@ -81,5 +97,22 @@ describe('Scanner', () => {
     const actual = scanner.scanToken()
     const expected = new Token(TokenType.KEYWORD, ':keyword', 1)
     expect(actual).deep.equal(expected)
+  })
+
+  it('should scan bracket', () => {
+    const test = [
+      { src: '(', token: TokenType.LEFT_PAREN },
+      { src: ')', token: TokenType.RIGHT_PAREN },
+      { src: '{', token: TokenType.LEFT_BRACE },
+      { src: '}', token: TokenType.RIGHT_BRACE },
+      { src: '[', token: TokenType.LEFT_SQUARE },
+      { src: ']', token: TokenType.RIGHT_SQUARE }
+    ]
+    test.map(({ src, token }) => {
+      const scanner = new Scanner(src)
+      const actual = scanner.scanToken()
+      const expected = new Token(token, src, 1)
+      expect(actual).deep.equal(expected)
+    })
   })
 })

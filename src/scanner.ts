@@ -3,6 +3,10 @@ const EOF = undefined
 export enum TokenType {
   LEFT_PAREN,
   RIGHT_PAREN,
+  LEFT_BRACE,
+  RIGHT_BRACE,
+  LEFT_SQUARE,
+  RIGHT_SQUARE,
   IDENTIFIER,
   KEYWORD,
   STRING,
@@ -55,7 +59,7 @@ export class Scanner {
   }
 
   private identifier() {
-    while (isAlpha(this.peek()) || isDigit(this.peek())) this.advance()
+    while (isAlpha(this.peek()) || isDigit(this.peek()) || isSymbol(this.peek())) this.advance()
     return this.makeToken(TokenType.IDENTIFIER)
   }
 
@@ -117,18 +121,33 @@ export class Scanner {
     this.skipWhitespace()
     this.start = this.current
 
-    if (this.isEnd()) return this.makeToken(TokenType.EOF)
+    if (this.isEnd()) {
+      return this.makeToken(TokenType.EOF)
+    }
 
     const char = this.advance()
 
-    if (isAlpha(char)) return this.identifier()
-    if (isDigit(char) || (char === '-' && isDigit(this.peek()))) return this.number()
+    if ((isAlpha(char) || isSymbol(char)) && !isDigit(this.peek())) {
+      return this.identifier()
+    }
+
+    if (isDigit(char) || (char === '-' && isDigit(this.peek()))) {
+      return this.number()
+    }
 
     switch (char) {
       case '(':
         return this.makeToken(TokenType.LEFT_PAREN)
       case ')':
         return this.makeToken(TokenType.RIGHT_PAREN)
+      case '{':
+        return this.makeToken(TokenType.LEFT_BRACE)
+      case '}':
+        return this.makeToken(TokenType.RIGHT_BRACE)
+      case '[':
+        return this.makeToken(TokenType.LEFT_SQUARE)
+      case ']':
+        return this.makeToken(TokenType.RIGHT_SQUARE)
       case ':':
         return this.keyword()
       case '"':
@@ -144,3 +163,5 @@ export class Scanner {
 const isDigit = (c: string | undefined) => c !== undefined && c >= '0' && c <= '9'
 
 const isAlpha = (c: string) => (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
+
+const isSymbol = (c: string) => '=+-*/\\&%$_!<>?'.includes(c)
