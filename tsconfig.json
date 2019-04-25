@@ -8,7 +8,7 @@
     // "jsx": "preserve",
     // "declaration": true,
     // "declarationMap": true,
-    // "sourceMap": true,
+    "sourceMap": true,
     // "outFile": "./",
     // "outDir": "./",
     // "rootDir": "./",
@@ -42,10 +42,10 @@
     // "typeRoots": [],
     // "types": [],
     // "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
     // "preserveSymlinks": true,
 
-    // "sourceRoot": "",
+    // "sourceRoot": ""
     // "mapRoot": "",
     // "inlineSourceMap": true,
     // "inlineSources": true,
