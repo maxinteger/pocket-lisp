@@ -1,4 +1,5 @@
 import { Scanner, Token, TokenType } from './scanner'
+import {FractionNumber} from './dataTypes/FractionNumber'
 
 export enum LiteralType {
   Integer,
@@ -29,6 +30,7 @@ export class Parser {
   }
 
   public parse() {
+    this.advance()
     while (!this.isEnd()) {
       const exp = this.expression()
       if (exp === undefined) {
@@ -36,7 +38,9 @@ export class Parser {
       } else {
         this._expressions.push(exp)
       }
+      this.advance()
     }
+
     this.consume(TokenType.EOF, 'Expect end of program.')
     return !this.hadError
   }
@@ -94,7 +98,7 @@ export class Parser {
   }
 
   private isEnd() {
-    return this.peek().type !== TokenType.EOF
+    return this.peek().type === TokenType.EOF
   }
 
   private peek() {
@@ -108,9 +112,14 @@ export class Parser {
         return new Literal(LiteralType.Integer, parseInt(token.value, 10))
       case TokenType.FLOAT_NUMBER:
         return new Literal(LiteralType.Float, parseFloat(token.value))
+      case TokenType.FRACTION_NUMBER:
+        return new Literal(LiteralType.Fraction, FractionNumber.parse(token.value))
+      case TokenType.STRING:
+        return new Literal(LiteralType.String, token.value)
       case TokenType.LEFT_PAREN: {
         const expressions = []
         do {
+          this.advance()
           expressions.push(this.expression())
         } while (this.current.type === TokenType.RIGHT_PAREN || this.isEnd())
         this.consume(TokenType.RIGHT_PAREN, "Expected ')'.")
@@ -119,6 +128,7 @@ export class Parser {
       case TokenType.LEFT_SQUARE: {
         const expressions = []
         do {
+          this.advance()
           expressions.push(this.expression())
         } while (this.current.type === TokenType.RIGHT_PAREN || this.isEnd())
         this.consume(TokenType.RIGHT_SQUARE, "Expected ']'.")
