@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
-    // "lib": [],
+    "lib": ["es6"],
     // "allowJs": true,
     // "checkJs": true,
     // "jsx": "preserve",
@@ -35,12 +35,12 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
 
-    // "moduleResolution": "node",
+    "moduleResolution": "node",
     "baseUrl": "./",
     // "paths": {},
     // "rootDirs": [],
     // "typeRoots": [],
-    // "types": [],
+    // "dataTypes": [],
     // "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     // "preserveSymlinks": true,

@@ -45,10 +45,13 @@
       ".tsx"
     ],
     "exclude": [
-      "**/*.d.ts"
+      "**/*.d.ts",
+      "**/*.js",
+      "**/*.js.map",
+      "test/**/*"
     ],
     "reporter": [
-      "html"
+      "text"
     ],
     "all": true
   }
