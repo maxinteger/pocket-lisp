@@ -1,5 +1,5 @@
 import { Scanner, Token, TokenType } from './scanner'
-import {FractionNumber} from './dataTypes/FractionNumber'
+import { FractionNumber } from './dataTypes/FractionNumber'
 
 export enum LiteralType {
   Integer,
@@ -7,7 +7,7 @@ export enum LiteralType {
   Fraction,
   String,
   Keyword,
-  Indetifier,
+  Identifier,
   List,
   Array
 }
@@ -24,7 +24,7 @@ export class Parser {
   private panicMode = false
   private current = Token.INIT
   private previous = Token.INIT
-  private _expressions: Literal<any>[]=[]
+  private _expressions: Literal<any>[] = []
   constructor(source: string) {
     this.scanner = new Scanner(source)
   }
@@ -116,26 +116,27 @@ export class Parser {
         return new Literal(LiteralType.Fraction, FractionNumber.parse(token.value))
       case TokenType.STRING:
         return new Literal(LiteralType.String, token.value)
-      case TokenType.LEFT_PAREN: {
-        const expressions = []
-        do {
-          this.advance()
-          expressions.push(this.expression())
-        } while (this.current.type === TokenType.RIGHT_PAREN || this.isEnd())
-        this.consume(TokenType.RIGHT_PAREN, "Expected ')'.")
-        return new Literal(LiteralType.List, expressions)
-      }
-      case TokenType.LEFT_SQUARE: {
-        const expressions = []
-        do {
-          this.advance()
-          expressions.push(this.expression())
-        } while (this.current.type === TokenType.RIGHT_PAREN || this.isEnd())
-        this.consume(TokenType.RIGHT_SQUARE, "Expected ']'.")
-        return new Literal(LiteralType.Array, expressions)
-      }
+      case TokenType.IDENTIFIER:
+        return new Literal(LiteralType.Identifier, token.value)
+      case TokenType.LEFT_PAREN:
+        return this.listLikeExpression(LiteralType.List, TokenType.RIGHT_PAREN)
+      case TokenType.LEFT_SQUARE:
+        return this.listLikeExpression(LiteralType.Array, TokenType.RIGHT_SQUARE)
       default:
         return undefined
     }
+  }
+
+  private listLikeExpression(literalType: LiteralType, endToken: TokenType) {
+    const expressions = []
+    for (;;) {
+      this.advance()
+      if (this.current.type === endToken || this.isEnd()) {
+        break
+      }
+      expressions.push(this.expression())
+    }
+    this.consume(endToken, "Expected ')'.")
+    return new Literal(literalType, expressions)
   }
 }
