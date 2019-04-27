@@ -30,13 +30,22 @@ describe('Scanner', () => {
     expect(actual).deep.equal(expected)
   })
 
-  it('should scan identifier ', () => {
-    const tests = ['x', 'hello', '+', '/', '_']
+  describe('identifier', () => {
+    it('should scanned in generic case', () => {
+      const tests = ['x', 'hello', '+', '/', '_']
 
-    tests.map(src => {
-      const scanner = new Scanner(src)
+      tests.map(src => {
+        const scanner = new Scanner(src)
+        const actual = scanner.scanToken()
+        const expected = new Token(TokenType.IDENTIFIER, src, 1)
+        expect(actual).deep.equal(expected)
+      })
+    })
+
+    it('should ignored the white spaces around the identifier', () => {
+      const scanner = new Scanner('  add  ')
       const actual = scanner.scanToken()
-      const expected = new Token(TokenType.IDENTIFIER, src, 1)
+      const expected = new Token(TokenType.IDENTIFIER, 'add', 1)
       expect(actual).deep.equal(expected)
     })
   })

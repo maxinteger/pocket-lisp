@@ -51,11 +51,11 @@ export class Scanner {
 
   private makeToken(type: TokenType) {
     const { start, line, current, source } = this
-    return new Token(type, source.substr(start, current), line)
+    return new Token(type, source.substring(start, current), line)
   }
   private makeStringToken() {
     const { start, line, current, source } = this
-    return new Token(TokenType.STRING, source.substr(start + 1, current - 2), line)
+    return new Token(TokenType.STRING, source.substring(start + 1, current - 1), line)
   }
 
   private errorToken(message: string) {
@@ -63,7 +63,13 @@ export class Scanner {
   }
 
   private identifier() {
-    while (isAlpha(this.peek()) || isDigit(this.peek()) || isSymbol(this.peek())) this.advance()
+    for (;;) {
+      const peek = this.peek()
+      if (!(peek && (isAlpha(peek) || isDigit(peek) || isSymbol(peek)))) {
+        break
+      }
+      this.advance()
+    }
     return this.makeToken(TokenType.IDENTIFIER)
   }
 
