@@ -53,6 +53,10 @@ export class Scanner {
     const { start, line, current, source } = this
     return new Token(type, source.substr(start, current), line)
   }
+  private makeStringToken() {
+    const { start, line, current, source } = this
+    return new Token(TokenType.STRING, source.substr(start + 1, current - 2), line)
+  }
 
   private errorToken(message: string) {
     return new Token(TokenType.ERROR, message, this.line)
@@ -91,7 +95,7 @@ export class Scanner {
     }
     if (this.isEnd()) return this.errorToken('Unterminated string')
     this.advance()
-    return this.makeToken(TokenType.STRING)
+    return this.makeStringToken()
   }
 
   private skipWhitespace() {

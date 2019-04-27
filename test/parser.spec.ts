@@ -34,4 +34,11 @@ describe('Parser', () => {
     const expected = <any>[new Literal(LiteralType.Fraction, new FractionNumber(2, 1))]
     expect(actual).deep.equals(expected)
   })
+  it('should parse string', () => {
+    const parser = new Parser('"hello world"')
+    parser.parse()
+    const actual = parser.expressions
+    const expected = <any>[new Literal(LiteralType.String, "hello world")]
+    expect(actual).deep.equals(expected)
+  })
 })

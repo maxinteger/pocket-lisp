@@ -31,7 +31,9 @@ describe('Scanner', () => {
   })
 
   it('should scan identifier ', () => {
-    ;['x', 'hello', '+', '/', '_'].map(src => {
+    const tests = ['x', 'hello', '+', '/', '_']
+
+    tests.map(src => {
       const scanner = new Scanner(src)
       const actual = scanner.scanToken()
       const expected = new Token(TokenType.IDENTIFIER, src, 1)
@@ -81,7 +83,7 @@ describe('Scanner', () => {
     it('successfully', () => {
       const scanner = new Scanner('"hello world"')
       const actual = scanner.scanToken()
-      const expected = new Token(TokenType.STRING, '"hello world"', 1)
+      const expected = new Token(TokenType.STRING, 'hello world', 1)
       expect(actual).deep.equal(expected)
     })
     it('with error if it is not terminated', () => {
