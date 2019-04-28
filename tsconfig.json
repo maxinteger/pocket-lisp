@@ -10,7 +10,7 @@
     // "declarationMap": true,
     "sourceMap": true,
     // "outFile": "./",
-    // "outDir": "./",
+    "outDir": "./bin",
     // "rootDir": "./",
     // "composite": true,
     // "incremental": true,
@@ -42,7 +42,7 @@
     // "typeRoots": [],
     // "dataTypes": [],
     // "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true
     // "preserveSymlinks": true,
 
     // "sourceRoot": ""
