@@ -44,6 +44,14 @@ describe('Fraction number', () => {
     })
   })
 
+  describe('getters', () => {
+    it('should work', () => {
+      const actual = new FractionNumber(1, 2)
+      expect(actual.numerator).equal(1)
+      expect(actual.denominator).equal(2)
+    })
+  })
+
   describe('parser', () => {
     it('should return with NaN if the input is invalid', () => {
       const tests = ['', 'xyz', '1', '1/', '1.1/1', '1/1.1', '1/0']

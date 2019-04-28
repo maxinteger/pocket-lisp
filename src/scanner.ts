@@ -85,7 +85,10 @@ export class Scanner {
       this.advance()
       while (isDigit(this.peek())) this.advance()
       return this.makeToken(TokenType.FLOAT_NUMBER)
-    } else if (this.peek() === '/' && isDigit(this.peekNext())) {
+    } else if (this.peek() === '/') {
+      if (!isDigit(this.peekNext())) {
+        return this.errorToken('Unfinished fraction number')
+      }
       this.advance()
       while (isDigit(this.peek())) this.advance()
       return this.makeToken(TokenType.FRACTION_NUMBER)

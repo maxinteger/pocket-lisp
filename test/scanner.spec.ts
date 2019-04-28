@@ -50,7 +50,7 @@ describe('Scanner', () => {
     })
   })
 
-  describe('should scan proper number token from', () => {
+  describe('should scan', () => {
     it('integer', () => {
       const actual = new Scanner('42').scanToken()
       const expected = new Token(TokenType.INTEGER_NUMBER, '42', 1)
@@ -86,6 +86,12 @@ describe('Scanner', () => {
       const expected = new Token(TokenType.FRACTION_NUMBER, '-1/2', 1)
       expect(actual).deep.equals(expected)
     })
+
+    it('partial fraction number with error', () => {
+      const actual = new Scanner('1/').scanToken()
+      const expected = new Token(TokenType.ERROR, 'Unfinished fraction number', 1)
+      expect(actual).deep.equal(expected)
+    })
   })
 
   describe('should scan string', () => {
@@ -95,6 +101,14 @@ describe('Scanner', () => {
       const expected = new Token(TokenType.STRING, 'hello world', 1)
       expect(actual).deep.equal(expected)
     })
+
+    it('successfully with linebreaks', () => {
+      const scanner = new Scanner('"hello \n world"')
+      const actual = scanner.scanToken()
+      const expected = new Token(TokenType.STRING, 'hello \n world', 2)
+      expect(actual).deep.equal(expected)
+    })
+
     it('with error if it is not terminated', () => {
       const scanner = new Scanner('"unterminated string')
       const actual = scanner.scanToken()
