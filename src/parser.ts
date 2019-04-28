@@ -19,15 +19,13 @@ export class Literal<T> implements Atom {
 }
 
 export class Parser {
-  private scanner: Scanner
   private hadError = false
   private panicMode = false
   private current = Token.INIT
   private previous = Token.INIT
   private _expressions: Literal<any>[] = []
-  constructor(source: string) {
-    this.scanner = new Scanner(source)
-  }
+
+  constructor(private scanner: Scanner) {}
 
   public parse() {
     this.advance()
