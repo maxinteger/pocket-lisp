@@ -169,6 +169,14 @@ export class Scanner {
 
     return this.errorToken('Unexpected character.')
   }
+
+  public scanAllToken(): Token[] {
+    const tokens = []
+    while (!this.isEnd()) {
+      tokens.push(this.scanToken())
+    }
+    return tokens
+  }
 }
 
 ///

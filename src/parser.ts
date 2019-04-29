@@ -1,5 +1,6 @@
 import { Scanner, Token, TokenType } from './scanner'
 import { FractionNumber } from './dataTypes/FractionNumber'
+import { indentity } from './utils/fn'
 
 export enum LiteralType {
   Integer,
@@ -36,7 +37,6 @@ export class Parser {
       } else {
         this._expressions.push(exp)
       }
-      this.advance()
     }
 
     this.consume(TokenType.EOF, 'Expect end of program.')
@@ -107,15 +107,15 @@ export class Parser {
     const token = this.current
     switch (token.type) {
       case TokenType.INTEGER_NUMBER:
-        return new Literal(LiteralType.Integer, parseInt(token.value, 10))
+        return this.literalExpression(LiteralType.Integer, parseInt)
       case TokenType.FLOAT_NUMBER:
-        return new Literal(LiteralType.Float, parseFloat(token.value))
+        return this.literalExpression(LiteralType.Float, parseFloat)
       case TokenType.FRACTION_NUMBER:
-        return new Literal(LiteralType.Fraction, FractionNumber.parse(token.value))
+        return this.literalExpression(LiteralType.Fraction, FractionNumber.parse)
       case TokenType.STRING:
-        return new Literal(LiteralType.String, token.value)
+        return this.literalExpression(LiteralType.String, indentity)
       case TokenType.IDENTIFIER:
-        return new Literal(LiteralType.Identifier, token.value)
+        return this.literalExpression(LiteralType.Identifier, indentity)
       case TokenType.LEFT_PAREN:
         return this.listLikeExpression(LiteralType.List, TokenType.RIGHT_PAREN)
       case TokenType.LEFT_SQUARE:
@@ -124,11 +124,19 @@ export class Parser {
         return undefined
     }
   }
+  private literalExpression(
+    literalType: LiteralType,
+    parserFn: (val: string) => any
+  ): Literal<any> {
+    const literal = new Literal(literalType, parserFn(this.current.value))
+    this.advance()
+    return literal
+  }
 
   private listLikeExpression(literalType: LiteralType, endToken: TokenType) {
     const expressions = []
+    this.advance()
     for (;;) {
-      this.advance()
       if (this.current.type === endToken || this.isEnd()) {
         break
       }

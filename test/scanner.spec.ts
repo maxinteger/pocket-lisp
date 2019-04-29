@@ -140,4 +140,30 @@ describe('Scanner', () => {
       expect(actual).deep.equal(expected)
     })
   })
+
+  it('should tokenize 2 lines of code', () => {
+    const scanner = new Scanner(`
+      (print "hello world")
+      (print (+ 1 2))
+    `)
+    const actual = scanner.scanAllToken()
+    const expected = [
+      // line 2
+      new Token(TokenType.LEFT_PAREN, '(', 2),
+      new Token(TokenType.IDENTIFIER, 'print', 2),
+      new Token(TokenType.STRING, 'hello world', 2),
+      new Token(TokenType.RIGHT_PAREN, ')', 2),
+      // line 3
+      new Token(TokenType.LEFT_PAREN, '(', 3),
+      new Token(TokenType.IDENTIFIER, 'print', 3),
+      new Token(TokenType.LEFT_PAREN, '(', 3),
+      new Token(TokenType.IDENTIFIER, '+', 3),
+      new Token(TokenType.INTEGER_NUMBER, '1', 3),
+      new Token(TokenType.INTEGER_NUMBER, '2', 3),
+      new Token(TokenType.RIGHT_PAREN, ')', 3),
+      new Token(TokenType.RIGHT_PAREN, ')', 3),
+      new Token(TokenType.EOF, '', 4)
+    ]
+    expect(actual).deep.equal(expected)
+  })
 })
