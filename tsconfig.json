@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "esnext",
+    "module": "commonjs",
     "lib": ["es6"],
     "sourceMap": true,
     "outDir": "./bin",
@@ -55,7 +55,8 @@
     // "emitDecoratorMetadata": true,
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "test/**/*"
   ],
   "exclude": ["node_modules"]
 }

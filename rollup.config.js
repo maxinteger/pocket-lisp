@@ -14,12 +14,17 @@ export default {
     }
   ],
   external: [
-  	...Object.keys(pkg.dependencies || {}),
-		...Object.keys(pkg.peerDependencies || {})
-	],
+    ...Object.keys(pkg.dependencies || {}),
+    ...Object.keys(pkg.peerDependencies || {})
+  ],
   plugins: [
     typescript({
-      typescript: require('typescript')
+      typescript: require('typescript'),
+      tsconfigOverride: {
+        compilerOptions: {
+          module: 'esnext'
+        }
+      }
     })
   ]
 }
