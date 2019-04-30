@@ -1,0 +1,6 @@
+.*
+tsconfig.json
+codecov.yml
+src
+test
+bin

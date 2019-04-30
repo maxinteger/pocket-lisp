@@ -1,15 +1,17 @@
 {
   "name": "pocket-lisp",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "nyc mocha",
-    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
-  },
-  "keywords": [],
   "author": "",
   "license": "MIT",
+  "description": "Simple, lisp/closure like interpreter for sandbox scripting in browser",
+  "keywords": [
+    "interpreter",
+    "lisp"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "files": ["dist"],
+  "types": "dist/index.d.ts",
   "dependencies": {},
   "devDependencies": {
     "@types/chai": "4.1.7",
@@ -20,9 +22,17 @@
     "mocha": "^6.1.4",
     "nyc": "^14.0.0",
     "prettier": "1.17.0",
+    "rollup": "^1.10.1",
+    "rollup-plugin-typescript2": "^0.21.0",
     "source-map-support": "^0.5.12",
     "ts-node": "^8.1.0",
     "typescript": "3.4.3"
+  },
+  "scripts": {
+    "test": "nyc mocha",
+    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "build": "rollup -c",
+    "watch": "rollup -cw"
   },
   "prettier": {
     "semi": false,
