@@ -1,17 +1,19 @@
 {
   "name": "pocket-lisp",
   "version": "1.0.0",
-  "author": "",
+  "author": {
+    "name": "Laszlo Vadasz"
+  },
   "license": "MIT",
   "description": "Simple, lisp/closure like interpreter for sandbox scripting in browser",
   "keywords": [
     "interpreter",
     "lisp"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
   "files": ["dist"],
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.es.js",
+  "types": "dist/types/index.d.ts",
   "dependencies": {},
   "devDependencies": {
     "@types/chai": "4.1.7",
