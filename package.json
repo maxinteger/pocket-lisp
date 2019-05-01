@@ -11,9 +11,9 @@
     "lisp"
   ],
   "files": ["dist"],
-  "main": "dist/cjs/index.js",
-  "module": "dist/es/index.es.js",
-  "types": "dist/types/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
   "dependencies": {},
   "devDependencies": {
     "@types/chai": "4.1.7",
