@@ -13,6 +13,13 @@ export enum LiteralType {
   Array
 }
 
+interface ParseError {
+  line: number
+  message: string
+  start?: number
+  end?: number
+}
+
 interface Atom {}
 
 export class Literal<T> implements Atom {
@@ -25,6 +32,7 @@ export class Parser {
   private current = Token.INIT
   private previous = Token.INIT
   private _expressions: Literal<any>[] = []
+  private _errors: ParseError[] = []
 
   constructor(private scanner: Scanner) {}
 
@@ -34,17 +42,26 @@ export class Parser {
       const exp = this.expression()
       if (exp === undefined) {
         this.error('Unknown token')
+        break
       } else {
         this._expressions.push(exp)
       }
     }
 
-    this.consume(TokenType.EOF, 'Expect end of program.')
-    return !this.hadError
+    if (this.hadError) {
+      return false
+    } else {
+      this.consume(TokenType.EOF, 'Expect end of program.')
+      return !this.hadError
+    }
   }
 
   get expressions(): Literal<any>[] {
     return this._expressions
+  }
+
+  get errors(): ParseError[] {
+    return this._errors
   }
 
   private advance() {
@@ -77,21 +94,10 @@ export class Parser {
 
   private errorAt(token: Token, message: string) {
     if (this.panicMode) return
-
-    this.panicMode = true
-    let snippet = ''
-
-    switch (token.type) {
-      case TokenType.EOF:
-        snippet = ' at end'
-        break
-      case TokenType.ERROR:
-        break
-      default:
-        snippet = ` at ${token.value}`
-    }
-
-    console.error(`[line ${token.line}]${snippet}: ${message}`)
+    this._errors.push({
+      line: token.line,
+      message
+    })
     this.hadError = true
   }
 
@@ -142,7 +148,20 @@ export class Parser {
       }
       expressions.push(this.expression())
     }
-    this.consume(endToken, "Expected ')'.")
+    this.consume(endToken, `Expected '${this.closeParentheses(endToken)}'.`)
     return new Literal(literalType, expressions)
+  }
+
+  private closeParentheses(tt: TokenType) {
+    switch (tt) {
+      case TokenType.RIGHT_PAREN:
+        return ')'
+      case TokenType.RIGHT_BRACE:
+        return '}'
+      case TokenType.RIGHT_SQUARE:
+        return ']'
+      default:
+        return ''
+    }
   }
 }

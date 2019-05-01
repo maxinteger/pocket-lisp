@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Scanner } from '../src/scanner'
+import { Scanner } from '../src'
 import { Literal, LiteralType, Parser } from '../src/parser'
 import { FractionNumber } from '../src/dataTypes/FractionNumber'
 
@@ -132,5 +132,52 @@ describe('Parser', () => {
       ])
     ]
     expect(actual).deep.equals(expected)
+  })
+
+  describe('error', () => {
+    it('should thrown if parentheses is not closed', () => {
+      const tests = [{ src: '(+ 1 2', error: ')' }, { src: '[1 2', error: ']' }]
+      tests.map(({ src, error }) => {
+        const parser = new Parser(new Scanner(src))
+        const parseRes = parser.parse()
+        expect(parseRes).equal(false)
+
+        const errors = parser.errors
+        expect(errors.length).equal(1)
+        expect(errors[0]).deep.equal({
+          line: 1,
+          message: `Expected '${error}'.`
+        })
+      })
+    })
+
+    it('should thrown if the token is unknown', () => {
+      const parser = new Parser(new Scanner(':keyword'))
+      parser.parse()
+      const parseRes = parser.parse()
+      expect(parseRes).equal(false)
+
+      const errors = parser.errors
+      expect(errors.length).equal(1)
+      expect(errors).deep.equal([{
+        line: 0,
+        message: `Unknown token`
+      }])
+    })
+
+
+    it('should thrown if the token is unknown', () => {
+      const parser = new Parser(new Scanner('@'))
+      parser.parse()
+      const parseRes = parser.parse()
+      expect(parseRes).equal(false)
+
+      const errors = parser.errors
+      expect(errors.length).equal(1)
+      expect(errors).deep.equal([{
+        line: 1,
+        message: `Unexpected character.`
+      }])
+    })
   })
 })
