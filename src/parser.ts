@@ -13,6 +13,12 @@ export enum LiteralType {
   Array
 }
 
+interface Atom {}
+
+export class Literal<T> implements Atom {
+  constructor(public kind: LiteralType, public value: T) {}
+}
+
 interface ParseError {
   line: number
   message: string
@@ -20,49 +26,55 @@ interface ParseError {
   end?: number
 }
 
-interface Atom {}
-
-export class Literal<T> implements Atom {
-  constructor(public kind: LiteralType, public value: T) {}
+interface ParserResult {
+  program: Literal<any>[]
+  errors: ParseError[]
+  hasError: boolean
 }
+
+///
 
 export class Parser {
   private hadError = false
   private panicMode = false
   private current = Token.INIT
   private previous = Token.INIT
-  private _expressions: Literal<any>[] = []
+  private _program: Literal<any>[] = []
   private _errors: ParseError[] = []
 
   constructor(private scanner: Scanner) {}
 
-  public parse() {
-    this.advance()
-    while (!this.isEnd()) {
-      const exp = this.expression()
-      if (exp === undefined) {
-        this.error('Unknown token')
-        break
-      } else {
-        this._expressions.push(exp)
+  public parse(): ParserResult {
+    try {
+      this.advance()
+      while (!this.isEnd()) {
+        const exp = this.expression()
+        if (exp === undefined) {
+          this.error('Unknown token')
+          break
+        } else {
+          this._program.push(exp)
+        }
       }
-    }
-
-    if (this.hadError) {
-      return false
-    } else {
       this.consume(TokenType.EOF, 'Expect end of program.')
-      return !this.hadError
+    } finally {
+      return {
+        hasError: this.hadError,
+        program: this.program,
+        errors: this.errors
+      }
     }
   }
 
-  get expressions(): Literal<any>[] {
-    return this._expressions
+  get program(): Literal<any>[] {
+    return this._program
   }
 
   get errors(): ParseError[] {
     return this._errors
   }
+
+  ///
 
   private advance() {
     this.previous = this.current
@@ -99,6 +111,7 @@ export class Parser {
       message
     })
     this.hadError = true
+    throw new Error(message)
   }
 
   private isEnd() {
