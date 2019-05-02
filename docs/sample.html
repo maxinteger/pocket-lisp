@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pocket lisp sample</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/codemirror.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/codemirror.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/mode/clojure/clojure.js"></script>
+    <script src="./index.es.js" type="module"></script>
+    <style>
+      .CodeMirror {
+        border: 1px solid #dee2e6;
+        border-left: none;
+        border-radius: 0.2rem;
+      }
+      .output {
+        height: 100%;
+        min-height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="my-3">Pocket lisp sample</h1>
+      <form>
+        <button id="run" type="button" class="btn btn-primary">Run</button>
+        <div class="row">
+          <div class="col-md-6 my-3">
+            <textarea name="code" id="code" cols="30" rows="10" class="border">
+(print (+ 1 2))</textarea
+            >
+          </div>
+          <div class="col-md-6 my-3">
+            <pre id="output" class="output border rounded-sm"></pre>
+          </div>
+        </div>
+      </form>
+    </div>
+    <script type="module">
+      import { Scanner, Parser, Interpreter } from './index.es.js'
+
+      const textArea = document.getElementById('code')
+      const cm = CodeMirror.fromTextArea(textArea, {
+        autoCloseBrackets: true,
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: 'text/x-clojure'
+      })
+
+      const runBtn = document.getElementById('run')
+
+      const run = () => {
+        const src = cm.doc.getValue()
+        const scanner = new Scanner(src)
+        const parser = new Parser(scanner)
+        parser.parse()
+        const interpreter = new Interpreter()
+        interpreter.interpret(parser.expressions)
+      }
+
+      runBtn.addEventListener('click', run)
+      window.addEventListener('keydown', e => {
+        if (e.ctrlKey && e.code === 'Enter') run()
+      })
+    </script>
+  </body>
+</html>

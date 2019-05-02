@@ -1,4 +1,4 @@
-import {Interpreter} from './Interpreter'
+import {Interpreter} from './interpreter'
 
 export interface PLCallable {
 	call: (iInterpreter: Interpreter, args: any[]) => any

@@ -3,19 +3,28 @@ import { PLCallable } from './types'
 import { Literal, LiteralType } from './parser'
 import { RuntimeError } from './dataTypes/RuntimeError'
 
+export interface InterpreterOptions {
+  globals?: { [key: string]: any }
+}
+
 export class Interpreter {
   private readonly globals = new Environment()
   private currentEnv = this.globals
 
-  constructor() {
+  constructor(options?: InterpreterOptions) {
     this.globals.define('print', nativeFn(console.log))
     this.globals.define('+', nativeFn((a, b) => a + b))
+
+    if (options) {
+      const globals = options.globals || {}
+      Object.keys(globals).forEach(key => this.globals.define(key, globals[key]))
+    }
   }
 
-  interpret(literals: Literal<any>[]) {
+  interpret(program: Literal<any>[]) {
     let returnVal: any = undefined
     try {
-      for (let literal of literals) {
+      for (let literal of program) {
         this.execLiteral(literal)
       }
     } catch (e) {
@@ -52,7 +61,7 @@ export class Interpreter {
 
 ///
 
-const nativeFn = (fn: (...args: any[]) => any): PLCallable =>
+export const nativeFn = (fn: (...args: any[]) => any): PLCallable =>
   <PLCallable>{
     // @ts-ignore
     call(interpreter: Interpreter, parameters: any[]) {
