@@ -19,6 +19,14 @@ describe('Environment', () => {
       const expected = 43
       expect(actual).equals(expected)
     })
+
+    it('should throw error if the variable defined and it is locked', () => {
+      expect(() => {
+        const env = new Environment()
+        env.define('var', 42, true)
+        env.define('var', 43)
+      }).throw(`'var' is locked and it is not re-definable.`)
+    })
   })
 
   describe('get', () => {

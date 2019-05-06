@@ -4,21 +4,27 @@ import { Literal, LiteralType } from './parser'
 import { RuntimeError } from './dataTypes/RuntimeError'
 
 export interface InterpreterOptions {
-  globals?: { [key: string]: any }
+  globals: { [key: string]: any }
   stdout?: (out: string) => void
+  lockedGlobals: boolean
 }
 
 export class Interpreter {
   private readonly globals = new Environment()
   private currentEnv = this.globals
 
-  constructor(options: InterpreterOptions = {}) {
-    this.globals.define('def', nativeFn((name, value) => this.currentEnv.define(name, value)))
-    this.globals.define('print', nativeFn(options.stdout || console.log))
-    this.globals.define('+', nativeFn((a, b) => a + b))
+  constructor(options: InterpreterOptions = { lockedGlobals: true, globals: {} }) {
+    const { stdout, globals, lockedGlobals } = options
 
-    const globals = options.globals || {}
-    Object.keys(globals).forEach(key => this.globals.define(key, globals[key]))
+    this.globals.define(
+      'def',
+      nativeFn((name, value) => this.currentEnv.define(name, value)),
+      lockedGlobals
+    )
+    this.globals.define('print', nativeFn(stdout || console.log), lockedGlobals)
+    this.globals.define('+', nativeFn((a, b) => a + b), lockedGlobals)
+
+    Object.keys(globals).forEach(key => this.globals.define(key, globals[key], lockedGlobals))
   }
 
   interpret(program: Literal<any>[]) {
