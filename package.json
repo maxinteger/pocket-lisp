@@ -34,7 +34,8 @@
     "test": "nyc mocha",
     "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build": "rollup -c",
-    "watch": "rollup -cw"
+    "watch": "rollup -cw",
+    "repl": "ts-node src/repl.ts"
   },
   "prettier": {
     "semi": false,

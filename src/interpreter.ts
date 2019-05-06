@@ -5,27 +5,26 @@ import { RuntimeError } from './dataTypes/RuntimeError'
 
 export interface InterpreterOptions {
   globals?: { [key: string]: any }
+  stdout?: (out: string) => void
 }
 
 export class Interpreter {
   private readonly globals = new Environment()
   private currentEnv = this.globals
 
-  constructor(options?: InterpreterOptions) {
-    this.globals.define('print', nativeFn(console.log))
+  constructor(options: InterpreterOptions = {}) {
+    this.globals.define('print', nativeFn(options.stdout || console.log))
     this.globals.define('+', nativeFn((a, b) => a + b))
 
-    if (options) {
-      const globals = options.globals || {}
-      Object.keys(globals).forEach(key => this.globals.define(key, globals[key]))
-    }
+    const globals = options.globals || {}
+    Object.keys(globals).forEach(key => this.globals.define(key, globals[key]))
   }
 
   interpret(program: Literal<any>[]) {
     let returnVal: any = undefined
     try {
       for (let literal of program) {
-        this.execLiteral(literal)
+        returnVal = this.execLiteral(literal)
       }
     } catch (e) {
       throw new RuntimeError(e)
