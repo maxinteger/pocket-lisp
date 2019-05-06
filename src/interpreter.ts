@@ -13,6 +13,7 @@ export class Interpreter {
   private currentEnv = this.globals
 
   constructor(options: InterpreterOptions = {}) {
+    this.globals.define('def', nativeFn((name, value) => this.currentEnv.define(name, value)))
     this.globals.define('print', nativeFn(options.stdout || console.log))
     this.globals.define('+', nativeFn((a, b) => a + b))
 

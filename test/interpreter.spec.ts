@@ -11,6 +11,7 @@ describe('interpreter', () => {
     const expected = undefined
     expect(actual).equals(expected)
   })
+
   it('should run simple program', () => {
     interpret(
       `
@@ -24,6 +25,31 @@ describe('interpreter', () => {
         (print (+ 1 2))
       `,
       { globals: { print: nativeFn(output => expect(output).equals(3)) } }
+    )
+  })
+
+  it('should print "<native fn>" if the user print out a global function', () => {
+    interpret('(print print)', {
+      globals: {
+        print: nativeFn(output => {
+          expect(output.arity()).equals(1)
+          expect(output.toString()).equals('<native fn>')
+        })
+      }
+    })
+  })
+
+  it('should throw runtime error if the fir item of the list expression is not a function', () => {
+    expect(() => interpret('(1 + 2)')).throw(`Error: '1' is not a function`)
+  })
+
+  it('should write and read variable', () => {
+    interpret(
+      `
+        (def "x" 42)
+        (print x)
+      `,
+      { globals: { print: nativeFn(output => expect(output).equals(42)) } }
     )
   })
 })
