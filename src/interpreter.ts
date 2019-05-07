@@ -5,16 +5,20 @@ import { nativeFn } from './stdlib/utils'
 import { PLCallable } from './types'
 
 export interface InterpreterOptions {
-  globals: { [key: string]: any }
+  globals?: { [key: string]: any }
   stdout?: (out: string) => void
   lockedGlobals?: boolean
 }
 
+const defaultOptions = { stdout: undefined, lockedGlobals: true, globals: <any>{} }
+
+///
+
 export class Interpreter {
   private readonly globals = new Environment()
   private _currentEnv = this.globals
-  constructor(options: InterpreterOptions = { lockedGlobals: true, globals: {} }) {
-    const { stdout, globals, lockedGlobals } = options
+  constructor(options?: InterpreterOptions) {
+    const { stdout, globals, lockedGlobals } = { ...defaultOptions, ...options }
 
     this.globals.define('print', nativeFn(stdout || console.log))
 
