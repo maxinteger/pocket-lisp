@@ -1,7 +1,8 @@
-import { Interpreter, Parser, Scanner } from '../src'
 import { expect } from 'chai'
-import { InterpreterOptions } from '../src/interpreter'
-import { nativeFn } from '../src/stdlib/utils'
+import { Parser } from 'parser'
+import { Scanner } from 'scanner'
+import { InterpreterOptions, Interpreter } from 'interpreter'
+import { nativeFn } from 'stdlib/utils'
 
 const interpret = (src: string, options?: InterpreterOptions) =>
   new Interpreter(options).interpret(new Parser(new Scanner(src)).parse().program)

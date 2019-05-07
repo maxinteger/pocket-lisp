@@ -1,7 +1,7 @@
 import { expect } from 'chai'
-import { Scanner } from '../src'
-import { Literal, LiteralType, Parser } from '../src/parser'
-import { FractionNumber } from '../src/dataTypes/FractionNumber'
+import { Scanner } from 'scanner'
+import { Literal, LiteralType, Parser } from 'parser'
+import { FractionNumber } from 'dataTypes/FractionNumber'
 
 describe('Parser', () => {
   it('should parse empty source', () => {

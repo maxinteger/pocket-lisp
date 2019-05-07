@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Environment } from '../../src/dataTypes/Environment'
+import { Environment } from 'dataTypes/Environment'
 
 describe('Environment', () => {
   describe('define', () => {

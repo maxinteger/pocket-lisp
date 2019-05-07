@@ -21,10 +21,13 @@
     "noFallthroughCasesInSwitch": true,
 
     "moduleResolution": "node",
-    "baseUrl": "./",
+    "baseUrl": "src",
     "esModuleInterop": true,
     "declaration": true,
-    "declarationDir": "./dist"
+    "declarationDir": "./dist",
+    "paths": {
+      "stdlib": ["stdlib/*"]
+    }
     // "outFile": "./",
     // "allowJs": true,
     // "checkJs": true,
@@ -39,7 +42,6 @@
     // "importHelpers": true,
     // "downlevelIteration": true,
     // "isolatedModules": true,
-    // "paths": {},
     // "rootDirs": [],
     // "typeRoots": [],
     // "dataTypes": [],

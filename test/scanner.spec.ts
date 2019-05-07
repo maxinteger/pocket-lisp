@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Scanner, Token, TokenType } from '../src/scanner'
+import { Scanner, Token, TokenType } from 'scanner'
 
 describe('Scanner', () => {
   it('should scan EOF on empty source', () => {

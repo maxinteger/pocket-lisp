@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { initInterpret } from '../utils'
-import { def } from '../../../src/stdlib/core/def'
-import { nativeFn } from '../../../src/stdlib/utils'
+import { def } from 'stdlib/core/def'
+import { nativeFn } from 'stdlib/utils'
 
 describe('stdlib/core/def', () => {
   it('should fail it parameter number is less or more then 2', () => {

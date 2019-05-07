@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { FractionNumber } from '../../src/dataTypes/FractionNumber'
+import { FractionNumber } from 'dataTypes/FractionNumber'
 
 describe('Fraction number', () => {
   describe('creation', () => {
