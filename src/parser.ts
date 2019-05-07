@@ -3,14 +3,14 @@ import { FractionNumber } from './dataTypes/FractionNumber'
 import { indentity } from './utils/fn'
 
 export enum LiteralType {
-  Integer,
-  Float,
-  Fraction,
-  String,
-  Keyword,
-  Identifier,
-  List,
-  Array
+  Integer = 'int',
+  Float = 'float',
+  Fraction = 'fraction',
+  String = 'string',
+  Keyword = 'keyword',
+  Identifier = 'identifier',
+  List = 'list',
+  Array = 'array'
 }
 
 interface Atom {}

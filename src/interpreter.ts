@@ -1,33 +1,27 @@
 import { Environment } from './dataTypes/Environment'
-import { PLCallable } from './types'
 import { Literal, LiteralType } from './parser'
 import { RuntimeError } from './dataTypes/RuntimeError'
+import { nativeFn } from './stdlib/utils'
+import { PLCallable } from './types'
 
 export interface InterpreterOptions {
   globals: { [key: string]: any }
   stdout?: (out: string) => void
-  lockedGlobals: boolean
+  lockedGlobals?: boolean
 }
 
 export class Interpreter {
   private readonly globals = new Environment()
-  private currentEnv = this.globals
-
+  private _currentEnv = this.globals
   constructor(options: InterpreterOptions = { lockedGlobals: true, globals: {} }) {
     const { stdout, globals, lockedGlobals } = options
 
-    this.globals.define(
-      'def',
-      nativeFn((name, value) => this.currentEnv.define(name, value)),
-      lockedGlobals
-    )
-    this.globals.define('print', nativeFn(stdout || console.log), lockedGlobals)
-    this.globals.define('+', nativeFn((a, b) => a + b), lockedGlobals)
+    this.globals.define('print', nativeFn(stdout || console.log))
 
     Object.keys(globals).forEach(key => this.globals.define(key, globals[key], lockedGlobals))
   }
 
-  interpret(program: Literal<any>[]) {
+  public interpret(program: Literal<any>[]) {
     let returnVal: any = undefined
     try {
       for (let literal of program) {
@@ -39,7 +33,7 @@ export class Interpreter {
     return returnVal
   }
 
-  private execLiteral(literal: Literal<any>) {
+  public execLiteral = (literal: Literal<any>) => {
     switch (literal.kind) {
       case LiteralType.Integer:
       case LiteralType.Float:
@@ -49,7 +43,7 @@ export class Interpreter {
         return literal.value
       case LiteralType.Keyword:
       case LiteralType.Identifier:
-        return this.currentEnv.get(literal.value)
+        return this._currentEnv.get(literal.value)
       case LiteralType.List:
         return this.execList(literal)
     }
@@ -58,25 +52,13 @@ export class Interpreter {
   private execList(literal: Literal<Literal<any>[]>): any {
     const [fnId, ...args] = literal.value
     if (fnId.kind === LiteralType.Identifier) {
-      const fn = this.currentEnv.get(fnId.value)
-      return fn.call(this, args.map(this.execLiteral, this))
+      const fn = <PLCallable>this._currentEnv.get(fnId.value)
+      return fn.call(this, args)
     }
     throw new RuntimeError(`'${fnId.value}' is not a function`)
   }
-}
 
-///
-
-export const nativeFn = (fn: (...args: any[]) => any): PLCallable =>
-  <PLCallable>{
-    // @ts-ignore
-    call(interpreter: Interpreter, parameters: any[]) {
-      return fn(...parameters)
-    },
-    arity() {
-      return fn.length
-    },
-    toString() {
-      return '<native fn>'
-    }
+  get currentEnv(): Environment {
+    return this._currentEnv
   }
+}

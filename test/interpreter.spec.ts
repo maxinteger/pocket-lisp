@@ -1,6 +1,7 @@
 import { Interpreter, Parser, Scanner } from '../src'
 import { expect } from 'chai'
-import { InterpreterOptions, nativeFn } from '../src/interpreter'
+import { InterpreterOptions } from '../src/interpreter'
+import { nativeFn } from '../src/stdlib/utils'
 
 const interpret = (src: string, options?: InterpreterOptions) =>
   new Interpreter(options).interpret(new Parser(new Scanner(src)).parse().program)
@@ -24,7 +25,12 @@ describe('interpreter', () => {
       `
         (print (+ 1 2))
       `,
-      { globals: { print: nativeFn(output => expect(output).equals(3)) } }
+      {
+        globals: {
+          print: nativeFn(output => expect(output).equals(3)),
+          '+': nativeFn((a, b) => a + b)
+        }
+      }
     )
   })
 
@@ -41,15 +47,5 @@ describe('interpreter', () => {
 
   it('should throw runtime error if the fir item of the list expression is not a function', () => {
     expect(() => interpret('(1 + 2)')).throw(`Error: '1' is not a function`)
-  })
-
-  it('should write and read variable', () => {
-    interpret(
-      `
-        (def "x" 42)
-        (print x)
-      `,
-      { globals: { print: nativeFn(output => expect(output).equals(42)) } }
-    )
   })
 })

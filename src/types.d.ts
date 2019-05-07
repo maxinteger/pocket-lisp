@@ -1,7 +1,8 @@
-import {Interpreter} from './interpreter'
+import { Interpreter } from './interpreter'
+import { Literal } from './parser'
 
 export interface PLCallable {
-	call: (iInterpreter: Interpreter, args: any[]) => any
-	arity: () => number
-	toString: () => string
+  call: (interpreter: Interpreter, args: Literal<any>[]) => any
+  arity: () => number
+  toString: () => string
 }
