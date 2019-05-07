@@ -21,7 +21,7 @@ export class Environment {
     } else if (this.enclosing !== null) {
       return this.enclosing.get(name)
     } else {
-      throw new RuntimeError(`Undefined variable: '${name}'.`)
+      throw new RuntimeError(`Undefined identifier: '${name}'.`)
     }
   }
 
@@ -31,7 +31,7 @@ export class Environment {
     } else if (this.enclosing !== null) {
       return this.enclosing.assign(name, value)
     } else {
-      throw new RuntimeError(`Undefined variable: '${name}'.`)
+      throw new RuntimeError(`Undefined identifier: '${name}'.`)
     }
   }
 }

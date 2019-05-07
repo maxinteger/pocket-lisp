@@ -50,7 +50,7 @@ describe('Environment', () => {
     it('should throw error if the key is not defined in any environment', () => {
       const env = new Environment()
       const actual = () => env.get('var')
-      expect(actual).throw("Undefined variable: 'var'.")
+      expect(actual).throw("Undefined identifier: 'var'.")
     })
   })
 
@@ -77,7 +77,7 @@ describe('Environment', () => {
     it('should throw error if the key is not defined in any environment', () => {
       const env = new Environment()
       const actual = () => env.assign('var', 42)
-      expect(actual).throw("Undefined variable: 'var'.")
+      expect(actual).throw("Undefined identifier: 'var'.")
     })
   })
 })
