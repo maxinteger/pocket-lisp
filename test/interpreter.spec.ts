@@ -27,10 +27,10 @@ describe('interpreter', () => {
       }
     })
 
-    interpret(`(print ["string", 1, 1.2, 1/2])`, {
+    interpret(`(print ["string", 1, 1.2, 1/2, true, false])`, {
       globals: {
         print: nativeFn(output =>
-          expect(output).deep.equal(['string', 1, 1.2, new FractionNumber(1, 2)])
+          expect(output).deep.equal(['string', 1, 1.2, new FractionNumber(1, 2), true, false])
         )
       }
     })

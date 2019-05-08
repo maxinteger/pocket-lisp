@@ -39,6 +39,7 @@ export class Interpreter {
 
   public execLiteral = (literal: Literal<any>) => {
     switch (literal.kind) {
+      case LiteralType.Boolean:
       case LiteralType.Integer:
       case LiteralType.Float:
       case LiteralType.Fraction:
