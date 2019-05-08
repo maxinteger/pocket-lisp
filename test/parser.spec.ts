@@ -21,6 +21,24 @@ describe('Parser', () => {
     expect(parseRes.program).deep.equals(expected)
   })
 
+  it('should parse true boolean value', () => {
+    const parser = new Parser(new Scanner('true'))
+    const parseRes = parser.parse()
+    expect(parseRes.hasError).equal(false)
+
+    const expected = <any>[new Literal(LiteralType.Boolean, true)]
+    expect(parseRes.program).deep.equals(expected)
+  })
+
+  it('should parse false boolean value', () => {
+    const parser = new Parser(new Scanner('false'))
+    const parseRes = parser.parse()
+    expect(parseRes.hasError).equal(false)
+
+    const expected = <any>[new Literal(LiteralType.Boolean, false)]
+    expect(parseRes.program).deep.equals(expected)
+  })
+
   it('should parse integer number', () => {
     const parser = new Parser(new Scanner('42'))
     const parseRes = parser.parse()

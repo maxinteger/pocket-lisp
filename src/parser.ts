@@ -1,8 +1,9 @@
 import { Scanner, Token, TokenType } from './scanner'
 import { FractionNumber } from './dataTypes/FractionNumber'
-import { indentity } from './utils/fn'
+import { always, identity } from './utils/fn'
 
 export enum LiteralType {
+  Boolean = 'bool',
   Integer = 'int',
   Float = 'float',
   Fraction = 'fraction',
@@ -125,25 +126,29 @@ export class Parser {
   private expression(): Literal<any> | undefined {
     const token = this.current
     switch (token.type) {
+      case TokenType.TRUE:
+        return this.makeLiteral(LiteralType.Boolean, always(true))
+      case TokenType.FALSE:
+        return this.makeLiteral(LiteralType.Boolean, always(false))
       case TokenType.INTEGER_NUMBER:
-        return this.literalExpression(LiteralType.Integer, parseInt)
+        return this.makeLiteral(LiteralType.Integer, parseInt)
       case TokenType.FLOAT_NUMBER:
-        return this.literalExpression(LiteralType.Float, parseFloat)
+        return this.makeLiteral(LiteralType.Float, parseFloat)
       case TokenType.FRACTION_NUMBER:
-        return this.literalExpression(LiteralType.Fraction, FractionNumber.parse)
+        return this.makeLiteral(LiteralType.Fraction, FractionNumber.parse)
       case TokenType.STRING:
-        return this.literalExpression(LiteralType.String, indentity)
+        return this.makeLiteral(LiteralType.String, identity)
       case TokenType.IDENTIFIER:
-        return this.literalExpression(LiteralType.Identifier, indentity)
+        return this.makeLiteral(LiteralType.Identifier, identity)
       case TokenType.LEFT_PAREN:
-        return this.listLikeExpression(LiteralType.List, TokenType.RIGHT_PAREN)
+        return this.makeListCollection(LiteralType.List, TokenType.RIGHT_PAREN)
       case TokenType.LEFT_SQUARE:
-        return this.listLikeExpression(LiteralType.Array, TokenType.RIGHT_SQUARE)
+        return this.makeListCollection(LiteralType.Array, TokenType.RIGHT_SQUARE)
       default:
         return undefined
     }
   }
-  private literalExpression(
+  private makeLiteral(
     literalType: LiteralType,
     parserFn: (val: string) => any
   ): Literal<any> {
@@ -152,7 +157,7 @@ export class Parser {
     return literal
   }
 
-  private listLikeExpression(literalType: LiteralType, endToken: TokenType) {
+  private makeListCollection(literalType: LiteralType, endToken: TokenType) {
     const expressions = []
     this.advance()
     for (;;) {

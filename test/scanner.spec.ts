@@ -51,6 +51,18 @@ describe('Scanner', () => {
   })
 
   describe('should scan', () => {
+    it('true', () => {
+      const actual = new Scanner('true').scanToken()
+      const expected = new Token(TokenType.TRUE, 'true', 1)
+      expect(actual).deep.equals(expected)
+    })
+
+    it('false', () => {
+      const actual = new Scanner('false').scanToken()
+      const expected = new Token(TokenType.FALSE, 'false', 1)
+      expect(actual).deep.equals(expected)
+    })
+
     it('integer', () => {
       const actual = new Scanner('42').scanToken()
       const expected = new Token(TokenType.INTEGER_NUMBER, '42', 1)
@@ -89,7 +101,7 @@ describe('Scanner', () => {
 
     it('partial fraction number with error', () => {
       const actual = new Scanner('1/').scanToken()
-      const expected = new Token(TokenType.ERROR, 'Unfinished fraction number', 1)
+      const expected = new Token(TokenType.ERROR, 'Unterminated fraction number', 1)
       expect(actual).deep.equal(expected)
     })
   })

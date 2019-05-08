@@ -7,6 +7,8 @@ export enum TokenType {
   RIGHT_BRACE,
   LEFT_SQUARE,
   RIGHT_SQUARE,
+  TRUE,
+  FALSE,
   IDENTIFIER,
   KEYWORD,
   STRING,
@@ -70,7 +72,21 @@ export class Scanner {
       }
       this.advance()
     }
-    return this.makeToken(TokenType.IDENTIFIER)
+    return this.makeIdentifierToken()
+  }
+
+  makeIdentifierToken() {
+    const { start, current, source } = this
+    const id = source.substring(start, current)
+
+    switch (id) {
+      case 'true':
+        return this.makeToken(TokenType.TRUE)
+      case 'false':
+        return this.makeToken(TokenType.FALSE)
+      default:
+        return this.makeToken(TokenType.IDENTIFIER)
+    }
   }
 
   private keyword() {
@@ -87,7 +103,7 @@ export class Scanner {
       return this.makeToken(TokenType.FLOAT_NUMBER)
     } else if (this.peek() === '/') {
       if (!isDigit(this.peekNext())) {
-        return this.errorToken('Unfinished fraction number')
+        return this.errorToken('Unterminated fraction number')
       }
       this.advance()
       while (isDigit(this.peek())) this.advance()
