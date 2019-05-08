@@ -12,7 +12,7 @@ describe('Scanner', () => {
   it('should trow error token when find an unexpected char', () => {
     const scanner = new Scanner('Á')
     const actual = scanner.scanToken()
-    const expected = new Token(TokenType.ERROR, 'Unexpected character.', 1)
+    const expected = new Token(TokenType.Error, 'Unexpected character.', 1)
     expect(actual).deep.equal(expected)
   })
 
@@ -37,7 +37,7 @@ describe('Scanner', () => {
       tests.map(src => {
         const scanner = new Scanner(src)
         const actual = scanner.scanToken()
-        const expected = new Token(TokenType.IDENTIFIER, src, 1)
+        const expected = new Token(TokenType.Identifier, src, 1)
         expect(actual).deep.equal(expected)
       })
     })
@@ -45,7 +45,7 @@ describe('Scanner', () => {
     it('should ignored the white spaces around the identifier', () => {
       const scanner = new Scanner('  add  ')
       const actual = scanner.scanToken()
-      const expected = new Token(TokenType.IDENTIFIER, 'add', 1)
+      const expected = new Token(TokenType.Identifier, 'add', 1)
       expect(actual).deep.equal(expected)
     })
   })
@@ -53,55 +53,55 @@ describe('Scanner', () => {
   describe('should scan', () => {
     it('true', () => {
       const actual = new Scanner('true').scanToken()
-      const expected = new Token(TokenType.TRUE, 'true', 1)
+      const expected = new Token(TokenType.True, 'true', 1)
       expect(actual).deep.equals(expected)
     })
 
     it('false', () => {
       const actual = new Scanner('false').scanToken()
-      const expected = new Token(TokenType.FALSE, 'false', 1)
+      const expected = new Token(TokenType.False, 'false', 1)
       expect(actual).deep.equals(expected)
     })
 
     it('integer', () => {
       const actual = new Scanner('42').scanToken()
-      const expected = new Token(TokenType.INTEGER_NUMBER, '42', 1)
+      const expected = new Token(TokenType.Integer, '42', 1)
       expect(actual).deep.equals(expected)
     })
 
     it('negative integer', () => {
       const actual = new Scanner('-42').scanToken()
-      const expected = new Token(TokenType.INTEGER_NUMBER, '-42', 1)
+      const expected = new Token(TokenType.Integer, '-42', 1)
       expect(actual).deep.equals(expected)
     })
 
     it('float', () => {
       const actual = new Scanner('42.5').scanToken()
-      const expected = new Token(TokenType.FLOAT_NUMBER, '42.5', 1)
+      const expected = new Token(TokenType.Float, '42.5', 1)
       expect(actual).deep.equals(expected)
     })
 
     it('negative float', () => {
       const actual = new Scanner('-42.5').scanToken()
-      const expected = new Token(TokenType.FLOAT_NUMBER, '-42.5', 1)
+      const expected = new Token(TokenType.Float, '-42.5', 1)
       expect(actual).deep.equals(expected)
     })
 
     it('fraction number', () => {
       const actual = new Scanner('1/2').scanToken()
-      const expected = new Token(TokenType.FRACTION_NUMBER, '1/2', 1)
+      const expected = new Token(TokenType.FractionNumber, '1/2', 1)
       expect(actual).deep.equals(expected)
     })
 
     it('negative fraction number', () => {
       const actual = new Scanner('-1/2').scanToken()
-      const expected = new Token(TokenType.FRACTION_NUMBER, '-1/2', 1)
+      const expected = new Token(TokenType.FractionNumber, '-1/2', 1)
       expect(actual).deep.equals(expected)
     })
 
     it('partial fraction number with error', () => {
       const actual = new Scanner('1/').scanToken()
-      const expected = new Token(TokenType.ERROR, 'Unterminated fraction number', 1)
+      const expected = new Token(TokenType.Error, 'Unterminated fraction number', 1)
       expect(actual).deep.equal(expected)
     })
   })
@@ -110,21 +110,21 @@ describe('Scanner', () => {
     it('successfully', () => {
       const scanner = new Scanner('"hello world"')
       const actual = scanner.scanToken()
-      const expected = new Token(TokenType.STRING, 'hello world', 1)
+      const expected = new Token(TokenType.String, 'hello world', 1)
       expect(actual).deep.equal(expected)
     })
 
     it('successfully with linebreaks', () => {
       const scanner = new Scanner('"hello \n world"')
       const actual = scanner.scanToken()
-      const expected = new Token(TokenType.STRING, 'hello \n world', 2)
+      const expected = new Token(TokenType.String, 'hello \n world', 2)
       expect(actual).deep.equal(expected)
     })
 
     it('with error if it is not terminated', () => {
       const scanner = new Scanner('"unterminated string')
       const actual = scanner.scanToken()
-      const expected = new Token(TokenType.ERROR, 'Unterminated string', 1)
+      const expected = new Token(TokenType.Error, 'Unterminated string', 1)
       expect(actual).deep.equal(expected)
     })
   })
@@ -132,18 +132,18 @@ describe('Scanner', () => {
   it('should scan keyword', () => {
     const scanner = new Scanner(':keyword"')
     const actual = scanner.scanToken()
-    const expected = new Token(TokenType.KEYWORD, ':keyword', 1)
+    const expected = new Token(TokenType.Keyword, ':keyword', 1)
     expect(actual).deep.equal(expected)
   })
 
   it('should scan bracket', () => {
     const test = [
-      { src: '(', token: TokenType.LEFT_PAREN },
-      { src: ')', token: TokenType.RIGHT_PAREN },
-      { src: '{', token: TokenType.LEFT_BRACE },
-      { src: '}', token: TokenType.RIGHT_BRACE },
-      { src: '[', token: TokenType.LEFT_SQUARE },
-      { src: ']', token: TokenType.RIGHT_SQUARE }
+      { src: '(', token: TokenType.LeftParen },
+      { src: ')', token: TokenType.RightParen },
+      { src: '{', token: TokenType.LeftBrace },
+      { src: '}', token: TokenType.RightBrace },
+      { src: '[', token: TokenType.LeftSquare },
+      { src: ']', token: TokenType.RightSquare }
     ]
     test.map(({ src, token }) => {
       const scanner = new Scanner(src)
@@ -161,19 +161,19 @@ describe('Scanner', () => {
     const actual = scanner.scanAllToken()
     const expected = [
       // line 2
-      new Token(TokenType.LEFT_PAREN, '(', 2),
-      new Token(TokenType.IDENTIFIER, 'print', 2),
-      new Token(TokenType.STRING, 'hello world', 2),
-      new Token(TokenType.RIGHT_PAREN, ')', 2),
+      new Token(TokenType.LeftParen, '(', 2),
+      new Token(TokenType.Identifier, 'print', 2),
+      new Token(TokenType.String, 'hello world', 2),
+      new Token(TokenType.RightParen, ')', 2),
       // line 3
-      new Token(TokenType.LEFT_PAREN, '(', 3),
-      new Token(TokenType.IDENTIFIER, 'print', 3),
-      new Token(TokenType.LEFT_PAREN, '(', 3),
-      new Token(TokenType.IDENTIFIER, '+', 3),
-      new Token(TokenType.INTEGER_NUMBER, '1', 3),
-      new Token(TokenType.INTEGER_NUMBER, '2', 3),
-      new Token(TokenType.RIGHT_PAREN, ')', 3),
-      new Token(TokenType.RIGHT_PAREN, ')', 3),
+      new Token(TokenType.LeftParen, '(', 3),
+      new Token(TokenType.Identifier, 'print', 3),
+      new Token(TokenType.LeftParen, '(', 3),
+      new Token(TokenType.Identifier, '+', 3),
+      new Token(TokenType.Integer, '1', 3),
+      new Token(TokenType.Integer, '2', 3),
+      new Token(TokenType.RightParen, ')', 3),
+      new Token(TokenType.RightParen, ')', 3),
       new Token(TokenType.EOF, '', 4)
     ]
     expect(actual).deep.equal(expected)

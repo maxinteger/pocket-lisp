@@ -1,29 +1,27 @@
-const EOF = undefined
-
 export enum TokenType {
-  LEFT_PAREN,
-  RIGHT_PAREN,
-  LEFT_BRACE,
-  RIGHT_BRACE,
-  LEFT_SQUARE,
-  RIGHT_SQUARE,
-  TRUE,
-  FALSE,
-  IDENTIFIER,
-  KEYWORD,
-  STRING,
-  INTEGER_NUMBER,
-  FLOAT_NUMBER,
-  FRACTION_NUMBER,
-  ERROR,
-  INIT,
+  Init,
+  LeftParen,
+  RightParen,
+  LeftBrace,
+  RightBrace,
+  LeftSquare,
+  RightSquare,
+  True,
+  False,
+  Identifier,
+  Keyword,
+  String,
+  Integer,
+  Float,
+  FractionNumber,
+  Error,
   EOF
 }
 
 export class Token {
   constructor(public type: TokenType, public value: string, public line: number) {}
 
-  static INIT = new Token(TokenType.INIT, '', 0)
+  static INIT = new Token(TokenType.Init, '', 0)
 }
 
 export class Scanner {
@@ -47,7 +45,6 @@ export class Scanner {
   }
 
   private peekNext() {
-    if (this.isEnd()) return EOF
     return this.source[this.current + 1]
   }
 
@@ -57,11 +54,11 @@ export class Scanner {
   }
   private makeStringToken() {
     const { start, line, current, source } = this
-    return new Token(TokenType.STRING, source.substring(start + 1, current - 1), line)
+    return new Token(TokenType.String, source.substring(start + 1, current - 1), line)
   }
 
   private errorToken(message: string) {
-    return new Token(TokenType.ERROR, message, this.line)
+    return new Token(TokenType.Error, message, this.line)
   }
 
   private identifier() {
@@ -81,17 +78,17 @@ export class Scanner {
 
     switch (id) {
       case 'true':
-        return this.makeToken(TokenType.TRUE)
+        return this.makeToken(TokenType.True)
       case 'false':
-        return this.makeToken(TokenType.FALSE)
+        return this.makeToken(TokenType.False)
       default:
-        return this.makeToken(TokenType.IDENTIFIER)
+        return this.makeToken(TokenType.Identifier)
     }
   }
 
   private keyword() {
     while (isAlpha(this.peek()) || isDigit(this.peek())) this.advance()
-    return this.makeToken(TokenType.KEYWORD)
+    return this.makeToken(TokenType.Keyword)
   }
 
   private number() {
@@ -100,17 +97,17 @@ export class Scanner {
     if (this.peek() === '.' && isDigit(this.peekNext())) {
       this.advance()
       while (isDigit(this.peek())) this.advance()
-      return this.makeToken(TokenType.FLOAT_NUMBER)
+      return this.makeToken(TokenType.Float)
     } else if (this.peek() === '/') {
       if (!isDigit(this.peekNext())) {
         return this.errorToken('Unterminated fraction number')
       }
       this.advance()
       while (isDigit(this.peek())) this.advance()
-      return this.makeToken(TokenType.FRACTION_NUMBER)
+      return this.makeToken(TokenType.FractionNumber)
     }
 
-    return this.makeToken(TokenType.INTEGER_NUMBER)
+    return this.makeToken(TokenType.Integer)
   }
 
   private string() {
@@ -166,17 +163,17 @@ export class Scanner {
 
     switch (char) {
       case '(':
-        return this.makeToken(TokenType.LEFT_PAREN)
+        return this.makeToken(TokenType.LeftParen)
       case ')':
-        return this.makeToken(TokenType.RIGHT_PAREN)
+        return this.makeToken(TokenType.RightParen)
       case '{':
-        return this.makeToken(TokenType.LEFT_BRACE)
+        return this.makeToken(TokenType.LeftBrace)
       case '}':
-        return this.makeToken(TokenType.RIGHT_BRACE)
+        return this.makeToken(TokenType.RightBrace)
       case '[':
-        return this.makeToken(TokenType.LEFT_SQUARE)
+        return this.makeToken(TokenType.LeftSquare)
       case ']':
-        return this.makeToken(TokenType.RIGHT_SQUARE)
+        return this.makeToken(TokenType.RightSquare)
       case ':':
         return this.keyword()
       case '"':

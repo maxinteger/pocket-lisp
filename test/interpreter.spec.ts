@@ -3,6 +3,7 @@ import { Parser } from 'parser'
 import { Scanner } from 'scanner'
 import { InterpreterOptions, Interpreter } from 'interpreter'
 import { nativeFn } from 'stdlib/utils'
+import { FractionNumber } from '../src/dataTypes/FractionNumber'
 
 const interpret = (src: string, options?: InterpreterOptions) =>
   new Interpreter(options).interpret(new Parser(new Scanner(src)).parse().program)
@@ -15,24 +16,24 @@ describe('interpreter', () => {
   })
 
   it('should run simple program', () => {
-    interpret(
-      `
-        (print "hello world")
-      `,
-      { globals: { print: nativeFn(output => expect(output).equals('hello world')) } }
-    )
+    interpret(`(print "hello world")`, {
+      globals: { print: nativeFn(output => expect(output).equals('hello world')) }
+    })
 
-    interpret(
-      `
-        (print (+ 1 2))
-      `,
-      {
-        globals: {
-          print: nativeFn(output => expect(output).equals(3)),
-          '+': nativeFn((a, b) => a + b)
-        }
+    interpret(`(print (+ 1 2))`, {
+      globals: {
+        print: nativeFn(output => expect(output).equals(3)),
+        '+': nativeFn((a, b) => a + b)
       }
-    )
+    })
+
+    interpret(`(print ["string", 1, 1.2, 1/2])`, {
+      globals: {
+        print: nativeFn(output =>
+          expect(output).deep.equal(['string', 1, 1.2, new FractionNumber(1, 2)])
+        )
+      }
+    })
   })
 
   it('should print "<native fn>" if the user print out a global function', () => {
@@ -46,7 +47,7 @@ describe('interpreter', () => {
     })
   })
 
-  it('should throw runtime error if the fir item of the list expression is not a function', () => {
+  it('should throw runtime error if the first item of the list expression is not a function', () => {
     expect(() => interpret('(1 + 2)')).throw(`Error: '1' is not a function`)
   })
 })

@@ -43,13 +43,14 @@ export class Interpreter {
       case LiteralType.Float:
       case LiteralType.Fraction:
       case LiteralType.String:
-      case LiteralType.Array:
         return literal.value
       case LiteralType.Keyword:
       case LiteralType.Identifier:
         return this._currentEnv.get(literal.value)
       case LiteralType.List:
         return this.execList(literal)
+      case LiteralType.Array:
+        return this.execArray(literal)
     }
   }
 
@@ -60,6 +61,10 @@ export class Interpreter {
       return fn.call(this, args)
     }
     throw new RuntimeError(`'${fnId.value}' is not a function`)
+  }
+
+  private execArray(literal: Literal<Literal<any>[]>): any[] {
+    return literal.value.map(this.execLiteral)
   }
 
   get currentEnv(): Environment {

@@ -52,7 +52,6 @@ export class Parser {
         const exp = this.expression()
         if (exp === undefined) {
           this.error('Unknown token')
-          break
         } else {
           this._program.push(exp)
         }
@@ -82,7 +81,7 @@ export class Parser {
 
     while (true) {
       this.current = this.scanner.scanToken()
-      if (this.current.type !== TokenType.ERROR) break
+      if (this.current.type !== TokenType.Error) break
 
       this.errorAtCurrent(this.current.value)
     }
@@ -126,24 +125,24 @@ export class Parser {
   private expression(): Literal<any> | undefined {
     const token = this.current
     switch (token.type) {
-      case TokenType.TRUE:
+      case TokenType.True:
         return this.makeLiteral(LiteralType.Boolean, always(true))
-      case TokenType.FALSE:
+      case TokenType.False:
         return this.makeLiteral(LiteralType.Boolean, always(false))
-      case TokenType.INTEGER_NUMBER:
+      case TokenType.Integer:
         return this.makeLiteral(LiteralType.Integer, parseInt)
-      case TokenType.FLOAT_NUMBER:
+      case TokenType.Float:
         return this.makeLiteral(LiteralType.Float, parseFloat)
-      case TokenType.FRACTION_NUMBER:
+      case TokenType.FractionNumber:
         return this.makeLiteral(LiteralType.Fraction, FractionNumber.parse)
-      case TokenType.STRING:
+      case TokenType.String:
         return this.makeLiteral(LiteralType.String, identity)
-      case TokenType.IDENTIFIER:
+      case TokenType.Identifier:
         return this.makeLiteral(LiteralType.Identifier, identity)
-      case TokenType.LEFT_PAREN:
-        return this.makeListCollection(LiteralType.List, TokenType.RIGHT_PAREN)
-      case TokenType.LEFT_SQUARE:
-        return this.makeListCollection(LiteralType.Array, TokenType.RIGHT_SQUARE)
+      case TokenType.LeftParen:
+        return this.makeListCollection(LiteralType.List, TokenType.RightParen)
+      case TokenType.LeftSquare:
+        return this.makeListCollection(LiteralType.Array, TokenType.RightSquare)
       default:
         return undefined
     }
@@ -170,16 +169,14 @@ export class Parser {
     return new Literal(literalType, expressions)
   }
 
-  private closeParentheses(tt: TokenType) {
+  private closeParentheses(tt: TokenType): string | void {
     switch (tt) {
-      case TokenType.RIGHT_PAREN:
+      case TokenType.RightParen:
         return ')'
-      case TokenType.RIGHT_BRACE:
+      case TokenType.RightBrace:
         return '}'
-      case TokenType.RIGHT_SQUARE:
+      case TokenType.RightSquare:
         return ']'
-      default:
-        return ''
     }
   }
 }
