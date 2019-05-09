@@ -1,8 +1,8 @@
-import { Environment } from './dataTypes/Environment'
-import { Literal, LiteralType } from './parser'
-import { RuntimeError } from './dataTypes/RuntimeError'
-import { nativeFn } from './stdlib/utils'
-import { PLCallable } from './types'
+import { Environment } from 'dataTypes/Environment'
+import { Literal, LiteralType } from 'parser'
+import { RuntimeError } from 'dataTypes/RuntimeError'
+import { nativeFn } from 'stdlib/utils'
+import { PLCallable } from 'types'
 
 export interface InterpreterOptions {
   globals?: { [key: string]: any }
@@ -50,8 +50,6 @@ export class Interpreter {
         return this._currentEnv.get(literal.value)
       case LiteralType.List:
         return this.execList(literal)
-      case LiteralType.Array:
-        return this.execArray(literal)
     }
   }
 
@@ -62,10 +60,6 @@ export class Interpreter {
       return fn.call(this, args)
     }
     throw new RuntimeError(`'${fnId.value}' is not a function`)
-  }
-
-  private execArray(literal: Literal<Literal<any>[]>): any[] {
-    return literal.value.map(this.execLiteral)
   }
 
   get currentEnv(): Environment {

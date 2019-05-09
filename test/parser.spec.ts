@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Scanner } from 'scanner'
-import { Literal, LiteralType, Parser } from 'parser'
+import { LIST_IDENTIFIER, Literal, LiteralType, Parser } from 'parser'
 import { FractionNumber } from 'dataTypes/FractionNumber'
 
 describe('Parser', () => {
@@ -105,7 +105,8 @@ describe('Parser', () => {
     expect(parseRes.hasError).equal(false)
 
     const expected = <any>[
-      new Literal(LiteralType.Array, [
+      new Literal(LiteralType.List, [
+        LIST_IDENTIFIER,
         new Literal(LiteralType.Integer, 1),
         new Literal(LiteralType.Integer, 2)
       ])

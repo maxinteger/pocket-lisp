@@ -3,7 +3,7 @@ import { Parser } from 'parser'
 import { Scanner } from 'scanner'
 import { InterpreterOptions, Interpreter } from 'interpreter'
 import { nativeFn } from 'stdlib/utils'
-import { FractionNumber } from '../src/dataTypes/FractionNumber'
+import { FractionNumber } from 'dataTypes/FractionNumber'
 
 const interpret = (src: string, options?: InterpreterOptions) =>
   new Interpreter(options).interpret(new Parser(new Scanner(src)).parse().program)
@@ -16,6 +16,22 @@ describe('interpreter', () => {
   })
 
   it('should run simple program', () => {
+    const tests = [
+      { input: '(print "hello world")', output: 'hello world' },
+      { input: '(print 1)', output: 1 },
+      { input: '(print 1.2)', output: 1.2 },
+      { input: '(print 1/2)', output: new FractionNumber(1, 2) },
+      { input: '(print true)', output: true },
+      { input: '(print false)', output: false }
+    ]
+    tests.map(({ input, output }) => {
+      interpret(input, {
+        globals: {
+          print: nativeFn(res => expect(res).deep.equal(output))
+        }
+      })
+    })
+
     interpret(`(print "hello world")`, {
       globals: { print: nativeFn(output => expect(output).equals('hello world')) }
     })
@@ -24,14 +40,6 @@ describe('interpreter', () => {
       globals: {
         print: nativeFn(output => expect(output).equals(3)),
         '+': nativeFn((a, b) => a + b)
-      }
-    })
-
-    interpret(`(print ["string", 1, 1.2, 1/2, true, false])`, {
-      globals: {
-        print: nativeFn(output =>
-          expect(output).deep.equal(['string', 1, 1.2, new FractionNumber(1, 2), true, false])
-        )
       }
     })
   })

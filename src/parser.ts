@@ -1,6 +1,6 @@
-import { Scanner, Token, TokenType } from './scanner'
-import { FractionNumber } from './dataTypes/FractionNumber'
-import { always, identity } from './utils/fn'
+import { Scanner, Token, TokenType } from 'scanner'
+import { FractionNumber } from 'dataTypes/FractionNumber'
+import { always, identity } from 'utils/fn'
 
 export enum LiteralType {
   Boolean = 'bool',
@@ -10,8 +10,7 @@ export enum LiteralType {
   String = 'string',
   Keyword = 'keyword',
   Identifier = 'identifier',
-  List = 'list',
-  Array = 'array'
+  List = 'list'
 }
 
 interface Atom {}
@@ -32,6 +31,10 @@ interface ParserResult {
   errors: ParseError[]
   hasError: boolean
 }
+
+///
+
+export const LIST_IDENTIFIER = new Literal(LiteralType.Identifier, 'List')
 
 ///
 
@@ -140,33 +143,31 @@ export class Parser {
       case TokenType.Identifier:
         return this.makeLiteral(LiteralType.Identifier, identity)
       case TokenType.LeftParen:
-        return this.makeListCollection(LiteralType.List, TokenType.RightParen)
+        return new Literal<unknown>(LiteralType.List, this.advanceUntil(TokenType.RightParen))
       case TokenType.LeftSquare:
-        return this.makeListCollection(LiteralType.Array, TokenType.RightSquare)
+        return new Literal<unknown>(LiteralType.List, [
+          LIST_IDENTIFIER,
+          ...this.advanceUntil(TokenType.RightSquare)
+        ])
       default:
         return undefined
     }
   }
-  private makeLiteral(
-    literalType: LiteralType,
-    parserFn: (val: string) => any
-  ): Literal<any> {
+  private makeLiteral(literalType: LiteralType, parserFn: (val: string) => any): Literal<any> {
     const literal = new Literal(literalType, parserFn(this.current.value))
     this.advance()
     return literal
   }
 
-  private makeListCollection(literalType: LiteralType, endToken: TokenType) {
-    const expressions = []
+  private advanceUntil(endToken: TokenType): any[] {
+    const literals = []
     this.advance()
     for (;;) {
-      if (this.current.type === endToken || this.isEnd()) {
-        break
-      }
-      expressions.push(this.expression())
+      if (this.current.type === endToken || this.isEnd()) break
+      literals.push(this.expression())
     }
     this.consume(endToken, `Expected '${this.closeParentheses(endToken)}'.`)
-    return new Literal(literalType, expressions)
+    return literals
   }
 
   private closeParentheses(tt: TokenType): string | void {
