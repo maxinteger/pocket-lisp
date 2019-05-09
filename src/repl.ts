@@ -1,14 +1,22 @@
 import * as repl from 'repl'
 import { REPLServer } from 'repl'
 import { Context } from 'vm'
-import { Interpreter } from './interpreter'
-import { Parser } from './parser'
-import { Scanner } from './scanner'
-import { StdoutManager } from './dataTypes/StdoutManager'
+import { Interpreter } from 'interpreter'
+import { Parser } from 'parser'
+import { Scanner } from 'scanner'
+import { StdoutManager } from 'dataTypes/StdoutManager'
+import { def } from 'stdlib/core/def'
+import { List } from 'stdlib/data/list'
 
 function createEval() {
   const output = new StdoutManager()
-  const interpreter = new Interpreter({ stdout: output.cb })
+  const interpreter = new Interpreter({
+    globals: {
+      def,
+      List
+    },
+    stdout: output.cb
+  })
 
   return function pocketLispEval(
     this: REPLServer,

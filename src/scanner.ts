@@ -6,6 +6,7 @@ export enum TokenType {
   RightBrace,
   LeftSquare,
   RightSquare,
+  Dispatch,
   True,
   False,
   Identifier,
@@ -174,6 +175,8 @@ export class Scanner {
         return this.makeToken(TokenType.LeftSquare)
       case ']':
         return this.makeToken(TokenType.RightSquare)
+      case '#':
+        return this.makeToken(TokenType.Dispatch)
       case ':':
         return this.keyword()
       case '"':
