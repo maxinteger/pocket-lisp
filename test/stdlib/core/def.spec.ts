@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import { initInterpret } from '../utils'
 import { def } from 'stdlib/core/def'
 import { nativeFn } from 'stdlib/utils'
+import { NATIVE_FN_NAME } from 'stdlib/constants'
 
 describe('stdlib/core/def', () => {
   it('should fail it parameter number is less or more then 2', () => {
@@ -26,5 +27,13 @@ describe('stdlib/core/def', () => {
 		`,
       { def, print: nativeFn(output => expect(output).equals(42)) }
     )
+  })
+
+  it('should has arity -1', () => {
+    expect(def.arity()).equals(2)
+  })
+
+  it('should has native toString', () => {
+    expect(def.toString()).equals(NATIVE_FN_NAME)
   })
 })
