@@ -1,14 +1,14 @@
-import { PLCallable } from '../types'
-import { Interpreter } from '../interpreter'
+import { PLCallable } from 'types'
+import { Interpreter } from 'interpreter'
 import { NATIVE_FN_NAME } from './constants'
-import { Literal, LiteralType } from '../parser'
-import { RuntimeError } from '../dataTypes/RuntimeError'
+import { Literal, LiteralType } from 'parser'
+import { RuntimeError } from 'dataTypes/RuntimeError'
 
 ///
 
 export const nativeFn = (fn: (...args: any[]) => any): PLCallable =>
   <PLCallable>{
-    call(interpreter: Interpreter, parameters: any[]) {
+    call(interpreter: Interpreter, parameters: Literal<unknown>[]) {
       const evaluatedParams = parameters.map(interpreter.execLiteral, interpreter)
       return fn.apply(null, evaluatedParams)
     },
@@ -27,7 +27,7 @@ export const assetParamLength = (args: any[], expected: number, msg?: string) =>
     throw new RuntimeError(msg || `Expected ${expected} argument(s), but got ${args.length}`)
 }
 
-export const assertParamType = (literal: Literal<any>, type: LiteralType, msg?: string) => {
+export const assertParamType = (literal: Literal<unknown>, type: LiteralType, msg?: string) => {
   if (literal.kind !== type)
     throw new RuntimeError(
       msg || `Invalid function parameter, actual: '${literal.kind}', expected: '${type}'`

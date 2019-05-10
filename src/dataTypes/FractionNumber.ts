@@ -1,4 +1,4 @@
-import {gcd} from '../utils/math'
+import {gcd} from 'utils/math'
 
 export class FractionNumber {
   private readonly _n: number

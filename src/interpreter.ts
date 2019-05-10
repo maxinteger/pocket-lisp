@@ -25,8 +25,8 @@ export class Interpreter {
     Object.keys(globals).forEach(key => this.globals.define(key, globals[key], lockedGlobals))
   }
 
-  public interpret(program: Literal<any>[]) {
-    let returnVal: any = undefined
+  public interpret(program: Literal<unknown>[]) {
+    let returnVal: unknown = undefined
     try {
       for (let literal of program) {
         returnVal = this.execLiteral(literal)
@@ -53,10 +53,10 @@ export class Interpreter {
     }
   }
 
-  private execList(literal: Literal<Literal<any>[]>): any {
+  private execList(literal: Literal<Literal<unknown>[]>): unknown {
     const [fnId, ...args] = literal.value
     if (fnId.kind === LiteralType.Identifier) {
-      const fn = <PLCallable>this._currentEnv.get(fnId.value)
+      const fn = <PLCallable>this._currentEnv.get((fnId as Literal<string>).value)
       return fn.call(this, args)
     }
     throw new RuntimeError(`'${fnId.value}' is not a function`)

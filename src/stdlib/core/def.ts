@@ -1,11 +1,11 @@
-import { Interpreter } from '../../interpreter'
+import { Interpreter } from 'interpreter'
 import { assertParamType, assetParamLength } from '../utils'
-import { LiteralType } from '../../parser'
-import { PLCallable } from '../../types'
+import { Literal, LiteralType } from 'parser'
+import { PLCallable } from 'types'
 import { NATIVE_FN_NAME } from '../constants'
 
 export const def = <PLCallable>{
-  call(interpreter: Interpreter, args: any[]) {
+  call(interpreter: Interpreter, args: Literal<unknown>[]) {
     assetParamLength(args, 2)
 
     const [id, value] = args
@@ -13,7 +13,7 @@ export const def = <PLCallable>{
 
     const evaluatedValue = interpreter.execLiteral(value)
 
-    interpreter.currentEnv.define(id.value, evaluatedValue)
+    interpreter.currentEnv.define((id as Literal<string>).value, evaluatedValue)
   },
   arity() {
     return 2

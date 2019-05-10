@@ -27,7 +27,7 @@ interface ParseError {
 }
 
 interface ParserResult {
-  program: Literal<any>[]
+  program: Literal<unknown>[]
   errors: ParseError[]
   hasError: boolean
 }
@@ -43,7 +43,7 @@ export class Parser {
   private panicMode = false
   private current = Token.INIT
   private previous = Token.INIT
-  private _program: Literal<any>[] = []
+  private _program: Literal<unknown>[] = []
   private _errors: ParseError[] = []
 
   constructor(private scanner: Scanner) {}
@@ -69,7 +69,7 @@ export class Parser {
     }
   }
 
-  get program(): Literal<any>[] {
+  get program(): Literal<unknown>[] {
     return this._program
   }
 
@@ -125,7 +125,7 @@ export class Parser {
     return this.current
   }
 
-  private expression(): Literal<any> | undefined {
+  private expression(): Literal<unknown> | undefined {
     const token = this.current
     switch (token.type) {
       case TokenType.True:
@@ -153,13 +153,13 @@ export class Parser {
         return undefined
     }
   }
-  private makeLiteral(literalType: LiteralType, parserFn: (val: string) => any): Literal<any> {
+  private makeLiteral(literalType: LiteralType, parserFn: (val: string) => unknown): Literal<unknown> {
     const literal = new Literal(literalType, parserFn(this.current.value))
     this.advance()
     return literal
   }
 
-  private advanceUntil(endToken: TokenType): any[] {
+  private advanceUntil(endToken: TokenType): unknown[] {
     const literals = []
     this.advance()
     for (;;) {

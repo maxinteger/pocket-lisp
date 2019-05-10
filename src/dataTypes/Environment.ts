@@ -6,7 +6,7 @@ export class Environment {
 
   constructor(private enclosing: Environment | null = null) {}
 
-  public define(name: string, value: any, locked = false) {
+  public define(name: string, value: unknown, locked = false) {
     if (!this.locked[name]) {
       this.values[name] = value
       if (locked) this.locked[name] = true
@@ -15,7 +15,7 @@ export class Environment {
     }
   }
 
-  public get(name: string): any {
+  public get(name: string): unknown {
     if (this.values[name]) {
       return this.values[name]
     } else if (this.enclosing !== null) {
@@ -25,7 +25,7 @@ export class Environment {
     }
   }
 
-  public assign(name: string, value: any): void {
+  public assign(name: string, value: unknown): void {
     if (this.values[name]) {
       this.values[name] = value
     } else if (this.enclosing !== null) {
