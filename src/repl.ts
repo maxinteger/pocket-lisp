@@ -6,7 +6,7 @@ import { Parser } from 'parser'
 import { Scanner } from 'scanner'
 import { StdoutManager } from 'dataTypes/StdoutManager'
 import { def } from 'stdlib/core/def'
-import { List } from 'stdlib/data/list'
+import { List } from 'stdlib/data/List'
 
 function createEval() {
   const output = new StdoutManager()
