@@ -35,6 +35,7 @@ interface ParserResult {
 ///
 
 export const LIST_IDENTIFIER = new Literal(LiteralType.Identifier, 'List')
+export const MAP_IDENTIFIER = new Literal(LiteralType.Identifier, 'HashMap')
 
 ///
 
@@ -148,6 +149,11 @@ export class Parser {
         return new Literal<unknown>(LiteralType.List, [
           LIST_IDENTIFIER,
           ...this.advanceUntil(TokenType.RightSquare)
+        ])
+      case TokenType.LeftBrace:
+        return new Literal<unknown>(LiteralType.List, [
+          MAP_IDENTIFIER,
+          ...this.advanceUntil(TokenType.RightBrace)
         ])
       default:
         return undefined

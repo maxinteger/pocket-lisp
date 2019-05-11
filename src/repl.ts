@@ -7,13 +7,15 @@ import { Scanner } from 'scanner'
 import { StdoutManager } from 'dataTypes/StdoutManager'
 import { def } from 'stdlib/core/def'
 import { List } from 'stdlib/data/List'
+import { HashMap } from 'stdlib/data/HashMap'
 
 function createEval() {
   const output = new StdoutManager()
   const interpreter = new Interpreter({
     globals: {
       def,
-      List
+      List,
+      HashMap
     },
     stdout: output.cb
   })

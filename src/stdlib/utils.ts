@@ -22,14 +22,29 @@ export const nativeFn = (fn: (...args: any[]) => any): PLCallable =>
 
 ///
 
-export const assetParamLength = (args: any[], expected: number, msg?: string) => {
-  if (args.length !== expected)
-    throw new RuntimeError(msg || `Expected ${expected} argument(s), but got ${args.length}`)
+export const assert = (val: boolean, msg: string) => {
+  if (val) throw new RuntimeError(msg)
 }
 
-export const assertParamType = (literal: Literal<unknown>, type: LiteralType, msg?: string) => {
-  if (literal.kind !== type)
-    throw new RuntimeError(
-      msg || `Invalid function parameter, actual: '${literal.kind}', expected: '${type}'`
-    )
+export const assetParamLength = (args: any[], expected: number, msg?: string) => {
+  assert(
+    args.length !== expected,
+    msg || `Expected ${expected} argument(s), but got ${args.length}`
+  )
+}
+
+export const assertParamType = (literal: Literal<unknown>, ...types: LiteralType[]) => {
+  assert(
+    types.find(t => t === literal.kind) === undefined,
+    `Invalid function parameter, actual: '${literal.kind}', expected: '${types.join(' or ')}'`
+  )
+}
+
+export const chunk = (ary: any[], chunkSize = 2) => {
+  const newAry = []
+  const end = ary.length
+  for (let i = 0; i < end; i += chunkSize) {
+    newAry.push(ary.slice(i, i + chunkSize))
+  }
+  return newAry
 }
