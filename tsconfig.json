@@ -27,7 +27,8 @@
     "declarationDir": "./dist",
     "paths": {
       "stdlib": ["stdlib/*"]
-    }
+    },
+    "experimentalDecorators": true
     // "outFile": "./",
     // "allowJs": true,
     // "checkJs": true,

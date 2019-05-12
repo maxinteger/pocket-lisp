@@ -8,6 +8,7 @@ import { StdoutManager } from 'dataTypes/StdoutManager'
 import { def } from 'stdlib/core/def'
 import { List } from 'stdlib/data/List'
 import { HashMap } from 'stdlib/data/HashMap'
+import * as math from 'stdlib/math'
 
 function createEval() {
   const output = new StdoutManager()
@@ -15,7 +16,8 @@ function createEval() {
     globals: {
       def,
       List,
-      HashMap
+      HashMap,
+      ...math
     },
     stdout: output.cb
   })
