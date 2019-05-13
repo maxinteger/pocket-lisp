@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Scanner } from 'scanner'
-import { LIST_IDENTIFIER, Literal, LiteralType, Parser } from 'parser'
+import { VECTOR_IDENTIFIER, Literal, LiteralType, Parser } from 'parser'
 import { FractionNumber } from 'dataTypes/FractionNumber'
 
 describe('Parser', () => {
@@ -106,7 +106,7 @@ describe('Parser', () => {
 
     const expected = <any>[
       new Literal(LiteralType.List, [
-        LIST_IDENTIFIER,
+        VECTOR_IDENTIFIER,
         new Literal(LiteralType.Integer, 1),
         new Literal(LiteralType.Integer, 2)
       ])

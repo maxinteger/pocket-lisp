@@ -2,7 +2,7 @@ import { Interpreter } from 'interpreter'
 import { PLCallable } from 'types'
 import { NATIVE_FN_NAME } from '../constants'
 
-export const List = <PLCallable>{
+export const Vector = <PLCallable>{
   call(interpreter: Interpreter, args: any[]) {
     return args.map(interpreter.execLiteral)
   },

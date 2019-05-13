@@ -6,7 +6,7 @@ import { Parser } from 'parser'
 import { Scanner } from 'scanner'
 import { StdoutManager } from 'dataTypes/StdoutManager'
 import { def } from 'stdlib/core/def'
-import { List } from 'stdlib/data/List'
+import { Vector } from 'stdlib/data/Vector'
 import { HashMap } from 'stdlib/data/HashMap'
 import * as math from 'stdlib/math'
 
@@ -15,7 +15,7 @@ function createEval() {
   const interpreter = new Interpreter({
     globals: {
       def,
-      List,
+      List: Vector,
       HashMap,
       ...math
     },
