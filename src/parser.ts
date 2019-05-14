@@ -1,12 +1,10 @@
 import { Scanner, Token, TokenType } from 'scanner'
-import { FractionNumber } from 'dataTypes/FractionNumber'
 import { always, identity } from 'utils/fn'
 
 export enum LiteralType {
   Boolean = 'bool',
   Integer = 'int',
   Float = 'float',
-  Fraction = 'fraction',
   String = 'string',
   Keyword = 'keyword',
   Identifier = 'identifier',
@@ -34,6 +32,7 @@ interface ParserResult {
 
 ///
 
+export const FRACTION_NUMBER_IDENTIFIER = new Literal(LiteralType.Identifier, 'FractionNumber')
 export const VECTOR_IDENTIFIER = new Literal(LiteralType.Identifier, 'Vector')
 export const MAP_IDENTIFIER = new Literal(LiteralType.Identifier, 'HashMap')
 
@@ -138,7 +137,7 @@ export class Parser {
       case TokenType.Float:
         return this.makeLiteral(LiteralType.Float, parseFloat)
       case TokenType.FractionNumber:
-        return this.makeLiteral(LiteralType.Fraction, FractionNumber.parse)
+        return this.makeLiteral(LiteralType.List, (val) => [FRACTION_NUMBER_IDENTIFIER, val])
       case TokenType.String:
         return this.makeLiteral(LiteralType.String, identity)
       case TokenType.Identifier:

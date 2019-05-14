@@ -14,6 +14,20 @@ interface Box<T> {
   value: T
 }
 
+export const negate = Symbol('negate')
+export const add = Symbol('add')
+export const subtract = Symbol('subtract')
+export const multiple = Symbol('multiple')
+export const divide = Symbol('divide')
+
+export interface BaseNumberOp<a>{
+  [negate](): a
+  [add](a: a): a
+  [subtract](a: a): a
+  [multiple](a: a): a
+  [divide](a: a): a
+}
+
 export const equals = Symbol('equals')
 /**
  * a.equals(a) === true (reflexivity)

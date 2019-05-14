@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import { Scanner } from 'scanner'
-import { VECTOR_IDENTIFIER, Literal, LiteralType, Parser } from 'parser'
-import { FractionNumber } from 'dataTypes/FractionNumber'
+import { VECTOR_IDENTIFIER, FRACTION_NUMBER_IDENTIFIER, Literal, LiteralType, Parser } from 'parser'
 
 describe('Parser', () => {
   it('should parse empty source', () => {
@@ -62,7 +61,10 @@ describe('Parser', () => {
     const parseRes = parser.parse()
     expect(parseRes.hasError).equal(false)
 
-    const expected = <any>[new Literal(LiteralType.Fraction, new FractionNumber(2, 1))]
+    const expected = <any>[new Literal(LiteralType.List, [
+      FRACTION_NUMBER_IDENTIFIER,
+      '4/2'
+    ])]
     expect(parseRes.program).deep.equals(expected)
   })
 

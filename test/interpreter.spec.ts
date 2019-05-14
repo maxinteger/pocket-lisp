@@ -3,7 +3,6 @@ import { Parser } from 'parser'
 import { Scanner } from 'scanner'
 import { InterpreterOptions, Interpreter } from 'interpreter'
 import { nativeFn } from 'stdlib/utils'
-import { FractionNumber } from 'dataTypes/FractionNumber'
 
 const interpret = (src: string, options?: InterpreterOptions) =>
   new Interpreter(options).interpret(new Parser(new Scanner(src)).parse().program)
@@ -20,7 +19,6 @@ describe('interpreter', () => {
       { input: '(print "hello world")', output: 'hello world' },
       { input: '(print 1)', output: 1 },
       { input: '(print 1.2)', output: 1.2 },
-      { input: '(print 1/2)', output: new FractionNumber(1, 2) },
       { input: '(print true)', output: true },
       { input: '(print false)', output: false }
     ]

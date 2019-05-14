@@ -42,7 +42,6 @@ export class Interpreter {
       case LiteralType.Boolean:
       case LiteralType.Integer:
       case LiteralType.Float:
-      case LiteralType.Fraction:
       case LiteralType.String:
         return literal.value
       case LiteralType.Keyword:
