@@ -4,7 +4,7 @@ import { NATIVE_FN_NAME } from '../constants'
 import { assert, chunk } from 'stdlib/utils'
 import { Literal } from 'parser'
 
-export const HashMap = <PLCallable>{
+export const hashMap = <PLCallable>{
   call(interpreter: Interpreter, args: Literal<unknown>[]) {
     assert(
       args.length % 2 !== 0,

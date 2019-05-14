@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { FractionNumber } from 'stdlib/data/FractionNumber'
+import { fractionNumber, str2fractionNumber } from 'stdlib/data/FractionNumber'
 
 describe('Fraction number', () => {
   describe('creation', () => {
@@ -13,7 +13,7 @@ describe('Fraction number', () => {
       ] as { n: any; d: any }[]
 
       tests.map(({ n, d }) => {
-        expect(() => new FractionNumber(n, d)).throw('Invalid fraction number parameters!')
+        expect(() => fractionNumber(n, d)).throw('Invalid fraction number parameters!')
       })
     })
 
@@ -25,7 +25,7 @@ describe('Fraction number', () => {
       }[]
 
       tests.map(({ n, d, res }) => {
-        expect(new FractionNumber(n, d).toString()).eq(res)
+        expect(fractionNumber(n, d).toString()).eq(res)
       })
     })
 
@@ -39,25 +39,25 @@ describe('Fraction number', () => {
       ] as { n: any; d: any; res: string }[]
 
       tests.map(({ n, d, res }) => {
-        expect(new FractionNumber(n, d).toString()).eq(res)
+        expect(fractionNumber(n, d).toString()).eq(res)
       })
     })
   })
 
   describe('getters', () => {
     it('should work', () => {
-      const actual = new FractionNumber(1, 2)
+      const actual = fractionNumber(1, 2)
       expect(actual.numerator).equal(1)
       expect(actual.denominator).equal(2)
     })
   })
 
   describe('parser', () => {
-    it('should return with NaN if the input is invalid', () => {
+    it('should throw error if the input is invalid', () => {
       const tests = ['', 'xyz', '1', '1/', '1.1/1', '1/1.1', '1/0']
 
       tests.map(input => {
-        expect(isNaN(<any>FractionNumber.parse(input))).equal(true)
+        expect(() => str2fractionNumber(input)).throw(`Invalid fraction number: ${input}.`)
       })
     })
 
@@ -71,7 +71,7 @@ describe('Fraction number', () => {
       ]
 
       tests.map(({ input, out }) => {
-        expect(FractionNumber.parse(input).toString()).equal(out)
+        expect(str2fractionNumber(input).toString()).equal(out)
       })
     })
   })

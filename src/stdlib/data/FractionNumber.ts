@@ -60,25 +60,19 @@ class FractionNumber implements BaseNumberOp<FractionNumber> {
   public toString() {
     return `${this._n}/${this._d}`
   }
-
-  static parse(str: string) {
-    const [n, d] = str.split('/').map(x => parseInt(x, 10))
-    if (isValid(n, d)) {
-      return new FractionNumber(n, d)
-    } else {
-      throw new RuntimeError(`Invalid fraction number: ${str}.`)
-    }
-  }
 }
 
 ///
-export const fractionNumber = (n: number | string, d?: number): FractionNumber => {
-  if (typeof n === 'string') {
-    return FractionNumber.parse(n)
-  } else if (d !== undefined) {
+export const fractionNumber = (n: number, d: number): FractionNumber => {
+  return new FractionNumber(n, d)
+}
+
+export const str2fractionNumber = (str: string) => {
+  const [n, d] = str.split('/').map(parseFloat)
+  if (isValid(n, d)) {
     return new FractionNumber(n, d)
   } else {
-    throw new RuntimeError(`Expected fraction number, but get ${n}, ${d}.`)
+    throw new RuntimeError(`Invalid fraction number: ${str}.`)
   }
 }
 

@@ -32,9 +32,9 @@ interface ParserResult {
 
 ///
 
-export const FRACTION_NUMBER_IDENTIFIER = new Literal(LiteralType.Identifier, 'FractionNumber')
-export const VECTOR_IDENTIFIER = new Literal(LiteralType.Identifier, 'Vector')
-export const MAP_IDENTIFIER = new Literal(LiteralType.Identifier, 'HashMap')
+export const FRACTION_NUMBER_IDENTIFIER = new Literal(LiteralType.Identifier, 'fractionNumber')
+export const VECTOR_IDENTIFIER = new Literal(LiteralType.Identifier, 'vector')
+export const MAP_IDENTIFIER = new Literal(LiteralType.Identifier, 'hashMap')
 
 ///
 
