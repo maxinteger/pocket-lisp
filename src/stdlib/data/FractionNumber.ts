@@ -34,7 +34,7 @@ class FractionNumber implements BaseNumberOp<FractionNumber> {
   }
 
   [add](a: FractionNumber) {
-    const numerator = this.numerator * a.denominator + this.denominator * a.numerator
+    const numerator = (this.numerator * a.denominator) + (this.denominator * a.numerator)
     const denominator = this.denominator * a.denominator
     return new FractionNumber(numerator, denominator)
   }
@@ -57,6 +57,10 @@ class FractionNumber implements BaseNumberOp<FractionNumber> {
     return new FractionNumber(numerator, denominator)
   }
 
+  reciprocal(): FractionNumber{
+    return new FractionNumber(this.denominator, this.numerator)
+  }
+
   public toString() {
     return `${this._n}/${this._d}`
   }
@@ -75,8 +79,6 @@ export const str2fractionNumber = (str: string) => {
     throw new RuntimeError(`Invalid fraction number: ${str}.`)
   }
 }
-
-export const reciprocal = (a: FractionNumber) => new FractionNumber(a.denominator, a.numerator)
 
 ///
 

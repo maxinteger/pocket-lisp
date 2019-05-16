@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import { fractionNumber, str2fractionNumber } from 'stdlib/data/FractionNumber'
+import { add, divide, multiple, negate, subtract } from 'stdlib/types'
 
 describe('Fraction number', () => {
   describe('creation', () => {
@@ -75,4 +76,51 @@ describe('Fraction number', () => {
       })
     })
   })
+
+  describe('reciprocal operator', () => {
+    it('should reciprocal the number', () => {
+      expect(fractionNumber(1,2).reciprocal()).deep.equals(fractionNumber(2, 1))
+    })
+  })
+
+  describe('negate operator', () => {
+    it('should negate the number', () => {
+      expect(fractionNumber(1,2)[negate]()).deep.equals(fractionNumber(-1, 2))
+      expect(fractionNumber(-1,2)[negate]()).deep.equals(fractionNumber(1, 2))
+    })
+  })
+
+  describe('add operator', () => {
+    it('should add two fraction number', () => {
+      const actual = fractionNumber(2, 3)[add](fractionNumber(1, 5))
+      const expected = fractionNumber(13, 15)
+      expect(actual).deep.equals(expected)
+    })
+  })
+
+  describe('subtract operator', () => {
+    it('should subtract two fraction number', () => {
+      const actual = fractionNumber(1, 2)[subtract](fractionNumber(1, 6))
+      const expected = fractionNumber(2, 6)
+      expect(actual).deep.equals(expected)
+    })
+  })
+
+  describe('multiple operator', () => {
+    it('should multiple two fraction number', () => {
+      const actual = fractionNumber(1, 2)[multiple](fractionNumber(2, 5))
+      const expected = fractionNumber(1, 5)
+      expect(actual).deep.equals(expected)
+    })
+  })
+
+  describe('divide operator', () => {
+    it('should divide two fraction number', () => {
+      const actual = fractionNumber(1, 8)[divide](fractionNumber(1, 4))
+      const expected = fractionNumber(1, 2)
+      expect(actual).deep.equals(expected)
+    })
+  })
+
+
 })
