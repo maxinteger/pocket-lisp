@@ -2,54 +2,8 @@ import { Environment } from 'dataTypes/Environment'
 import { Literal, LiteralType } from 'parser'
 import { RuntimeError } from 'dataTypes/RuntimeError'
 import { nativeFn } from 'stdlib/utils'
-import { PLCallable } from 'types'
-
-interface PLLiteral {
-  parser: (x: string) => any
-  factory: PLCallable
-}
-
-export interface InterpreterOptions {
-  globals?: { [key: string]: any }
-  stdout?: (out: string) => void
-  lockedGlobals?: boolean
-}
-
-export interface PLLiterals {
-  bool: PLLiteral
-  int: PLLiteral
-  float: PLLiteral
-  fractionNumber: PLLiteral
-  vector: PLLiteral
-  hashMap: PLLiteral
-}
-
-const notImplementedLiteral = (name: string): PLLiteral => ({
-  parser: () => {
-    throw new RuntimeError(`${name} is not implemented`)
-  },
-  factory: nativeFn(() => {
-    throw new RuntimeError(`${name} is not implemented`)
-  })
-})
-
-const defaultLiterals: PLLiterals = {
-  bool: {
-    parser: (x: string) => x === 'true',
-    factory: nativeFn(Boolean)
-  },
-  int: {
-    parser: (x: string) => parseInt(x, 10),
-    factory: nativeFn(Number)
-  },
-  float: {
-    parser: parseFloat,
-    factory: nativeFn(Number)
-  },
-  fractionNumber: notImplementedLiteral('FractionNumber'),
-  vector: notImplementedLiteral('Vector'),
-  hashMap: notImplementedLiteral('HashMap')
-}
+import { InterpreterOptions, PLCallable, PLLiterals } from 'types'
+import { defaultLiterals } from 'utils/defaultLiterals'
 
 const defaultOptions = {
   stdout: undefined,

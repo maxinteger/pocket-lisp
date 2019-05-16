@@ -136,6 +136,13 @@ describe('Scanner', () => {
     expect(actual).deep.equal(expected)
   })
 
+  it('should scan dispatch', () => {
+    const scanner = new Scanner('#')
+    const actual = scanner.scanToken()
+    const expected = new Token(TokenType.Dispatch, '#', 1)
+    expect(actual).deep.equal(expected)
+  })
+
   it('should scan bracket', () => {
     const test = [
       { src: '(', token: TokenType.LeftParen },
