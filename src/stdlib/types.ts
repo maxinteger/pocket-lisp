@@ -1,4 +1,4 @@
-import { Bool } from 'stdlib/data/Bool'
+import { PLBool } from 'stdlib/data/Bool'
 
 export function staticImplements<T>() {
   // @ts-ignore
@@ -9,10 +9,6 @@ export function staticImplements<T>() {
   Types based on Fantasy land
 	https://github.com/fantasyland/fantasy-land
  */
-
-interface Box<T> {
-  value: T
-}
 
 export const negate = Symbol('negate')
 export const add = Symbol('add')
@@ -34,9 +30,9 @@ export const equals = Symbol('equals')
  * a.equals(b) === b.equals(a) (symmetry)
  * If a.equals(b) and b.equals(c), then a.equals(c) (transitivity)
  */
-export interface Setoid<a> extends Box<a> {
+export interface Setoid<a> {
   // Setoid a => a ~> a -> Boolean
-  [equals](b: Setoid<a>): Bool
+  [equals](b: Setoid<a>): PLBool
 }
 
 export const lte = Symbol('lte')
@@ -47,7 +43,7 @@ export const lte = Symbol('lte')
  */
 export interface Ord<a> extends Setoid<a> {
   // Semigroupoid c => c i j ~> c j k -> c i k
-  [lte](b: Ord<a>): Bool
+  [lte](b: Ord<a>): PLBool
 }
 
 export const compose = Symbol('compose')
@@ -107,7 +103,7 @@ export const filter = Symbol('filter')
  */
 export interface Filterable<a> {
   // Filterable f => f a ~> (a -> Boolean) -> f a
-  [filter](p: (a: a) => Bool): Filterable<a>
+  [filter](p: (a: a) => PLBool): Filterable<a>
 }
 
 export const map = Symbol('map')
