@@ -1,15 +1,9 @@
-import { Interpreter } from 'interpreter'
-import { PLCallable } from 'types'
-import { NATIVE_FN_NAME } from '../constants'
+class Vector<T> {
+  constructor(private _value: T[]) {}
 
-export const vector = <PLCallable>{
-  call(interpreter: Interpreter, args: any[]) {
-    return args.map(interpreter.execLiteral)
-  },
-  arity() {
-    return -1
-  },
   toString() {
-    return NATIVE_FN_NAME
+    return `[${this._value.join()}]`
   }
 }
+
+export const vector: <T>(value?: T[]) => Vector<T> = (value = []) => new Vector(value)
