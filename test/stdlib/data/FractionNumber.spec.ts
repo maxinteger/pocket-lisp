@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 import { fractionNumber, str2fractionNumber } from 'stdlib/data/FractionNumber'
-import { add, divide, multiple, negate, subtract } from 'stdlib/types'
+import { add, divide, equals, multiple, negate, subtract } from 'stdlib/types'
+import { plBool } from 'stdlib/data/Bool'
 
 describe('Fraction number', () => {
   describe('creation', () => {
@@ -77,16 +78,25 @@ describe('Fraction number', () => {
     })
   })
 
+  describe('equal operator', () => {
+    it('should compare two number', () => {
+      expect(fractionNumber(1, 2)[equals](fractionNumber(1, 2))).deep.equals(plBool(true))
+      expect(fractionNumber(1, 2)[equals](fractionNumber(5, 10))).deep.equals(plBool(true))
+      expect(fractionNumber(1, 2)[equals](fractionNumber(6, 10))).deep.equals(plBool(false))
+      expect(fractionNumber(1, 2)[equals](fractionNumber(-1, 2))).deep.equals(plBool(false))
+    })
+  })
+
   describe('reciprocal operator', () => {
     it('should reciprocal the number', () => {
-      expect(fractionNumber(1,2).reciprocal()).deep.equals(fractionNumber(2, 1))
+      expect(fractionNumber(1, 2).reciprocal()).deep.equals(fractionNumber(2, 1))
     })
   })
 
   describe('negate operator', () => {
     it('should negate the number', () => {
-      expect(fractionNumber(1,2)[negate]()).deep.equals(fractionNumber(-1, 2))
-      expect(fractionNumber(-1,2)[negate]()).deep.equals(fractionNumber(1, 2))
+      expect(fractionNumber(1, 2)[negate]()).deep.equals(fractionNumber(-1, 2))
+      expect(fractionNumber(-1, 2)[negate]()).deep.equals(fractionNumber(1, 2))
     })
   })
 
@@ -121,6 +131,4 @@ describe('Fraction number', () => {
       expect(actual).deep.equals(expected)
     })
   })
-
-
 })
