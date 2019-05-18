@@ -1,8 +1,9 @@
 import { gcd } from 'utils/math'
-import { add, BaseNumberOp, divide, multiple, negate, subtract } from 'stdlib/types'
+import { add, BaseNumberOp, divide, equals, multiple, negate, Setoid, subtract } from 'stdlib/types'
 import { RuntimeError } from 'dataTypes/RuntimeError'
+import { plBool } from 'stdlib/data/Bool'
 
-class FractionNumber implements BaseNumberOp<FractionNumber> {
+class FractionNumber implements Setoid<FractionNumber>, BaseNumberOp<FractionNumber> {
   private readonly _n: number
   private readonly _d: number
 
@@ -29,12 +30,16 @@ class FractionNumber implements BaseNumberOp<FractionNumber> {
     return this._d
   }
 
+  [equals](a: FractionNumber) {
+    return plBool(this.numerator === a.numerator && this.denominator === a.denominator)
+  }
+
   [negate]() {
     return new FractionNumber(-this._n, this._d)
   }
 
   [add](a: FractionNumber) {
-    const numerator = (this.numerator * a.denominator) + (this.denominator * a.numerator)
+    const numerator = this.numerator * a.denominator + this.denominator * a.numerator
     const denominator = this.denominator * a.denominator
     return new FractionNumber(numerator, denominator)
   }
@@ -57,7 +62,7 @@ class FractionNumber implements BaseNumberOp<FractionNumber> {
     return new FractionNumber(numerator, denominator)
   }
 
-  reciprocal(): FractionNumber{
+  reciprocal(): FractionNumber {
     return new FractionNumber(this.denominator, this.numerator)
   }
 

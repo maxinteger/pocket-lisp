@@ -1,6 +1,7 @@
 import { expect } from 'chai'
-import { add, divide, multiple, negate, subtract } from 'stdlib/types'
+import { add, divide, equals, multiple, negate, subtract } from 'stdlib/types'
 import { plNumber, str2PLNumber } from 'stdlib/data/Number'
+import { plBool } from 'stdlib/data/Bool'
 
 describe('Number', () => {
   describe('creation', () => {})
@@ -33,6 +34,13 @@ describe('Number', () => {
       tests.map(({ input, out }) => {
         expect(str2PLNumber(input).toString()).equal(out)
       })
+    })
+  })
+
+  describe('equals operator', () => {
+    it('should compare numbers', () => {
+      expect(plNumber(2)[equals](plNumber(2))).deep.equals(plBool(true))
+      expect(plNumber(2)[equals](plNumber(1))).deep.equals(plBool(false))
     })
   })
 

@@ -1,12 +1,18 @@
-import { add, BaseNumberOp, divide, multiple, negate, subtract } from 'stdlib/types'
+import { add, BaseNumberOp, divide, equals, multiple, negate, Setoid, subtract } from 'stdlib/types'
 import { RuntimeError } from 'dataTypes/RuntimeError'
+import { plBool } from 'stdlib/data/Bool'
 
-export class PLNumber implements BaseNumberOp<PLNumber> {
+export class PLNumber implements Setoid<PLNumber>, BaseNumberOp<PLNumber> {
   constructor(private _value: number) {}
 
   get value() {
     return this._value
   }
+
+  [equals](a: PLNumber) {
+    return plBool(this._value === a.value)
+  }
+
   [negate]() {
     return new PLNumber(-this._value)
   }
