@@ -1,27 +1,24 @@
-import { Interpreter } from 'interpreter'
-import { PLCallable } from 'types'
-import { NATIVE_FN_NAME } from '../constants'
-import { assert, chunk } from 'stdlib/utils'
-import { Literal } from 'parser'
+import { of, SApplicative, staticImplements } from 'stdlib/types'
 
-export const hashMap = <PLCallable>{
-  call(interpreter: Interpreter, args: Literal<unknown>[]) {
-    assert(
-      args.length % 2 !== 0,
-      `Expected even number of arguments (key, value pairs), but got ${args.length}.`
-    )
+type Entries = [any, any][]
 
-    const evaluatedParams = args.map(interpreter.execLiteral)
+@staticImplements<SApplicative<Entries, HashMap>>()
+class HashMap {
+  private readonly value: Map<any, any>
 
-    return chunk(evaluatedParams).reduce((map, [key, value]) => {
-      map.set(key, value)
-      return map
-    }, new Map())
-  },
-  arity() {
-    return -1
-  },
+  constructor(entries?: Entries) {
+    this.value = new Map(entries)
+  }
+
+  static [of](value: Entries): HashMap {
+    return new HashMap(value)
+  }
+
   toString() {
-    return NATIVE_FN_NAME
+    return `{${Array.from(this.value.entries())
+      .map(([k, v]) => `${k}: ${v}`)
+      .join(', ')}}`
   }
 }
+
+export const hashMap = (entries?: Entries) => HashMap[of](entries || [])
