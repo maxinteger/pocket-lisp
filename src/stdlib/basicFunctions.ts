@@ -1,0 +1,37 @@
+import { BaseNumberOp } from 'stdlib/types'
+import { assertType } from 'stdlib/utils'
+import * as op from './types'
+
+type BinaryBaseNumberOp = <a extends BaseNumberOp<any>>(a: BaseNumberOp<a>, b: BaseNumberOp<a>) => ThisType<a>
+
+export const negate: <a extends BaseNumberOp<any>>(a: BaseNumberOp<a>) => ThisType<a> = a => {
+  return a[op.negate]()
+}
+
+export const add: BinaryBaseNumberOp = (a, b) => {
+  assertType(a, b)
+  return a[op.add](b)
+}
+
+export const subtract: BinaryBaseNumberOp = (a, b) => {
+  assertType(a, b)
+  return a[op.subtract](b)
+}
+
+export const multiple: BinaryBaseNumberOp = (a, b) => {
+  assertType(a, b)
+  return a[op.multiple](b)
+}
+
+export const divide: BinaryBaseNumberOp = (a, b) => {
+  assertType(a, b)
+  return a[op.divide](b)
+}
+
+export default {
+	negate,
+	'+': add,
+	'-': subtract,
+	'*': multiple,
+	'/': divide,
+}

@@ -1,7 +1,18 @@
-import { chunk } from 'stdlib/utils'
+import { assertType, chunk } from 'stdlib/utils'
 import { expect } from 'chai'
+import { plBool } from 'stdlib/data/Bool'
 
 describe('stdlib utils', () => {
+  describe('assertType', () => {
+    it('should throws error if the params have different constructors', () => {
+      expect(() => assertType(plBool(true), Boolean(false))).throws(
+        `Type mismatch between: 'PLBool' and 'Boolean'`
+      )
+    })
+    it('should does nothing if the params have the same constructors', () => {
+      expect(() => assertType(plBool(true), plBool(false))).not.throw()
+    })
+  })
   describe('chunk', () => {
     it('should return with empty array if the input is empty', () => {
       const actual = chunk([])

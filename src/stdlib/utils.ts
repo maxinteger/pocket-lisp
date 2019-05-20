@@ -40,6 +40,14 @@ export const assertParamType = (literal: Literal<unknown>, ...types: LiteralType
   )
 }
 
+export const assertType = (a: any, b: any) =>
+  assert(
+    a.constructor !== b.constructor,
+    `Type mismatch between: '${a.constructor && a.constructor.name}' and '${b.constructor &&
+      b.constructor.name}'`
+  )
+
+
 export const chunk = (ary: any[], chunkSize = 2) => {
   const newAry = []
   const end = ary.length
