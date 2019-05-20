@@ -1,10 +1,11 @@
 import { expect } from 'chai'
 import { Scanner } from 'scanner'
-import { VECTOR_IDENTIFIER, FRACTION_NUMBER_IDENTIFIER, Literal, LiteralType, Parser } from 'parser'
+import { VECTOR_IDENTIFIER, Literal, LiteralType, Parser } from 'parser'
+import { defaultLiterals } from 'utils/defaultLiterals'
 
 describe('Parser', () => {
   it('should parse empty source', () => {
-    const parser = new Parser(new Scanner(''))
+    const parser = new Parser(new Scanner(''), defaultLiterals)
     const parseRes = parser.parse()
 
     expect(parseRes.hasError).equal(false)
@@ -12,7 +13,7 @@ describe('Parser', () => {
   })
 
   it('should parse empty source with comment', () => {
-    const parser = new Parser(new Scanner('; comment'))
+    const parser = new Parser(new Scanner('; comment'), defaultLiterals)
     const parseRes = parser.parse()
     expect(parseRes.hasError).equal(false)
 
@@ -21,7 +22,7 @@ describe('Parser', () => {
   })
 
   it('should parse true boolean value', () => {
-    const parser = new Parser(new Scanner('true'))
+    const parser = new Parser(new Scanner('true'), defaultLiterals)
     const parseRes = parser.parse()
     expect(parseRes.hasError).equal(false)
 
@@ -30,7 +31,7 @@ describe('Parser', () => {
   })
 
   it('should parse false boolean value', () => {
-    const parser = new Parser(new Scanner('false'))
+    const parser = new Parser(new Scanner('false'), defaultLiterals)
     const parseRes = parser.parse()
     expect(parseRes.hasError).equal(false)
 
@@ -39,7 +40,7 @@ describe('Parser', () => {
   })
 
   it('should parse integer number', () => {
-    const parser = new Parser(new Scanner('42'))
+    const parser = new Parser(new Scanner('42'), defaultLiterals)
     const parseRes = parser.parse()
     expect(parseRes.hasError).equal(false)
 
@@ -48,7 +49,7 @@ describe('Parser', () => {
   })
 
   it('should parse float number', () => {
-    const parser = new Parser(new Scanner('42.5'))
+    const parser = new Parser(new Scanner('42.5'), defaultLiterals)
     const parseRes = parser.parse()
     expect(parseRes.hasError).equal(false)
 
@@ -57,19 +58,16 @@ describe('Parser', () => {
   })
 
   it('should parse fraction number', () => {
-    const parser = new Parser(new Scanner('4/2'))
+    const parser = new Parser(new Scanner('4/2'), defaultLiterals)
     const parseRes = parser.parse()
     expect(parseRes.hasError).equal(false)
 
-    const expected = <any>[new Literal(LiteralType.List, [
-      FRACTION_NUMBER_IDENTIFIER,
-      '4/2'
-    ])]
+    const expected = <any>[new Literal(LiteralType.FractionNumber, '4/2')]
     expect(parseRes.program).deep.equals(expected)
   })
 
   it('should parse string', () => {
-    const parser = new Parser(new Scanner('"hello world"'))
+    const parser = new Parser(new Scanner('"hello world"'), defaultLiterals)
     const parseRes = parser.parse()
     expect(parseRes.hasError).equal(false)
 
@@ -78,7 +76,7 @@ describe('Parser', () => {
   })
 
   it('should parse identifier', () => {
-    const parser = new Parser(new Scanner('add'))
+    const parser = new Parser(new Scanner('add'), defaultLiterals)
     const parseRes = parser.parse()
     expect(parseRes.hasError).equal(false)
 
@@ -87,7 +85,7 @@ describe('Parser', () => {
   })
 
   it('should parse list expression', () => {
-    const parser = new Parser(new Scanner('(add 1 2)'))
+    const parser = new Parser(new Scanner('(add 1 2)'), defaultLiterals)
     const parseRes = parser.parse()
     expect(parseRes.hasError).equal(false)
 
@@ -102,7 +100,7 @@ describe('Parser', () => {
   })
 
   it('should parse array expression', () => {
-    const parser = new Parser(new Scanner('[1 2]'))
+    const parser = new Parser(new Scanner('[1 2]'), defaultLiterals)
     const parseRes = parser.parse()
     expect(parseRes.hasError).equal(false)
 
@@ -121,7 +119,8 @@ describe('Parser', () => {
       new Scanner(`
       (print "hello world")
       (print (+ 1 2))
-    `)
+    `),
+      defaultLiterals
     )
     const parseRes = parser.parse()
     expect(parseRes.hasError).equal(false)
@@ -147,7 +146,7 @@ describe('Parser', () => {
     it('should thrown if parentheses is not closed', () => {
       const tests = [{ src: '(+ 1 2', error: ')' }, { src: '[1 2', error: ']' }]
       tests.map(({ src, error }) => {
-        const parser = new Parser(new Scanner(src))
+        const parser = new Parser(new Scanner(src), defaultLiterals)
         const parseRes = parser.parse()
         expect(parseRes.hasError).equal(true)
 
@@ -160,7 +159,7 @@ describe('Parser', () => {
     })
 
     it('should thrown if the token is unknown', () => {
-      const parser = new Parser(new Scanner(':keyword'))
+      const parser = new Parser(new Scanner(':keyword'), defaultLiterals)
       const parseRes = parser.parse()
       expect(parseRes.hasError).equal(true)
 
@@ -174,7 +173,7 @@ describe('Parser', () => {
     })
 
     it('should thrown if the token is unknown', () => {
-      const parser = new Parser(new Scanner('@'))
+      const parser = new Parser(new Scanner('@'), defaultLiterals)
       const parseRes = parser.parse()
       expect(parseRes.hasError).equal(true)
 

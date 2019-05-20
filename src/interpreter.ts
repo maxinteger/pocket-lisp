@@ -4,6 +4,7 @@ import { RuntimeError } from 'dataTypes/RuntimeError'
 import { nativeFn } from 'stdlib/utils'
 import { InterpreterOptions, PLCallable, PLLiterals } from 'types'
 import { defaultLiterals } from 'utils/defaultLiterals'
+import { NATIVE_FN_NAME } from 'stdlib/constants'
 
 const defaultOptions = {
   stdout: undefined,
@@ -27,9 +28,11 @@ export class Interpreter {
 
     this.globals.define('print', nativeFn(stdout || console.log))
 
-    Object.keys(globals).forEach(key =>
-      this.globals.define(key, nativeFn(globals[key]), lockedGlobals)
-    )
+    Object.keys(globals).forEach(key => {
+      const value = globals[key]
+      const fn = value.toString() === NATIVE_FN_NAME ? value : nativeFn(value)
+      this.globals.define(key, fn, lockedGlobals)
+    })
   }
 
   public interpret(program: Literal<unknown>[]) {

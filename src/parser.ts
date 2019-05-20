@@ -135,9 +135,9 @@ export class Parser {
 
     switch (token.type) {
       case TokenType.True:
-        return this.makeLiteral(LiteralType.Boolean, bool.factory(true))
+        return this.makeLiteral(LiteralType.Boolean, bool.parser || missingParser('bool') )
       case TokenType.False:
-        return this.makeLiteral(LiteralType.Boolean, bool.factory(false))
+        return this.makeLiteral(LiteralType.Boolean, bool.parser || missingParser('bool') )
       case TokenType.Integer:
         return this.makeLiteral(LiteralType.Integer, int.parser || missingParser('int') )
       case TokenType.Float:

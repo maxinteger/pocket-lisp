@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import { initInterpret } from '../testUtils'
 import { def } from 'stdlib/core/def'
-import { nativeFn } from 'stdlib/utils'
 import { NATIVE_FN_NAME } from 'stdlib/constants'
 
 describe('stdlib/core/def', () => {
@@ -25,7 +24,7 @@ describe('stdlib/core/def', () => {
 		(def x 42)
 		(print x)
 		`,
-      { def, print: nativeFn(output => expect(output).equals(42)) }
+      { def, print: (output: any) => expect(output).equals(42) }
     )
   })
 

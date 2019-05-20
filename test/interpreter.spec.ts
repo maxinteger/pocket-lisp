@@ -2,7 +2,6 @@ import { expect } from 'chai'
 import { Parser } from 'parser'
 import { Scanner } from 'scanner'
 import { Interpreter } from 'interpreter'
-import { nativeFn } from 'stdlib/utils'
 import { InterpreterOptions } from 'types'
 
 const interpret = (src: string, options?: InterpreterOptions) =>
@@ -26,19 +25,19 @@ describe('interpreter', () => {
     tests.map(({ input, output }) => {
       interpret(input, {
         globals: {
-          print: nativeFn(res => expect(res).deep.equal(output))
+          print: ((res: any) => expect(res).deep.equal(output))
         }
       })
     })
 
     interpret(`(print "hello world")`, {
-      globals: { print: nativeFn(output => expect(output).equals('hello world')) }
+      globals: { print: ((output: any) => expect(output).equals('hello world')) }
     })
 
     interpret(`(print (+ 1 2))`, {
       globals: {
-        print: nativeFn(output => expect(output).equals(3)),
-        '+': nativeFn((a, b) => a + b)
+        print: ((output: any) => expect(output).equals(3)),
+        '+': ((a: any, b: any) => a + b)
       }
     })
   })
@@ -46,7 +45,7 @@ describe('interpreter', () => {
   it('should print "<native fn>" if the user print out a global function', () => {
     interpret('(print print)', {
       globals: {
-        print: nativeFn(output => {
+        print: ((output: any) => {
           expect(output.arity()).equals(1)
           expect(output.toString()).equals('<native fn>')
         })

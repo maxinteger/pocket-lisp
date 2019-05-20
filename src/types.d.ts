@@ -1,7 +1,9 @@
 import { Interpreter } from 'interpreter'
 import { Literal } from 'parser'
+import { nativeFnFlag } from 'stdlib/common'
 
 declare interface PLCallable {
+  [nativeFnFlag]: true
   call: (interpreter: Interpreter, args: Literal<unknown>[]) => unknown
   arity: () => number
   toString: () => string
