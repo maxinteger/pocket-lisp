@@ -5,42 +5,38 @@ import { Interpreter } from 'interpreter'
 import { Parser } from 'parser'
 import { Scanner } from 'scanner'
 import { StdoutManager } from 'dataTypes/StdoutManager'
-import { def } from 'stdlib/core/def'
-import { Vector } from 'stdlib/data/Vector'
-import { HashMap } from 'stdlib/data/HashMap'
-import * as math from 'stdlib/math'
+import { literals, runtime } from 'stdlib/'
 
 function createEval() {
   const output = new StdoutManager()
-  const interpreter = new Interpreter({
-    globals: {
-      def,
-      List: Vector,
-      HashMap,
-      ...math
+  const interpreter = new Interpreter(
+    {
+      globals: runtime,
+      stdout: (value) => output.cb(value.toString())
     },
-    stdout: output.cb
-  })
+    literals
+  )
 
   return function pocketLispEval(
     this: REPLServer,
     evalCmd: string,
     _context: Context,
     _file: string,
-    cb: (err: Error | null, result: any) => void
+    callback: (err: Error | null, result: any) => void
   ) {
-    const parserResult = new Parser(new Scanner(evalCmd)).parse()
+    const parserResult = new Parser(new Scanner(evalCmd), literals).parse()
     if (!parserResult.hasError) {
       try {
-        const res = interpreter.interpret(parserResult.program)
+        const res: any = interpreter.interpret(parserResult.program)
         const stdOut = output.read()
-        if (stdOut) cb(null, stdOut)
-        cb(null, res)
+
+        if (stdOut) callback(null, stdOut)
+        callback(null, res.toString())
       } catch (e) {
-        cb(e, null)
+        callback(e, null)
       }
     } else {
-      cb(new Error(parserResult.errors[0].message), null)
+      callback(new Error(parserResult.errors[0].message), null)
     }
   }
 }
