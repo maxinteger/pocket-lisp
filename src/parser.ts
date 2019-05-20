@@ -1,10 +1,13 @@
 import { Scanner, Token, TokenType } from 'scanner'
-import { always, identity } from 'utils/fn'
+import { identity } from 'utils/fn'
+import { defaultLiterals } from 'utils/defaultLiterals'
+import { RuntimeError } from 'dataTypes/RuntimeError'
 
 export enum LiteralType {
   Boolean = 'bool',
   Integer = 'int',
   Float = 'float',
+  FractionNumber = 'fractionNumber',
   String = 'string',
   Keyword = 'keyword',
   Identifier = 'identifier',
@@ -32,9 +35,10 @@ interface ParserResult {
 
 ///
 
-export const FRACTION_NUMBER_IDENTIFIER = new Literal(LiteralType.Identifier, 'fractionNumber')
 export const VECTOR_IDENTIFIER = new Literal(LiteralType.Identifier, 'vector')
 export const MAP_IDENTIFIER = new Literal(LiteralType.Identifier, 'hashMap')
+
+const missingParser = (name: string) => () => { throw new RuntimeError(`Missing parser '${name}'`)}
 
 ///
 
@@ -46,7 +50,7 @@ export class Parser {
   private _program: Literal<unknown>[] = []
   private _errors: ParseError[] = []
 
-  constructor(private scanner: Scanner) {}
+  constructor(private scanner: Scanner, private literals = defaultLiterals) {}
 
   public parse(): ParserResult {
     try {
@@ -127,17 +131,19 @@ export class Parser {
 
   private expression(): Literal<unknown> | undefined {
     const token = this.current
+    const {bool, fractionNumber, int, float} = this.literals
+
     switch (token.type) {
       case TokenType.True:
-        return this.makeLiteral(LiteralType.Boolean, always(true))
+        return this.makeLiteral(LiteralType.Boolean, bool.factory(true))
       case TokenType.False:
-        return this.makeLiteral(LiteralType.Boolean, always(false))
+        return this.makeLiteral(LiteralType.Boolean, bool.factory(false))
       case TokenType.Integer:
-        return this.makeLiteral(LiteralType.Integer, parseInt)
+        return this.makeLiteral(LiteralType.Integer, int.parser || missingParser('int') )
       case TokenType.Float:
-        return this.makeLiteral(LiteralType.Float, parseFloat)
+        return this.makeLiteral(LiteralType.Float, float.parser || missingParser('float'))
       case TokenType.FractionNumber:
-        return this.makeLiteral(LiteralType.List, (val) => [FRACTION_NUMBER_IDENTIFIER, val])
+        return this.makeLiteral(LiteralType.FractionNumber, fractionNumber.parser || missingParser('fractionNumber'))
       case TokenType.String:
         return this.makeLiteral(LiteralType.String, identity)
       case TokenType.Identifier:
