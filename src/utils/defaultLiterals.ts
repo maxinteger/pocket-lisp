@@ -1,28 +1,29 @@
 import { RuntimeError } from 'dataTypes/RuntimeError'
-import { nativeFn } from 'stdlib/utils'
 import { PLLiteral, PLLiterals } from 'types'
+
+const notImplementedFactory = (name: string): any => (_value: any) => () => {
+  throw new RuntimeError(`${name} is not implemented`)
+}
 
 const notImplementedLiteral = (name: string): PLLiteral => ({
   parser: () => {
     throw new RuntimeError(`${name} is not implemented`)
   },
-  factory: nativeFn(() => {
-    throw new RuntimeError(`${name} is not implemented`)
-  })
+  factory: notImplementedFactory(name)
 })
 
 export const defaultLiterals: PLLiterals = {
   bool: {
     parser: (x: string) => x === 'true',
-    factory: nativeFn(Boolean)
+    factory: Boolean
   },
   int: {
     parser: (x: string) => parseInt(x, 10),
-    factory: nativeFn(Number)
+    factory: Number
   },
   float: {
     parser: parseFloat,
-    factory: nativeFn(Number)
+    factory: Number
   },
   fractionNumber: notImplementedLiteral('FractionNumber'),
   vector: notImplementedLiteral('Vector'),

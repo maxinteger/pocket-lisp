@@ -16,17 +16,20 @@ const defaultOptions = {
 export class Interpreter {
   private readonly globals = new Environment()
   private _currentEnv = this.globals
+
   constructor(options?: InterpreterOptions, literals?: PLLiterals) {
     const { stdout, globals, lockedGlobals } = { ...defaultOptions, ...options }
     const plLiterals = { ...literals, ...defaultLiterals }
 
     Object.keys(plLiterals).forEach(key => {
-      this.globals.define(key, (plLiterals as any)[key].factory)
+      this.globals.define(key, nativeFn((plLiterals as any)[key].factory))
     })
 
     this.globals.define('print', nativeFn(stdout || console.log))
 
-    Object.keys(globals).forEach(key => this.globals.define(key, globals[key], lockedGlobals))
+    Object.keys(globals).forEach(key =>
+      this.globals.define(key, nativeFn(globals[key]), lockedGlobals)
+    )
   }
 
   public interpret(program: Literal<unknown>[]) {
@@ -46,6 +49,7 @@ export class Interpreter {
       case LiteralType.Boolean:
       case LiteralType.Integer:
       case LiteralType.Float:
+      case LiteralType.FractionNumber:
       case LiteralType.String:
         return literal.value
       case LiteralType.Keyword:
