@@ -38,7 +38,9 @@ interface ParserResult {
 export const VECTOR_IDENTIFIER = new Literal(LiteralType.Identifier, 'vector')
 export const MAP_IDENTIFIER = new Literal(LiteralType.Identifier, 'hashMap')
 
-const missingParser = (name: string) => () => { throw new RuntimeError(`Missing parser '${name}'`)}
+const missingParser = (name: string) => () => {
+  throw new RuntimeError(`Missing parser '${name}'`)
+}
 
 ///
 
@@ -131,21 +133,24 @@ export class Parser {
 
   private expression(): Literal<unknown> | undefined {
     const token = this.current
-    const {bool, fractionNumber, int, float} = this.literals
+    const { bool, fractionNumber, int, float, string } = this.literals
 
     switch (token.type) {
       case TokenType.True:
-        return this.makeLiteral(LiteralType.Boolean, bool.parser || missingParser('bool') )
+        return this.makeLiteral(LiteralType.Boolean, bool.parser || missingParser('bool'))
       case TokenType.False:
-        return this.makeLiteral(LiteralType.Boolean, bool.parser || missingParser('bool') )
+        return this.makeLiteral(LiteralType.Boolean, bool.parser || missingParser('bool'))
       case TokenType.Integer:
-        return this.makeLiteral(LiteralType.Integer, int.parser || missingParser('int') )
+        return this.makeLiteral(LiteralType.Integer, int.parser || missingParser('int'))
       case TokenType.Float:
         return this.makeLiteral(LiteralType.Float, float.parser || missingParser('float'))
       case TokenType.FractionNumber:
-        return this.makeLiteral(LiteralType.FractionNumber, fractionNumber.parser || missingParser('fractionNumber'))
+        return this.makeLiteral(
+          LiteralType.FractionNumber,
+          fractionNumber.parser || missingParser('fractionNumber')
+        )
       case TokenType.String:
-        return this.makeLiteral(LiteralType.String, identity)
+        return this.makeLiteral(LiteralType.String, string.parser || missingParser('string'))
       case TokenType.Identifier:
         return this.makeLiteral(LiteralType.Identifier, identity)
       case TokenType.LeftParen:
@@ -164,7 +169,10 @@ export class Parser {
         return undefined
     }
   }
-  private makeLiteral(literalType: LiteralType, parserFn: (val: string) => unknown): Literal<unknown> {
+  private makeLiteral(
+    literalType: LiteralType,
+    parserFn: (val: string) => unknown
+  ): Literal<unknown> {
     const literal = new Literal(literalType, parserFn(this.current.value))
     this.advance()
     return literal

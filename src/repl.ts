@@ -31,7 +31,7 @@ function createEval() {
         const stdOut = output.read()
 
         if (stdOut) callback(null, stdOut)
-        callback(null, res.toString())
+        callback(null, res && res.toString())
       } catch (e) {
         callback(e, null)
       }

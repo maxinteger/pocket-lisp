@@ -25,6 +25,10 @@ export const defaultLiterals: PLLiterals = {
     parser: parseFloat,
     factory: Number
   },
+  string: {
+    parser: (str: string) => str,
+    factory: String
+  },
   fractionNumber: {
     parser: (str: string) => str,
     factory: () => undefined

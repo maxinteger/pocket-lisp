@@ -6,6 +6,7 @@ import * as math from './math'
 import { plNumber, str2PLNumber } from 'stdlib/data/Number'
 import { fractionNumber, str2fractionNumber } from 'stdlib/data/FractionNumber'
 import { PLLiterals } from 'types'
+import { plString } from 'stdlib/data/PLString'
 
 export const literals: PLLiterals = {
   bool: {
@@ -23,6 +24,10 @@ export const literals: PLLiterals = {
   fractionNumber: {
     parser: str2fractionNumber,
     factory: fractionNumber
+  },
+  string: {
+    parser: plString,
+    factory: plString
   },
   vector: {
     factory: vector
