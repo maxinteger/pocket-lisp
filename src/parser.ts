@@ -35,8 +35,8 @@ interface ParserResult {
 
 ///
 
-export const VECTOR_IDENTIFIER = new Literal(LiteralType.Identifier, 'vector')
-export const MAP_IDENTIFIER = new Literal(LiteralType.Identifier, 'hashMap')
+export const VECTOR_IDENTIFIER = new Literal(LiteralType.Identifier, 'plVector')
+export const MAP_IDENTIFIER = new Literal(LiteralType.Identifier, 'plHashMap')
 
 const missingParser = (name: string) => () => {
   throw new RuntimeError(`Missing parser '${name}'`)
@@ -147,7 +147,7 @@ export class Parser {
       case TokenType.FractionNumber:
         return this.makeLiteral(
           LiteralType.FractionNumber,
-          fractionNumber.parser || missingParser('fractionNumber')
+          fractionNumber.parser || missingParser('plFractionNumber')
         )
       case TokenType.String:
         return this.makeLiteral(LiteralType.String, string.parser || missingParser('string'))

@@ -1,9 +1,9 @@
 import { gcd } from 'utils/math'
 import { add, BaseNumberOp, divide, equals, multiple, negate, Setoid, subtract } from 'stdlib/types'
 import { RuntimeError } from 'dataTypes/RuntimeError'
-import { plBool } from 'stdlib/data/Bool'
+import { plBool } from 'stdlib/data/PLBool'
 
-class FractionNumber implements Setoid<FractionNumber>, BaseNumberOp<FractionNumber> {
+class PLFractionNumber implements Setoid<PLFractionNumber>, BaseNumberOp<PLFractionNumber> {
   private readonly _n: number
   private readonly _d: number
 
@@ -30,40 +30,40 @@ class FractionNumber implements Setoid<FractionNumber>, BaseNumberOp<FractionNum
     return this._d
   }
 
-  [equals](a: FractionNumber) {
+  [equals](a: PLFractionNumber) {
     return plBool(this.numerator === a.numerator && this.denominator === a.denominator)
   }
 
   [negate]() {
-    return new FractionNumber(-this._n, this._d)
+    return new PLFractionNumber(-this._n, this._d)
   }
 
-  [add](a: FractionNumber) {
+  [add](a: PLFractionNumber) {
     const numerator = this.numerator * a.denominator + this.denominator * a.numerator
     const denominator = this.denominator * a.denominator
-    return new FractionNumber(numerator, denominator)
+    return new PLFractionNumber(numerator, denominator)
   }
 
-  [subtract](a: FractionNumber) {
+  [subtract](a: PLFractionNumber) {
     const numerator = this.numerator * a.denominator - this.denominator * a.numerator
     const denominator = this.denominator * a.denominator
-    return new FractionNumber(numerator, denominator)
+    return new PLFractionNumber(numerator, denominator)
   }
 
-  [multiple](a: FractionNumber) {
+  [multiple](a: PLFractionNumber) {
     const numerator = this.numerator * a.numerator
     const denominator = this.denominator * a.denominator
-    return new FractionNumber(numerator, denominator)
+    return new PLFractionNumber(numerator, denominator)
   }
 
-  [divide](a: FractionNumber) {
+  [divide](a: PLFractionNumber) {
     const numerator = this.numerator * a.denominator
     const denominator = this.denominator * a.numerator
-    return new FractionNumber(numerator, denominator)
+    return new PLFractionNumber(numerator, denominator)
   }
 
-  reciprocal(): FractionNumber {
-    return new FractionNumber(this.denominator, this.numerator)
+  reciprocal(): PLFractionNumber {
+    return new PLFractionNumber(this.denominator, this.numerator)
   }
 
   public toString() {
@@ -72,14 +72,14 @@ class FractionNumber implements Setoid<FractionNumber>, BaseNumberOp<FractionNum
 }
 
 ///
-export const fractionNumber = (n: number, d: number): FractionNumber => {
-  return new FractionNumber(n, d)
+export const plFractionNumber = (n: number, d: number): PLFractionNumber => {
+  return new PLFractionNumber(n, d)
 }
 
-export const str2fractionNumber = (str: string) => {
+export const str2plFractionNumber = (str: string) => {
   const [n, d] = str.split('/').map(parseFloat)
   if (isValid(n, d)) {
-    return new FractionNumber(n, d)
+    return new PLFractionNumber(n, d)
   } else {
     throw new RuntimeError(`Invalid fraction number: ${str}.`)
   }

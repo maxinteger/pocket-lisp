@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { equals, lte } from 'stdlib/types'
-import { plBool, str2bool } from 'stdlib/data/Bool'
+import { plBool, str2plBool } from 'stdlib/data/PLBool'
 
 describe('Bool', () => {
   describe('creation', () => {})
@@ -17,7 +17,7 @@ describe('Bool', () => {
       const tests = ['', 'xyz', '_']
 
       tests.map(input => {
-        expect(() => str2bool(input)).throw(`Invalid boolean: '${input}'.`)
+        expect(() => str2plBool(input)).throw(`Invalid boolean: '${input}'.`)
       })
     })
 
@@ -25,7 +25,7 @@ describe('Bool', () => {
       const tests = [{ input: 'true', out: 'true' }, { input: 'false', out: 'false' }]
 
       tests.map(({ input, out }) => {
-        expect(str2bool(input).toString()).equal(out)
+        expect(str2plBool(input).toString()).equal(out)
       })
     })
   })

@@ -1,4 +1,4 @@
-import { plNumber } from 'stdlib/data/Number'
+import { plNumber } from 'stdlib/data/PLNumber'
 
 export const E = plNumber(Math.E)
 export const LN2 = plNumber(Math.LN2)

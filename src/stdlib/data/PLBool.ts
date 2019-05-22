@@ -32,7 +32,7 @@ export class PLBool implements Setoid<PLBool>, Ord<PLBool>, Functor<PLBool, PLBo
 
 export const plBool = (value: boolean) => new PLBool(value)
 
-export const str2bool = (str: string) => {
+export const str2plBool = (str: string) => {
   switch (str) {
     case 'true':
       return plBool(true)

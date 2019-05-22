@@ -1,5 +1,5 @@
 import { E, LN10, LN2, LOG10E, LOG2E, PI, SQRT1_2, SQRT2 } from 'stdlib/math'
-import { plNumber } from 'stdlib/data/Number'
+import { plNumber } from 'stdlib/data/PLNumber'
 import { expect } from 'chai'
 
 describe('stdlib/math/constants', () => {

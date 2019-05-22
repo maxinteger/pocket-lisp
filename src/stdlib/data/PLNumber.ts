@@ -1,6 +1,6 @@
 import { add, BaseNumberOp, divide, equals, multiple, negate, Setoid, subtract } from 'stdlib/types'
 import { RuntimeError } from 'dataTypes/RuntimeError'
-import { plBool } from 'stdlib/data/Bool'
+import { plBool } from 'stdlib/data/PLBool'
 
 export class PLNumber implements Setoid<PLNumber>, BaseNumberOp<PLNumber> {
   constructor(private _value: number) {}
@@ -38,6 +38,8 @@ export class PLNumber implements Setoid<PLNumber>, BaseNumberOp<PLNumber> {
   }
 }
 
+export const plNumber = (value: number) => new PLNumber(value)
+
 export const str2PLNumber = (str: string) => {
   const val = parseFloat(str)
   if (isNaN(val)) {
@@ -45,5 +47,3 @@ export const str2PLNumber = (str: string) => {
   }
   return new PLNumber(val)
 }
-
-export const plNumber = (value: number) => new PLNumber(value)

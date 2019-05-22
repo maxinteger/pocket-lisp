@@ -1,4 +1,4 @@
-import { PLBool } from 'stdlib/data/Bool'
+import { PLBool } from 'stdlib/data/PLBool'
 
 export function staticImplements<T>() {
   // @ts-ignore

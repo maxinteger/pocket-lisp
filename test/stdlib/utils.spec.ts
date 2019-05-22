@@ -1,6 +1,6 @@
 import { assertType, chunk } from 'stdlib/utils'
 import { expect } from 'chai'
-import { plBool } from 'stdlib/data/Bool'
+import { plBool } from 'stdlib/data/PLBool'
 
 describe('stdlib utils', () => {
   describe('assertType', () => {

@@ -1,16 +1,16 @@
 import ops from './basicFunctions'
-import { vector } from 'stdlib/data/Vector'
-import { hashMap } from 'stdlib/data/HashMap'
-import { plBool, str2bool } from 'stdlib/data/Bool'
+import { plVector } from 'stdlib/data/PLVector'
+import { plHashMap } from 'stdlib/data/PLHashMap'
+import { plBool, str2plBool } from 'stdlib/data/PLBool'
 import * as math from './math'
-import { plNumber, str2PLNumber } from 'stdlib/data/Number'
-import { fractionNumber, str2fractionNumber } from 'stdlib/data/FractionNumber'
+import { plNumber, str2PLNumber } from 'stdlib/data/PLNumber'
+import { plFractionNumber, str2plFractionNumber } from 'stdlib/data/PLFractionNumber'
 import { PLLiterals } from 'types'
 import { plString } from 'stdlib/data/PLString'
 
 export const literals: PLLiterals = {
   bool: {
-    parser: str2bool,
+    parser: str2plBool,
     factory: plBool
   },
   int: {
@@ -22,18 +22,18 @@ export const literals: PLLiterals = {
     factory: plNumber
   },
   fractionNumber: {
-    parser: str2fractionNumber,
-    factory: fractionNumber
+    parser: str2plFractionNumber,
+    factory: plFractionNumber
   },
   string: {
     parser: plString,
     factory: plString
   },
   vector: {
-    factory: vector
+    factory: plVector
   },
   hashMap: {
-    factory: hashMap
+    factory: plHashMap
   }
 }
 

@@ -2,16 +2,16 @@ import { of, SApplicative, staticImplements } from 'stdlib/types'
 
 type Entries = [any, any][]
 
-@staticImplements<SApplicative<Entries, HashMap>>()
-class HashMap {
+@staticImplements<SApplicative<Entries, PLHashMap>>()
+class PLHashMap {
   private readonly value: Map<any, any>
 
   constructor(entries?: Entries) {
     this.value = new Map(entries)
   }
 
-  static [of](value: Entries): HashMap {
-    return new HashMap(value)
+  static [of](value: Entries): PLHashMap {
+    return new PLHashMap(value)
   }
 
   toString() {
@@ -21,4 +21,4 @@ class HashMap {
   }
 }
 
-export const hashMap = (entries?: Entries) => HashMap[of](entries || [])
+export const plHashMap = (entries?: Entries) => PLHashMap[of](entries || [])

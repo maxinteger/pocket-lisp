@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { add, divide, equals, multiple, negate, subtract } from 'stdlib/types'
-import { plNumber, str2PLNumber } from 'stdlib/data/Number'
-import { plBool } from 'stdlib/data/Bool'
+import { plNumber, str2PLNumber } from 'stdlib/data/PLNumber'
+import { plBool } from 'stdlib/data/PLBool'
 
 describe('Number', () => {
   describe('creation', () => {})
