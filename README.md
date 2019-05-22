@@ -14,11 +14,40 @@ We needed a very simple and configurable domain specific language to add a littl
 
 ## Goals
 
-- simple
-- expressive
-- "fast"
-- sandboxed - no access to the native runtime environment (ex. Browser, NodeJS, etc.) API
- 
+- Simple
+- Expressive
+- "Fast"
+- Sandbox - no access to the native runtime environment (ex. Browser, NodeJS, etc.) API
+- Zero dependencies
+
+## Usage
+
+### Package 
+
+_coming soon_
+
+### Repl
+
+The easiest way the try the language is to run it in your terminal in REPL 
+(Read-eval-print loop) mode. For that check out the repository, install the dependencies, 
+then run the fallowing command:
+
+    npm start
+     
+## For contributors
+
+You can build packages locally with
+
+    npm build
+    
+or do continuous build with
+
+    npm watch
+    
+Also you can run test by
+
+    npm test
+
 
 [license-shield]: https://img.shields.io/badge/License-MIT-blue.svg?style=shield
 [license-link]: https://opensource.org/licenses/MIT
