@@ -1,5 +1,11 @@
-class PLVector<T> {
+import { SerializeToJS, toJS } from 'stdlib/types'
+
+class PLVector<T> implements SerializeToJS<any[]> {
   constructor(private _value: T[]) {}
+
+  [toJS]() {
+    return this._value
+  }
 
   toString() {
     return `[${this._value.join()}]`

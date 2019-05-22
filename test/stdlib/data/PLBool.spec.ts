@@ -1,14 +1,21 @@
 import { expect } from 'chai'
-import { equals, lte } from 'stdlib/types'
+import { equals, lte, toJS } from 'stdlib/types'
 import { plBool, str2plBool } from 'stdlib/data/PLBool'
 
-describe('Bool', () => {
+describe('stdlib/core/PLBool', () => {
   describe('creation', () => {})
 
   describe('getters', () => {
     it('should work', () => {
       expect(plBool(true).value).equal(true)
       expect(plBool(false).value).equal(false)
+    })
+  })
+
+  describe('toJS', () => {
+    it('should return with the JS representation', () => {
+      expect(plBool(true)[toJS]()).equals(true)
+      expect(plBool(false)[toJS]()).equals(false)
     })
   })
 

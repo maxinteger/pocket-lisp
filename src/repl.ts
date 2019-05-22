@@ -6,13 +6,14 @@ import { Parser } from 'parser'
 import { Scanner } from 'scanner'
 import { StdoutManager } from 'dataTypes/StdoutManager'
 import { literals, runtime } from 'stdlib/'
+import { toJS } from 'stdlib/types'
 
 function createEval() {
   const output = new StdoutManager()
   const interpreter = new Interpreter(
     {
       globals: runtime,
-      stdout: (value) => output.cb(value.toString())
+      stdout: value => output.cb(value.toString())
     },
     literals
   )
@@ -31,7 +32,7 @@ function createEval() {
         const stdOut = output.read()
 
         if (stdOut) callback(null, stdOut)
-        callback(null, res && res.toString())
+        callback(null, res && res[toJS]())
       } catch (e) {
         callback(e, null)
       }

@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import { plFractionNumber, str2plFractionNumber } from 'stdlib/data/PLFractionNumber'
-import { add, divide, equals, multiple, negate, subtract } from 'stdlib/types'
+import { add, divide, equals, multiple, negate, subtract, toJS } from 'stdlib/types'
 import { plBool } from 'stdlib/data/PLBool'
 
-describe('Fraction number', () => {
+describe('stdlib/core/PLFractionNumber', () => {
   describe('creation', () => {
     it('should throw error if the parameters are invalid', () => {
       const tests = [
@@ -51,6 +51,12 @@ describe('Fraction number', () => {
       const actual = plFractionNumber(1, 2)
       expect(actual.numerator).equal(1)
       expect(actual.denominator).equal(2)
+    })
+  })
+
+  describe('toJS', () => {
+    it('should return with the JS representation', () => {
+      expect(plFractionNumber(1,2)[toJS]()).deep.equal({numerator: 1, denominator: 2})
     })
   })
 

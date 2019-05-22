@@ -5,6 +5,12 @@ export function staticImplements<T>() {
   return (constructor: T) => {}
 }
 
+export const toJS = Symbol('toJS')
+
+export interface SerializeToJS<T> {
+  [toJS](): T
+}
+
 /*
   Types based on Fantasy land
 	https://github.com/fantasyland/fantasy-land

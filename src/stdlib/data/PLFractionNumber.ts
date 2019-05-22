@@ -1,9 +1,31 @@
 import { gcd } from 'utils/math'
-import { add, BaseNumberOp, divide, equals, multiple, negate, Setoid, subtract } from 'stdlib/types'
+import {
+  add,
+  BaseNumberOp,
+  divide,
+  equals,
+  multiple,
+  negate,
+  SerializeToJS,
+  Setoid,
+  subtract,
+  toJS
+} from 'stdlib/types'
 import { RuntimeError } from 'dataTypes/RuntimeError'
 import { plBool } from 'stdlib/data/PLBool'
 
-class PLFractionNumber implements Setoid<PLFractionNumber>, BaseNumberOp<PLFractionNumber> {
+interface JSFractionNumber {
+  numerator: number
+  denominator: number
+}
+
+///
+
+class PLFractionNumber
+  implements
+    SerializeToJS<JSFractionNumber>,
+    Setoid<PLFractionNumber>,
+    BaseNumberOp<PLFractionNumber> {
   private readonly _n: number
   private readonly _d: number
 
@@ -66,12 +88,20 @@ class PLFractionNumber implements Setoid<PLFractionNumber>, BaseNumberOp<PLFract
     return new PLFractionNumber(this.denominator, this.numerator)
   }
 
+  [toJS]() {
+    return {
+      numerator: this._n,
+      denominator: this._d
+    }
+  }
+
   public toString() {
     return `${this._n}/${this._d}`
   }
 }
 
 ///
+
 export const plFractionNumber = (n: number, d: number): PLFractionNumber => {
   return new PLFractionNumber(n, d)
 }

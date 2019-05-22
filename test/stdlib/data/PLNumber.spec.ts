@@ -1,15 +1,22 @@
 import { expect } from 'chai'
-import { add, divide, equals, multiple, negate, subtract } from 'stdlib/types'
+import { add, divide, equals, multiple, negate, subtract, toJS } from 'stdlib/types'
 import { plNumber, str2PLNumber } from 'stdlib/data/PLNumber'
 import { plBool } from 'stdlib/data/PLBool'
 
-describe('Number', () => {
+describe('stdlib/core/PLNumber', () => {
   describe('creation', () => {})
 
   describe('getters', () => {
     it('should work', () => {
       const actual = plNumber(1)
       expect(actual.value).equal(1)
+    })
+  })
+
+
+  describe('toJS', () => {
+    it('should return with the JS representation', () => {
+      expect(plNumber(42)[toJS]()).equal(42)
     })
   })
 

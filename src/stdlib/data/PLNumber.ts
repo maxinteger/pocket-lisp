@@ -1,8 +1,19 @@
-import { add, BaseNumberOp, divide, equals, multiple, negate, Setoid, subtract } from 'stdlib/types'
+import {
+  add,
+  BaseNumberOp,
+  divide,
+  equals,
+  multiple,
+  negate,
+  SerializeToJS,
+  Setoid,
+  subtract,
+  toJS
+} from 'stdlib/types'
 import { RuntimeError } from 'dataTypes/RuntimeError'
 import { plBool } from 'stdlib/data/PLBool'
 
-export class PLNumber implements Setoid<PLNumber>, BaseNumberOp<PLNumber> {
+export class PLNumber implements SerializeToJS<number>, Setoid<PLNumber>, BaseNumberOp<PLNumber> {
   constructor(private _value: number) {}
 
   get value() {
@@ -31,6 +42,10 @@ export class PLNumber implements Setoid<PLNumber>, BaseNumberOp<PLNumber> {
 
   [divide](a: PLNumber) {
     return new PLNumber(this._value / a.value)
+  }
+
+  [toJS]() {
+    return this._value
   }
 
   toString() {

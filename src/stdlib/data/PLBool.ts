@@ -1,8 +1,21 @@
-import { equals, Functor, lte, map, of, Ord, SApplicative, Setoid, staticImplements } from 'stdlib/types'
+import {
+  equals,
+  Functor,
+  lte,
+  map,
+  of,
+  Ord,
+  SApplicative,
+  SerializeToJS,
+  Setoid,
+  staticImplements,
+  toJS
+} from 'stdlib/types'
 import { RuntimeError } from 'dataTypes/RuntimeError'
 
 @staticImplements<SApplicative<boolean, PLBool>>()
-export class PLBool implements Setoid<PLBool>, Ord<PLBool>, Functor<PLBool, PLBool> {
+export class PLBool
+  implements SerializeToJS<boolean>, Setoid<PLBool>, Ord<PLBool>, Functor<PLBool, PLBool> {
   constructor(private _value: boolean) {}
 
   get value() {
@@ -23,6 +36,10 @@ export class PLBool implements Setoid<PLBool>, Ord<PLBool>, Functor<PLBool, PLBo
 
   [map]<b>(f: (a: PLBool) => b): PLBool {
     return new PLBool(f(this) as any)
+  }
+
+  [toJS]() {
+    return this._value
   }
 
   toString() {
