@@ -1,7 +1,7 @@
 import ops from './basicFunctions'
 import { plVector } from 'stdlib/data/PLVector'
 import { plHashMap } from 'stdlib/data/PLHashMap'
-import { plBool, str2plBool } from 'stdlib/data/PLBool'
+import { and, not, or, plBool, str2plBool } from 'stdlib/data/PLBool'
 import * as math from './math'
 import { plNumber, str2PLNumber } from 'stdlib/data/PLNumber'
 import { plFractionNumber, str2plFractionNumber } from 'stdlib/data/PLFractionNumber'
@@ -39,5 +39,8 @@ export const literals: PLLiterals = {
 
 export const runtime = {
   ...ops,
-  ...math
+  ...math,
+  not,
+  and,
+  or
 }
