@@ -1,7 +1,7 @@
-import { Scanner, Token, TokenType } from 'scanner'
-import { identity } from 'utils/fn'
-import { defaultLiterals } from 'utils/defaultLiterals'
-import { RuntimeError } from 'dataTypes/RuntimeError'
+import { Scanner, Token, TokenType } from 'lang/scanner'
+import { identity } from 'lang/utils/fn'
+import { defaultLiterals } from 'lang/utils/defaultLiterals'
+import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 
 export enum LiteralType {
   Boolean = 'bool',

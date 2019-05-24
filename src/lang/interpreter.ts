@@ -1,10 +1,10 @@
-import { Environment } from 'dataTypes/Environment'
-import { Literal, LiteralType } from 'parser'
-import { RuntimeError } from 'dataTypes/RuntimeError'
-import { nativeFn } from 'stdlib/utils'
-import { InterpreterOptions, PLCallable, PLLiterals } from 'types'
-import { defaultLiterals } from 'utils/defaultLiterals'
-import { NATIVE_FN_NAME } from 'stdlib/constants'
+import { Environment } from 'lang/dataTypes/Environment'
+import { Literal, LiteralType } from 'lang/parser'
+import { RuntimeError } from 'lang/dataTypes/RuntimeError'
+import { InterpreterOptions, PLCallable, PLLiterals } from 'lang/types'
+import { defaultLiterals } from 'lang/utils/defaultLiterals'
+import { NATIVE_FN_NAME } from 'lang/utils/constants'
+import { nativeFn } from 'lang/utils/fn'
 
 const defaultOptions = {
   stdout: undefined,

@@ -1,8 +1,8 @@
 import { expect } from 'chai'
-import { Parser } from 'parser'
-import { Scanner } from 'scanner'
-import { Interpreter } from 'interpreter'
-import { InterpreterOptions } from 'types'
+import { Parser } from 'lang/parser'
+import { Scanner } from 'lang/scanner'
+import { Interpreter } from 'lang/interpreter'
+import { InterpreterOptions } from 'lang/types'
 
 const interpret = (src: string, options?: InterpreterOptions) =>
   new Interpreter(options).interpret(new Parser(new Scanner(src)).parse().program)

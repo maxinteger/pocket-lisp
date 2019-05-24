@@ -1,12 +1,12 @@
-import ops from './basicFunctions'
+import ops from 'stdlib/fn/typeClass'
 import { plVector } from 'stdlib/data/PLVector'
 import { plHashMap } from 'stdlib/data/PLHashMap'
 import { and, not, or, plBool, str2plBool } from 'stdlib/data/PLBool'
-import * as math from './math'
+import * as math from 'stdlib/fn/math'
 import { plNumber, str2PLNumber } from 'stdlib/data/PLNumber'
 import { plFractionNumber, reciprocal, str2plFractionNumber } from 'stdlib/data/PLFractionNumber'
-import { PLLiterals } from 'types'
 import { plString } from 'stdlib/data/PLString'
+import { PLLiterals } from 'lang/types'
 
 export const literals: PLLiterals = {
   bool: {

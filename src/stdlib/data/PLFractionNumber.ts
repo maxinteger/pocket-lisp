@@ -1,4 +1,4 @@
-import { gcd } from 'utils/math'
+import { gcd } from 'lang/utils/math'
 import {
   add,
   BaseNumberOp,
@@ -11,7 +11,7 @@ import {
   subtract,
   toJS
 } from 'stdlib/types'
-import { RuntimeError } from 'dataTypes/RuntimeError'
+import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { plBool } from 'stdlib/data/PLBool'
 import { typeCheck } from 'stdlib/utils'
 

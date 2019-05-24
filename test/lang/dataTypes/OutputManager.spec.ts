@@ -1,4 +1,4 @@
-import { StdoutManager } from 'dataTypes/StdoutManager'
+import { StdoutManager } from 'lang/dataTypes/StdoutManager'
 import { expect } from 'chai'
 
 describe('StdoutManager', () => {

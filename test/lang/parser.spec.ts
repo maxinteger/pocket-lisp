@@ -1,7 +1,7 @@
 import { expect } from 'chai'
-import { Scanner } from 'scanner'
-import { VECTOR_IDENTIFIER, Literal, LiteralType, Parser } from 'parser'
-import { defaultLiterals } from 'utils/defaultLiterals'
+import { Scanner } from 'lang/scanner'
+import { VECTOR_IDENTIFIER, Literal, LiteralType, Parser } from 'lang/parser'
+import { defaultLiterals } from 'lang/utils/defaultLiterals'
 
 describe('Parser', () => {
   it('should parse empty source', () => {

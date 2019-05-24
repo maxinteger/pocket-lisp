@@ -1,5 +1,5 @@
-import { Interpreter } from 'interpreter'
-import { Literal } from 'parser'
+import { Interpreter } from 'lang/interpreter'
+import { Literal } from 'lang/parser'
 
 declare interface PLCallable {
   call: (interpreter: Interpreter, args: Literal<unknown>[]) => unknown

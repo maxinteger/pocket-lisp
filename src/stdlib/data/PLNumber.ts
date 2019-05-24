@@ -10,7 +10,7 @@ import {
   subtract,
   toJS
 } from 'stdlib/types'
-import { RuntimeError } from 'dataTypes/RuntimeError'
+import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { plBool } from 'stdlib/data/PLBool'
 
 export class PLNumber implements SerializeToJS<number>, Setoid<PLNumber>, BaseNumberOp<PLNumber> {

@@ -1,5 +1,5 @@
-import { RuntimeError } from 'dataTypes/RuntimeError'
-import { PLLiteral, PLLiterals } from 'types'
+import { RuntimeError } from 'lang/dataTypes/RuntimeError'
+import { PLLiteral, PLLiterals } from 'lang/types'
 
 const notImplementedFactory = (name: string): any => (_value: any) => () => {
   throw new RuntimeError(`${name} is not implemented`)

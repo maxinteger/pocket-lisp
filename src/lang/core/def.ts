@@ -1,8 +1,8 @@
-import { Interpreter } from 'interpreter'
-import { assertParamType, assetParamLength } from '../utils'
-import { Literal, LiteralType } from 'parser'
-import { PLCallable } from 'types'
-import { NATIVE_FN_NAME } from '../constants'
+import { Interpreter } from 'lang/interpreter'
+import { Literal, LiteralType } from 'lang/parser'
+import { NATIVE_FN_NAME } from 'lang/utils/constants'
+import { PLCallable } from 'lang/types'
+import { assertParamType, assetParamLength } from 'lang/utils/fn'
 
 export const def = <PLCallable>{
   call(interpreter: Interpreter, args: Literal<unknown>[]) {

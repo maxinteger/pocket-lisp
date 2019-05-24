@@ -1,4 +1,4 @@
-import { RuntimeError } from './RuntimeError'
+import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 
 export class Environment {
   private values = Object.create(null)

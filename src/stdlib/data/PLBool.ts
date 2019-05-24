@@ -11,7 +11,7 @@ import {
   staticImplements,
   toJS
 } from 'stdlib/types'
-import { RuntimeError } from 'dataTypes/RuntimeError'
+import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { typeCheck } from 'stdlib/utils'
 
 @staticImplements<SApplicative<boolean, PLBool>>()

@@ -1,6 +1,6 @@
 import { BaseNumberOp } from 'stdlib/types'
 import { assertType } from 'stdlib/utils'
-import * as op from './types'
+import * as op from 'stdlib/types'
 
 type BinaryBaseNumberOp = <a extends BaseNumberOp<any>>(a: BaseNumberOp<a>, b: BaseNumberOp<a>) => ThisType<a>
 

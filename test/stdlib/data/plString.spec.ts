@@ -6,6 +6,14 @@ describe('stdlib/core/PLString', () => {
   it('should create empty String', () => {
     expect(plString()).deep.equal({ _value: '' })
   })
+
+  describe('getters', () => {
+    it('should work', () => {
+      const actual = plString('OK')
+      expect(actual.value).equal('OK')
+    })
+  })
+
   it('should have proper toString', () => {
     expect(plString().toString()).equal('')
     expect(plString('hello world').toString()).equal('hello world')
