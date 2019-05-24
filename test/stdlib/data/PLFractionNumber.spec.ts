@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { plFractionNumber, str2plFractionNumber } from 'stdlib/data/PLFractionNumber'
+import { plFractionNumber, reciprocal, str2plFractionNumber } from 'stdlib/data/PLFractionNumber'
 import { add, divide, equals, multiple, negate, subtract, toJS } from 'stdlib/types'
 import { plBool } from 'stdlib/data/PLBool'
 
@@ -56,7 +56,7 @@ describe('stdlib/core/PLFractionNumber', () => {
 
   describe('toJS', () => {
     it('should return with the JS representation', () => {
-      expect(plFractionNumber(1,2)[toJS]()).deep.equal({numerator: 1, denominator: 2})
+      expect(plFractionNumber(1, 2)[toJS]()).deep.equal({ numerator: 1, denominator: 2 })
     })
   })
 
@@ -90,12 +90,6 @@ describe('stdlib/core/PLFractionNumber', () => {
       expect(plFractionNumber(1, 2)[equals](plFractionNumber(5, 10))).deep.equals(plBool(true))
       expect(plFractionNumber(1, 2)[equals](plFractionNumber(6, 10))).deep.equals(plBool(false))
       expect(plFractionNumber(1, 2)[equals](plFractionNumber(-1, 2))).deep.equals(plBool(false))
-    })
-  })
-
-  describe('reciprocal operator', () => {
-    it('should reciprocal the number', () => {
-      expect(plFractionNumber(1, 2).reciprocal()).deep.equals(plFractionNumber(2, 1))
     })
   })
 
@@ -135,6 +129,12 @@ describe('stdlib/core/PLFractionNumber', () => {
       const actual = plFractionNumber(1, 8)[divide](plFractionNumber(1, 4))
       const expected = plFractionNumber(1, 2)
       expect(actual).deep.equals(expected)
+    })
+  })
+
+  describe('reciprocal operator', () => {
+    it('should reciprocal the number', () => {
+      expect(reciprocal(plFractionNumber(1, 2))).deep.equals(plFractionNumber(2, 1))
     })
   })
 })

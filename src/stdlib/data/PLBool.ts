@@ -12,7 +12,7 @@ import {
   toJS
 } from 'stdlib/types'
 import { RuntimeError } from 'dataTypes/RuntimeError'
-import { checkType } from 'stdlib/utils'
+import { typeCheck } from 'stdlib/utils'
 
 @staticImplements<SApplicative<boolean, PLBool>>()
 export class PLBool
@@ -66,18 +66,18 @@ export const str2plBool = (str: string) => {
 ///
 
 export const not = (x: PLBool) => {
-  checkType(PLBool, x)
+  typeCheck(PLBool, x)
   return plBool(!x.value)
 }
 
 export const and = (x: PLBool, y: PLBool) => {
-  checkType(PLBool, x)
-  checkType(PLBool, y)
+  typeCheck(PLBool, x)
+  typeCheck(PLBool, y)
   return plBool(x.value && y.value)
 }
 
 export const or = (x: PLBool, y: PLBool) => {
-  checkType(PLBool, x)
-  checkType(PLBool, y)
+  typeCheck(PLBool, x)
+  typeCheck(PLBool, y)
   return plBool(x.value || y.value)
 }

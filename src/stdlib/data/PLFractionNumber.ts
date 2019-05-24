@@ -13,6 +13,7 @@ import {
 } from 'stdlib/types'
 import { RuntimeError } from 'dataTypes/RuntimeError'
 import { plBool } from 'stdlib/data/PLBool'
+import { typeCheck } from 'stdlib/utils'
 
 interface JSFractionNumber {
   numerator: number
@@ -84,10 +85,6 @@ class PLFractionNumber
     return new PLFractionNumber(numerator, denominator)
   }
 
-  reciprocal(): PLFractionNumber {
-    return new PLFractionNumber(this.denominator, this.numerator)
-  }
-
   [toJS]() {
     return {
       numerator: this._n,
@@ -113,6 +110,11 @@ export const str2plFractionNumber = (str: string) => {
   } else {
     throw new RuntimeError(`Invalid fraction number: ${str}.`)
   }
+}
+
+export const reciprocal = (fn: PLFractionNumber): PLFractionNumber => {
+  typeCheck(PLFractionNumber, fn)
+  return plFractionNumber(fn.denominator, fn.numerator)
 }
 
 ///

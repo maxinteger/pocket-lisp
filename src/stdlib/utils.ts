@@ -46,7 +46,7 @@ export const assertType = (a: any, b: any) =>
       b.constructor.name}'`
   )
 
-export const checkType = (type: any, value: any) =>
+export const typeCheck = (type: any, value: any) =>
   assert(
     type !== value.constructor,
     `Expected '${type.name}', but got '${value.constructor.name}'.`
