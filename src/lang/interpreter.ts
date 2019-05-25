@@ -5,6 +5,8 @@ import { InterpreterOptions, PLCallable, PLLiterals } from 'lang/types'
 import { defaultLiterals } from 'lang/utils/defaultLiterals'
 import { NATIVE_FN_NAME } from 'lang/utils/constants'
 import { nativeFn } from 'lang/utils/fn'
+import { def } from 'lang/core/def'
+import { ifFn } from 'lang/core/if'
 
 const defaultOptions = {
   stdout: undefined,
@@ -27,6 +29,8 @@ export class Interpreter {
     })
 
     this.globals.define('print', nativeFn(stdout || console.log))
+    this.globals.define('def', def)
+    this.globals.define('if', ifFn)
 
     Object.keys(globals).forEach(key => {
       const value = globals[key]

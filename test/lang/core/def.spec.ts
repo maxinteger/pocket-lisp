@@ -28,7 +28,7 @@ describe('stdlib/core/def', () => {
     )
   })
 
-  it('should has arity -1', () => {
+  it('should has arity 2', () => {
     expect(def.arity()).equals(2)
   })
 
