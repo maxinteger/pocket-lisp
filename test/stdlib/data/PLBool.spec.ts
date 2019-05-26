@@ -1,9 +1,14 @@
 import { expect } from 'chai'
-import { equals, lte, toJS } from 'stdlib/types'
-import { and, not, or, plBool, str2plBool } from 'stdlib/data/PLBool'
+import { equals, lte, of, toJS } from 'stdlib/types'
+import { and, not, or, PLBool, plBool, str2plBool } from 'stdlib/data/PLBool'
 
 describe('stdlib/core/PLBool', () => {
-  describe('creation', () => {})
+  describe('creation with of', () => {
+    it('should have same result as the factory function', () => {
+      expect(PLBool[of](true)).deep.equals(plBool(true))
+      expect(PLBool[of](false)).deep.equals(plBool(false))
+    })
+  })
 
   describe('getters', () => {
     it('should work', () => {

@@ -1,6 +1,11 @@
-import { SerializeToJS, toJS } from 'stdlib/types'
+import { of, SApplicative, SerializeToJS, staticImplements, toJS } from 'stdlib/types'
 
-class PLVector<T> implements SerializeToJS<any[]> {
+@staticImplements<SApplicative<any[], PLVector<any>>>()
+export class PLVector<T> implements SerializeToJS<any[]> {
+  static [of](value: any[]) {
+    return plVector(value)
+  }
+
   constructor(private _value: T[]) {}
 
   [toJS]() {

@@ -6,8 +6,11 @@ import {
   equals,
   multiple,
   negate,
+  of,
+  SApplicative,
   SerializeToJS,
   Setoid,
+  staticImplements,
   subtract,
   toJS
 } from 'stdlib/types'
@@ -22,13 +25,18 @@ interface JSFractionNumber {
 
 ///
 
-class PLFractionNumber
+@staticImplements<SApplicative<JSFractionNumber, PLFractionNumber>>()
+export class PLFractionNumber
   implements
     SerializeToJS<JSFractionNumber>,
     Setoid<PLFractionNumber>,
     BaseNumberOp<PLFractionNumber> {
   private readonly _n: number
   private readonly _d: number
+
+  static [of](value: JSFractionNumber) {
+    return plFractionNumber(value.numerator, value.denominator)
+  }
 
   constructor(numerator: number, denominator: number) {
     if (!isValid(numerator, denominator)) {

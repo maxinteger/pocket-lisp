@@ -3,15 +3,15 @@ import { of, SApplicative, SerializeToJS, staticImplements, toJS } from 'stdlib/
 type Entries = [any, any][]
 
 @staticImplements<SApplicative<Entries, PLHashMap>>()
-class PLHashMap implements SerializeToJS<Map<any, any>> {
+export class PLHashMap implements SerializeToJS<Map<any, any>> {
   private readonly _value: Map<any, any>
-
-  constructor(entries?: Entries) {
-    this._value = new Map(entries)
-  }
 
   static [of](value: Entries): PLHashMap {
     return new PLHashMap(value)
+  }
+
+  constructor(entries?: Entries) {
+    this._value = new Map(entries)
   }
 
   [toJS]() {

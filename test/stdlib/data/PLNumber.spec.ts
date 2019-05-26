@@ -1,10 +1,16 @@
 import { expect } from 'chai'
-import { add, divide, equals, multiple, negate, subtract, toJS } from 'stdlib/types'
-import { plNumber, str2PLNumber } from 'stdlib/data/PLNumber'
+import { add, divide, equals, multiple, negate, of, subtract, toJS } from 'stdlib/types'
+import { PLNumber, plNumber, str2PLNumber } from 'stdlib/data/PLNumber'
 import { plBool } from 'stdlib/data/PLBool'
 
 describe('stdlib/core/PLNumber', () => {
-  describe('creation', () => {})
+  describe('creation', () => {
+    describe('with of', () => {
+      it('should have same result as the factory function', () => {
+        expect(PLNumber[of](42)).deep.equals(plNumber(42))
+      })
+    })
+  })
 
   describe('getters', () => {
     it('should work', () => {
@@ -12,7 +18,6 @@ describe('stdlib/core/PLNumber', () => {
       expect(actual.value).equal(1)
     })
   })
-
 
   describe('toJS', () => {
     it('should return with the JS representation', () => {

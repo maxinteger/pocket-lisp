@@ -17,14 +17,14 @@ import { typeCheck } from 'stdlib/utils'
 @staticImplements<SApplicative<boolean, PLBool>>()
 export class PLBool
   implements SerializeToJS<boolean>, Setoid<PLBool>, Ord<PLBool>, Functor<PLBool, PLBool> {
+  static [of](value: boolean): PLBool {
+    return new PLBool(value)
+  }
+
   constructor(private _value: boolean) {}
 
   get value() {
     return this._value
-  }
-
-  static [of](value: boolean): PLBool {
-    return new PLBool(value)
   }
 
   [equals](a: PLBool) {

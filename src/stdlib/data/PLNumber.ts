@@ -5,15 +5,23 @@ import {
   equals,
   multiple,
   negate,
+  of,
+  SApplicative,
   SerializeToJS,
   Setoid,
+  staticImplements,
   subtract,
   toJS
 } from 'stdlib/types'
 import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { plBool } from 'stdlib/data/PLBool'
 
+@staticImplements<SApplicative<number, PLNumber>>()
 export class PLNumber implements SerializeToJS<number>, Setoid<PLNumber>, BaseNumberOp<PLNumber> {
+  static [of](value: number) {
+    return plNumber(value)
+  }
+
   constructor(private _value: number) {}
 
   get value() {

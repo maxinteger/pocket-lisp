@@ -1,8 +1,16 @@
 import { expect } from 'chai'
-import { toJS } from 'stdlib/types'
-import { plString } from 'stdlib/data/PLString'
+import { of, toJS } from 'stdlib/types'
+import { PLString, plString } from 'stdlib/data/PLString'
 
 describe('stdlib/core/PLString', () => {
+  describe('creation', () => {
+    describe('with of', () => {
+      it('should have same result as the factory function', () => {
+        expect(PLString[of]('hello world')).deep.equals(plString('hello world'))
+      })
+    })
+  })
+
   it('should create empty String', () => {
     expect(plString()).deep.equal({ _value: '' })
   })

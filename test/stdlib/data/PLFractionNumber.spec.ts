@@ -1,6 +1,11 @@
 import { expect } from 'chai'
-import { plFractionNumber, reciprocal, str2plFractionNumber } from 'stdlib/data/PLFractionNumber'
-import { add, divide, equals, multiple, negate, subtract, toJS } from 'stdlib/types'
+import {
+  PLFractionNumber,
+  plFractionNumber,
+  reciprocal,
+  str2plFractionNumber
+} from 'stdlib/data/PLFractionNumber'
+import { add, divide, equals, multiple, negate, of, subtract, toJS } from 'stdlib/types'
 import { plBool } from 'stdlib/data/PLBool'
 
 describe('stdlib/core/PLFractionNumber', () => {
@@ -42,6 +47,14 @@ describe('stdlib/core/PLFractionNumber', () => {
 
       tests.map(({ n, d, res }) => {
         expect(plFractionNumber(n, d).toString()).eq(res)
+      })
+    })
+
+    describe('with of', () => {
+      it('should have same result as the factory function', () => {
+        expect(PLFractionNumber[of]({ numerator: 1, denominator: 2 })).deep.equals(
+          plFractionNumber(1, 2)
+        )
       })
     })
   })

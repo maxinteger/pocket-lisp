@@ -1,6 +1,11 @@
-import { SerializeToJS, toJS } from 'stdlib/types'
+import { of, SApplicative, SerializeToJS, staticImplements, toJS } from 'stdlib/types'
 
-class PLString implements SerializeToJS<string> {
+@staticImplements<SApplicative<string, PLString>>()
+export class PLString implements SerializeToJS<string> {
+  static [of](value: string) {
+    return plString(value)
+  }
+
   constructor(private _value: string) {}
 
   get value() {

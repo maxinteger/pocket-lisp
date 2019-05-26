@@ -1,8 +1,13 @@
 import { expect } from 'chai'
-import { plHashMap } from 'stdlib/data/PLHashMap'
-import { toJS } from 'stdlib/types'
+import { PLHashMap, plHashMap } from 'stdlib/data/PLHashMap'
+import { of, toJS } from 'stdlib/types'
 
 describe('stdlib/core/PLHashMap', () => {
+  describe('creation with of', () => {
+    it('should have same result as the factory function', () => {
+      expect(PLHashMap[of]([['a', 1]])).deep.equals(plHashMap([['a', 1]]))
+    })
+  })
   it('should create empty plHashMap', () => {
     expect(plHashMap().toString()).deep.equal('{}')
   })
