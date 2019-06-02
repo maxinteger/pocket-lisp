@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { PLVector, plVector } from 'stdlib/data/PLVector'
-import { of, toJS } from 'stdlib/types'
+import { concat, of, toJS } from 'stdlib/types'
 
 describe('stdlib/core/PLVector', () => {
   describe('creation', () => {
@@ -11,6 +11,22 @@ describe('stdlib/core/PLVector', () => {
       it('should have same result as the factory function', () => {
         expect(PLVector[of]([1, 2, 3])).deep.equals(plVector([1, 2, 3]))
       })
+    })
+  })
+
+  describe('getters', () => {
+    it('should work', () => {
+      expect(plVector([]).value).deep.equal([])
+      expect(plVector([1, 2, 3]).value).deep.equal([1, 2, 3])
+    })
+  })
+
+  describe('concat', () => {
+    it('should concatenate 2 vectors', () => {
+      const actual = plVector([1])
+        [concat](plVector([2]))
+        [concat](plVector([3]))
+      expect(actual.value).deep.equal([1, 2, 3])
     })
   })
 

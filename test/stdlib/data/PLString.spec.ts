@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { of, toJS } from 'stdlib/types'
+import { concat, of, toJS } from 'stdlib/types'
 import { PLString, plString } from 'stdlib/data/PLString'
 
 describe('stdlib/core/PLString', () => {
@@ -19,6 +19,13 @@ describe('stdlib/core/PLString', () => {
     it('should work', () => {
       const actual = plString('OK')
       expect(actual.value).equal('OK')
+    })
+  })
+
+  describe('concat', () => {
+    it('should concatenate 2 strings', () => {
+      const actual = plString('hello')[concat](plString(' '))[concat](plString('world'))
+      expect(actual.value).equal('hello world')
     })
   })
 
