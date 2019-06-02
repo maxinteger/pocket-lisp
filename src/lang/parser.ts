@@ -35,8 +35,8 @@ interface ParserResult {
 
 ///
 
-export const VECTOR_IDENTIFIER = new Literal(LiteralType.Identifier, 'plVector')
-export const MAP_IDENTIFIER = new Literal(LiteralType.Identifier, 'plHashMap')
+export const VECTOR_IDENTIFIER = new Literal(LiteralType.Identifier, 'vector')
+export const MAP_IDENTIFIER = new Literal(LiteralType.Identifier, 'hashMap')
 
 const missingParser = (name: string) => () => {
   throw new RuntimeError(`Missing parser '${name}'`)

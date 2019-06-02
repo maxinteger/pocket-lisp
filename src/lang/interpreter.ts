@@ -22,7 +22,7 @@ export class Interpreter {
 
   constructor(options?: InterpreterOptions, literals?: PLLiterals) {
     const { stdout, globals, lockedGlobals } = { ...defaultOptions, ...options }
-    const plLiterals = { ...literals, ...defaultLiterals }
+    const plLiterals = { ...defaultLiterals, ...literals }
 
     Object.keys(plLiterals).forEach(key => {
       this.globals.define(key, nativeFn((plLiterals as any)[key].factory))

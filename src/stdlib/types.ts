@@ -1,4 +1,6 @@
 import { PLBool } from 'stdlib/data/PLBool'
+import { PLString } from 'stdlib/data/PLString'
+import { PLNumber } from 'stdlib/data/PLNumber'
 
 export function staticImplements<T>() {
   // @ts-ignore
@@ -10,11 +12,6 @@ export const toJS = Symbol('toJS')
 export interface SerializeToJS<T> {
   [toJS](): T
 }
-
-/*
-  Types based on Fantasy land
-	https://github.com/fantasyland/fantasy-land
- */
 
 export const negate = Symbol('negate')
 export const add = Symbol('add')
@@ -29,6 +26,20 @@ export interface BaseNumberOp<T extends BaseNumberOp<any>> {
   [multiple](a: ThisType<T>): ThisType<T>
   [divide](a: ThisType<T>): ThisType<T>
 }
+
+export const elem = Symbol('elem')
+export const nth = Symbol('nth')
+export const join = Symbol('join')
+export interface ListLikeData<T> {
+  [elem](x: T): PLBool
+  [nth](i: PLNumber): T
+  [join](a: PLString): PLString
+}
+
+/*
+  Types based on Fantasy land
+	https://github.com/fantasyland/fantasy-land
+ */
 
 export const equals = Symbol('equals')
 /**

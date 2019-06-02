@@ -21,11 +21,11 @@ export class PLVector<T> implements SerializeToJS<any[]> {
   }
 
   [concat](a: PLVector<any>) {
-    return plVector(this._value.concat(a.value))
+    return plVector(...this._value.concat(a.value))
   }
 
   [toJS]() {
-    return this._value
+    return this._value.map((x: any) => x[toJS]())
   }
 
   toString() {
@@ -33,4 +33,4 @@ export class PLVector<T> implements SerializeToJS<any[]> {
   }
 }
 
-export const plVector: <T>(value?: T[]) => PLVector<T> = (value = []) => new PLVector(value)
+export const plVector: <T>(...value: T[]) => PLVector<T> = (...value) => new PLVector(value)
