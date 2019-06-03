@@ -3,6 +3,7 @@ import { Literal, LiteralType } from 'lang/parser'
 import { PLCallable } from 'lang/types'
 import { Interpreter } from 'lang/interpreter'
 import { NATIVE_FN_NAME } from 'lang/utils/constants'
+import { Environment } from 'lang/dataTypes/Environment'
 
 export const identity: <T>(x: T) => T = x => x
 
@@ -27,8 +28,8 @@ export const assertParamType = (literal: Literal<unknown>, ...types: LiteralType
 
 export const nativeFn = (fn: (...args: any[]) => any): PLCallable =>
   <PLCallable>{
-    call(interpreter: Interpreter, parameters: Literal<unknown>[]) {
-      const evaluatedParams = parameters.map(interpreter.execLiteral, interpreter)
+    call(interpreter: Interpreter, env: Environment, parameters: Literal<unknown>[]) {
+      const evaluatedParams = parameters.map(p => interpreter.execLiteral(p, env), interpreter)
       return fn.apply(null, evaluatedParams)
     },
     arity() {

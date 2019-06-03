@@ -18,7 +18,6 @@ const defaultOptions = {
 
 export class Interpreter {
   private readonly globals = new Environment()
-  private _currentEnv = this.globals
 
   constructor(options?: InterpreterOptions, literals?: PLLiterals) {
     const { stdout, globals, lockedGlobals } = { ...defaultOptions, ...options }
@@ -43,7 +42,7 @@ export class Interpreter {
     let returnVal: unknown = undefined
     try {
       for (let literal of program) {
-        returnVal = this.execLiteral(literal)
+        returnVal = this.execLiteral(literal, this.globals)
       }
     } catch (e) {
       throw new RuntimeError(e)
@@ -51,7 +50,7 @@ export class Interpreter {
     return returnVal
   }
 
-  public execLiteral = (literal: Literal<any>) => {
+  public execLiteral = (literal: Literal<any>, env: Environment) => {
     switch (literal.kind) {
       case LiteralType.Boolean:
       case LiteralType.Integer:
@@ -61,22 +60,18 @@ export class Interpreter {
         return literal.value
       case LiteralType.Keyword:
       case LiteralType.Identifier:
-        return this._currentEnv.get(literal.value)
+        return env.get(literal.value)
       case LiteralType.List:
-        return this.execList(literal)
+        return this.execList(literal, env)
     }
   }
 
-  private execList(literal: Literal<Literal<unknown>[]>): unknown {
+  private execList(literal: Literal<Literal<unknown>[]>, env: Environment): unknown {
     const [fnId, ...args] = literal.value
     if (fnId.kind === LiteralType.Identifier) {
-      const fn = <PLCallable>this._currentEnv.get((fnId as Literal<string>).value)
-      return fn.call(this, args)
+      const fn = <PLCallable>env.get((fnId as Literal<string>).value)
+      return fn.call(this, env, args)
     }
     throw new RuntimeError(`'${fnId.value}' is not a function`)
-  }
-
-  get currentEnv(): Environment {
-    return this._currentEnv
   }
 }

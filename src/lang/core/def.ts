@@ -3,17 +3,19 @@ import { Literal, LiteralType } from 'lang/parser'
 import { NATIVE_FN_NAME } from 'lang/utils/constants'
 import { PLCallable } from 'lang/types'
 import { assertParamType, assetParamLength } from 'lang/utils/fn'
+import { Environment } from 'lang/dataTypes/Environment'
 
 export const def = <PLCallable>{
-  call(interpreter: Interpreter, args: Literal<unknown>[]) {
+  call(interpreter: Interpreter, env: Environment, args: Literal<unknown>[]) {
     assetParamLength(args, 2)
 
     const [id, value] = args
     assertParamType(id, LiteralType.Identifier)
 
-    const evaluatedValue = interpreter.execLiteral(value)
+    const evaluatedValue = interpreter.execLiteral(value, env)
 
-    interpreter.currentEnv.define((id as Literal<string>).value, evaluatedValue)
+    env.define((id as Literal<string>).value, evaluatedValue)
+    return evaluatedValue
   },
   arity() {
     return 2

@@ -3,6 +3,7 @@ import { Parser } from 'lang/parser'
 import { Scanner } from 'lang/scanner'
 import { Interpreter } from 'lang/interpreter'
 import { InterpreterOptions } from 'lang/types'
+import { NATIVE_FN_NAME } from 'lang/utils/constants'
 
 const interpret = (src: string, options?: InterpreterOptions) =>
   new Interpreter(options).interpret(new Parser(new Scanner(src)).parse().program)
@@ -42,12 +43,12 @@ describe('interpreter', () => {
     })
   })
 
-  it('should print "<native fn>" if the user print out a global function', () => {
+  it('should print "[native fn]" if the user print out a global function', () => {
     interpret('(print print)', {
       globals: {
         print: ((output: any) => {
           expect(output.arity()).equals(1)
-          expect(output.toString()).equals('<native fn>')
+          expect(output.toString()).equals(NATIVE_FN_NAME)
         })
       }
     })

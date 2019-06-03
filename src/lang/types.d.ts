@@ -1,8 +1,9 @@
 import { Interpreter } from 'lang/interpreter'
 import { Literal } from 'lang/parser'
+import { Environment } from 'lang/dataTypes/Environment'
 
 declare interface PLCallable {
-  call: (interpreter: Interpreter, args: Literal<unknown>[]) => unknown
+  call: (interpreter: Interpreter, env: Environment, args: Literal<unknown>[]) => unknown
   arity: () => number
   toString: () => string
 }
