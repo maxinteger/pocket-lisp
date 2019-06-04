@@ -4,7 +4,7 @@ import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { InterpreterOptions, PLCallable, PLLiterals } from 'lang/types'
 import { defaultLiterals } from 'lang/utils/defaultLiterals'
 import { NATIVE_FN_NAME } from 'lang/utils/constants'
-import { nativeFn } from 'lang/utils/fn'
+import { simpleFn } from 'lang/utils/fn'
 import { def } from 'lang/core/def'
 import { ifFn } from 'lang/core/if'
 
@@ -24,16 +24,16 @@ export class Interpreter {
     const plLiterals = { ...defaultLiterals, ...literals }
 
     Object.keys(plLiterals).forEach(key => {
-      this.globals.define(key, nativeFn((plLiterals as any)[key].factory))
+      this.globals.define(key, simpleFn((plLiterals as any)[key].factory))
     })
 
-    this.globals.define('print', nativeFn(stdout || console.log))
+    this.globals.define('print', simpleFn(stdout || console.log))
     this.globals.define('def', def)
     this.globals.define('if', ifFn)
 
     Object.keys(globals).forEach(key => {
       const value = globals[key]
-      const fn = value.toString() === NATIVE_FN_NAME ? value : nativeFn(value)
+      const fn = value.toString() === NATIVE_FN_NAME ? value : simpleFn(value)
       this.globals.define(key, fn, lockedGlobals)
     })
   }

@@ -26,7 +26,7 @@ export const assertParamType = (literal: Literal<unknown>, ...types: LiteralType
     `Invalid function parameter, actual: '${literal.kind}', expected: '${types.join(' or ')}'`
   )
 
-export const nativeFn = (fn: (...args: any[]) => any): PLCallable =>
+export const simpleFn = (fn: (...args: any[]) => any): PLCallable =>
   <PLCallable>{
     call(interpreter: Interpreter, env: Environment, parameters: Literal<unknown>[]) {
       const evaluatedParams = parameters.map(p => interpreter.execLiteral(p, env), interpreter)
