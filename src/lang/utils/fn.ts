@@ -26,16 +26,37 @@ export const assertParamType = (literal: Literal<unknown>, ...types: LiteralType
     `Invalid function parameter, actual: '${literal.kind}', expected: '${types.join(' or ')}'`
   )
 
-export const simpleFn = (fn: (...args: any[]) => any): PLCallable =>
-  <PLCallable>{
-    call(interpreter: Interpreter, env: Environment, parameters: Literal<unknown>[]) {
-      const evaluatedParams = parameters.map(p => interpreter.execLiteral(p, env), interpreter)
-      return fn.apply(null, evaluatedParams)
-    },
-    arity() {
-      return fn.length
-    },
-    toString() {
-      return NATIVE_FN_NAME
-    }
-  }
+const plCallablePops = {
+	configurable: false,
+	writable: false,
+	enumerable: false
+}
+
+export const createFn = (
+  fn: (interpreter: Interpreter, env: Environment, parameters: Literal<unknown>[]) => any,
+  args: number,
+	representation?: string
+): PLCallable => {
+	return Object.create(null, {
+		call: {
+			...plCallablePops,
+			value: fn
+		},
+		arity: {
+			...plCallablePops,
+			value: args
+		},
+		toString: {
+			...plCallablePops,
+			value: () => representation || NATIVE_FN_NAME
+		}
+	})
+}
+
+export const simpleFn = (fn: (...args: any[]) => any): PLCallable => createFn(
+	(interpreter, env, parameters) => {
+		const evaluatedParams = parameters.map(p => interpreter.execLiteral(p, env), interpreter)
+		return fn.apply(null, evaluatedParams)
+	},
+	fn.length
+)

@@ -29,7 +29,7 @@ describe('stdlib/core/def', () => {
   })
 
   it('should has arity 2', () => {
-    expect(def.arity()).equals(2)
+    expect(def.arity).equals(2)
   })
 
   it('should has native toString', () => {

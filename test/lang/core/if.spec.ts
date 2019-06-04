@@ -37,7 +37,7 @@ describe('stdlib/core/if', () => {
   })
 
   it('should has arity 3', () => {
-    expect(ifFn.arity()).equals(3)
+    expect(ifFn.arity).equals(3)
   })
 
   it('should has native toString', () => {

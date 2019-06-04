@@ -4,7 +4,7 @@ import { Environment } from 'lang/dataTypes/Environment'
 
 declare interface PLCallable {
   call: (interpreter: Interpreter, env: Environment, args: Literal<unknown>[]) => unknown
-  arity: () => number
+  arity: number
   toString: () => string
 }
 

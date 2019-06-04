@@ -47,7 +47,7 @@ describe('interpreter', () => {
     interpret('(print print)', {
       globals: {
         print: ((output: any) => {
-          expect(output.arity()).equals(1)
+          expect(output.arity).equals(1)
           expect(output.toString()).equals(NATIVE_FN_NAME)
         })
       }
