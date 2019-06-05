@@ -4,6 +4,7 @@ Pocket lisp is a Closure like programming language.
 
 
 [![License: MIT][license-shield]][license-link]
+[![code style: prettier][prettier-shield]][prettier-link]
 [![Travis Build Status][build-shield]][build-link]
 [![Codecov Code Coverage][coverage-shield]][coverage-link]
 
@@ -51,6 +52,8 @@ Also you can run test by
 
 [license-shield]: https://img.shields.io/badge/License-MIT-blue.svg?style=shield
 [license-link]: https://opensource.org/licenses/MIT
+[prettier-shield]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square
+[prettier-link]: https://github.com/prettier/prettier
 [build-shield]: https://travis-ci.com/maxinteger/pocket-lisp.svg?branch=master
 [build-link]: https://travis-ci.com/maxinteger/pocket-lisp
 [coverage-shield]: https://codecov.io/gh/maxinteger/pocket-lisp/branch/master/graph/badge.svg
