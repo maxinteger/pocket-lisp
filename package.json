@@ -23,6 +23,7 @@
     "@types/node": "12.0.4",
     "chai": "4.2.0",
     "codecov": "3.5.0",
+    "husky": "^2.4.0",
     "mocha": "6.1.4",
     "nyc": "14.1.1",
     "prettier": "1.17.1",
@@ -39,7 +40,8 @@
     "build": "rollup -c",
     "watch": "rollup -cw",
     "repl": "ts-node -r tsconfig-paths/register src/repl.ts",
-    "start": "npm run repl"
+    "start": "npm run repl",
+    "precommit": "mocha"
   },
   "prettier": {
     "semi": false,
