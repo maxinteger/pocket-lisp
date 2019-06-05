@@ -55,6 +55,6 @@ describe('interpreter', () => {
   })
 
   it('should throw runtime error if the first item of the list expression is not a function', () => {
-    expect(() => interpret('(1 + 2)')).throw(`Error: '1' is not a function`)
+    expect(() => interpret('(1 + 2)')).throw(`'1' is not a function`)
   })
 })

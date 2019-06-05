@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import { initInterpret } from '../../testUtils'
-import { def } from 'lang/core/def'
 import { NATIVE_FN_NAME } from 'lang/utils/constants'
 import { ifFn } from 'lang/core/if'
 
