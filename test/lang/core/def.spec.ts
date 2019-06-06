@@ -9,7 +9,7 @@ describe('stdlib/core/def', () => {
     expect(() => initInterpret('(def x 1 2)', { def })).throw('Expected 2 argument(s), but got 3')
   })
 
-  it('should throw error if the second parameter is not identifier', () => {
+  it('should throw error if the first parameter is not identifier', () => {
     expect(() => initInterpret('(def 1 42)', { def })).throw(
       "Invalid function parameter, actual: 'int', expected: 'identifier'"
     )

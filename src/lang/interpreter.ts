@@ -1,12 +1,11 @@
 import { Environment } from 'lang/dataTypes/Environment'
 import { Literal, LiteralType } from 'lang/parser'
 import { RuntimeError } from 'lang/dataTypes/RuntimeError'
-import { InterpreterOptions, PLCallable, PLLiterals } from 'lang/types'
+import { InterpreterOptions, PLLiterals } from 'lang/types'
 import { defaultLiterals } from 'lang/utils/defaultLiterals'
 import { NATIVE_FN_NAME } from 'lang/utils/constants'
 import { simpleFn } from 'lang/utils/fn'
-import { def } from 'lang/core/def'
-import { ifFn } from 'lang/core/if'
+import { def, fn, ifFn } from 'lang/core'
 
 const defaultOptions = {
   stdout: undefined,
@@ -30,6 +29,7 @@ export class Interpreter {
     this.globals.define('print', simpleFn(stdout || console.log))
     this.globals.define('def', def)
     this.globals.define('if', ifFn)
+    this.globals.define('fn', fn)
 
     Object.keys(globals).forEach(key => {
       const value = globals[key]
@@ -68,10 +68,11 @@ export class Interpreter {
 
   private execList(literal: Literal<Literal<unknown>[]>, env: Environment): unknown {
     const [fnId, ...args] = literal.value
-    if (fnId.kind === LiteralType.Identifier) {
-      const fn = <PLCallable>env.get((fnId as Literal<string>).value)
+    const fn: any = this.execLiteral(fnId, env)
+
+    if (typeof fn.call === 'function') {
       return fn.call(this, env, args)
     }
-    throw new RuntimeError(`'${fnId.value}' is not a function`)
+    throw new RuntimeError(`'${fn}' is not a function`)
   }
 }
