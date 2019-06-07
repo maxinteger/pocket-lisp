@@ -8,7 +8,7 @@ export const fn = createFn(
   (_interpreter: Interpreter, env: Environment, args: Literal<unknown>[]) => {
     assetParamLength(args, 2)
 
-    const [fnArgNamesList, codeBlock] = args as [
+    const [fnArgNamesList, fnBody] = args as [
       Literal<Literal<string>[]>,
       Literal<LiteralType.List>
     ]
@@ -16,7 +16,6 @@ export const fn = createFn(
 
     const fnArgNames = fnArgNamesList.value.slice(1)
     fnArgNames.map(id => assertParamType(id, LiteralType.Identifier))
-    assertParamType(codeBlock, LiteralType.List)
 
     return createFn(
       (interpreter: Interpreter, callEnv: Environment, fnArgs: Literal<unknown>[]) => {
@@ -29,7 +28,7 @@ export const fn = createFn(
           closure.define(id.value, arg)
         })
 
-        return interpreter.execLiteral(codeBlock, closure)
+        return interpreter.execLiteral(fnBody, closure)
       },
       fnArgNames.length,
       LAMBDA_FN_NAME
