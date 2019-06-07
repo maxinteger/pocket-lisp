@@ -43,20 +43,22 @@ The identifier
 -  must be start with latin alphabetic character or the fallowing symbols `=+-*\&%$_!<>?`
 - can continue with latin alphabetic or numeric characters or the fallowing symbols `=+-*\&%$_!<>?`
 
-
+```clojure 
     x
-    +   ; completely valid
-    
+    +                                   ; completely valid
+```
+
 ### Keywords
 
 Keywords are special identifiers which are
 - must be start with colon (`:`) and 
 - must continue with at least 1 latin alphabetic or numeric characters or the fallowing symbols `=+-*\&%$_!<>?`
- 
-    
+
+```clojure
     :keyword
     :t1
     :x
+```
 
 ## Literals
 
@@ -99,8 +101,10 @@ The rest of the list will be the parameters of the function
 
 Print value to the standard output. It accepts any amount fo parameters.
 
+```clojure
     (print Hello world)
     (print 42 1/2 1.5)
+```
 
 ### define variable - `def` 
 
@@ -111,8 +115,10 @@ The function has 2 parameter:
 
 Define the `x` variable
 
+```clojure
     (def x 42)
     (print x)                           ; print 42
+```
 
 ### Lambda function
 
@@ -121,12 +127,14 @@ Define the `x` variable
 - function body, can be anything
 
 
+```clojure
     (fn [] 42)
     (fn [] (+ 1 2))
                                         ; function closure 
     (def add (fn [a] ( fn [b] (+ a b) )))
     (def addTo10 (add 10))              ; create reference for the function
     (print (addto10 1))                 ; print 11
+```
     
         
 
@@ -138,5 +146,6 @@ Define the `x` variable
 - true branch
 - false branch
 
-
+```clojure
     (print (if true 1 2))               ; print 1
+```

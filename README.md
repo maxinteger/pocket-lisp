@@ -1,6 +1,6 @@
 # Pocket lisp
 
-Pocket lisp is a Closure like programming language.
+Pocket lisp is a Clojure like programming language.
 
 
 [![License: MIT][license-shield]][license-link]
