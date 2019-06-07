@@ -1,2 +1,142 @@
 # Pocket lisp
 
+Pocket Lisp a simple and configurable generic script language.
+
+## Goals
+
+- Simple
+- Expressive
+- "Fast"
+- Sandbox - no access to the native runtime environment (ex. Browser, NodeJS, etc.) API
+- Zero dependencies
+
+# Usage
+
+## Package 
+
+_coming soon_
+
+## Repl
+
+The easiest way the try the language is to run it in your terminal in REPL 
+(Read-eval-print loop) mode. For that check out the repository, install the dependencies, 
+then run the fallowing command:
+
+    npm start
+
+
+# Pocket lisp syntax
+
+The syntax very similar to the closure script language
+
+
+## Basics
+
+- space like (space, newline, comma, etc.) characters are ignored.
+  For example: `[ 1 2 3 ]` equivalent with `[ 1, 2, 3 ]` 
+- single line comment star with: `;`
+- no multi line comment
+
+### Identifiers
+
+The identifier
+-  must be start with latin alphabetic character or the fallowing symbols `=+-*\&%$_!<>?`
+- can continue with latin alphabetic or numeric characters or the fallowing symbols `=+-*\&%$_!<>?`
+
+
+    x
+    +   ; completely valid
+    
+### Keywords
+
+Keywords are special identifiers which are
+- must be start with colon (`:`) and 
+- must continue with at least 1 latin alphabetic or numeric characters or the fallowing symbols `=+-*\&%$_!<>?`
+ 
+    
+    :keyword
+    :t1
+    :x
+
+## Literals
+
+### boolean
+- `true` and `false`
+ 
+### Number
+
+- Integer: `42`
+- float: `42.5`
+- friction: `1/2` *numerator and denominator must be integer*
+
+### String
+
+- string `"Hello world"` 
+
+### Vector
+
+Array like structure
+
+- vector `[ 1 2 3 ]`
+
+### HashMap
+
+Key value pairs
+
+- hashMap: `{ key1 value1 key2 value2}` *must be pairs*
+
+## List / Function calls
+
+List a special structure which is very similar to an array, 
+except the first item must be callable (lambda function, or function reference). 
+The rest of the list will be the parameters of the function 
+
+- list: `(print 1 2 3)`
+
+## Integrated functions
+
+### Print
+
+Print value to the standard output. It accepts any amount fo parameters.
+
+    (print Hello world)
+    (print 42 1/2 1.5)
+
+### define variable - `def` 
+
+`def` function can create a new variable in the current scope.
+The function has 2 parameter:
+- the variable name, it must be an identifier
+- the initial value of the variable, it can be anything and it is mandatory
+
+Define the `x` variable
+
+    (def x 42)
+    (print x)                           ; print 42
+
+### Lambda function
+
+`fn` define a lambda function. It has 2 parameters:
+- arguments vector, where the items must be identifiers, empty vector allowed
+- function body, can be anything
+
+
+    (fn [] 42)
+    (fn [] (+ 1 2))
+                                        ; function closure 
+    (def add (fn [a] ( fn [b] (+ a b) )))
+    (def addTo10 (add 10))              ; create reference for the function
+    (print (addto10 1))                 ; print 11
+    
+        
+
+### If "statement"
+
+`if` function has 3 parameters and if the first expression value is `true` then evaluate and return with the second parameter otherwise does the same with the third parameter
+
+- Boolean expression
+- true branch
+- false branch
+
+
+    (print (if true 1 2))               ; print 1
