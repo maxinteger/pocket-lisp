@@ -1,9 +1,5 @@
 import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { Literal, LiteralType } from 'lang/parser'
-import { PLCallable } from 'lang/types'
-import { Interpreter } from 'lang/interpreter'
-import { NATIVE_FN_NAME } from 'lang/utils/constants'
-import { Environment } from 'lang/dataTypes/Environment'
 
 export const identity: <T>(x: T) => T = x => x
 
@@ -25,38 +21,3 @@ export const assertParamType = (literal: Literal<unknown>, ...types: LiteralType
     types.find(t => t === literal.kind) === undefined,
     `Invalid function parameter, actual: '${literal.kind}', expected: '${types.join(' or ')}'`
   )
-
-const plCallablePops = {
-	configurable: false,
-	writable: false,
-	enumerable: false
-}
-
-export const createFn = (
-  fn: (interpreter: Interpreter, env: Environment, parameters: Literal<unknown>[]) => any,
-  args: number,
-	representation?: string
-): PLCallable => {
-	return Object.create(null, {
-		call: {
-			...plCallablePops,
-			value: fn
-		},
-		arity: {
-			...plCallablePops,
-			value: args
-		},
-		toString: {
-			...plCallablePops,
-			value: () => representation || NATIVE_FN_NAME
-		}
-	})
-}
-
-export const simpleFn = (fn: (...args: any[]) => any): PLCallable => createFn(
-	(interpreter, env, parameters) => {
-		const evaluatedParams = parameters.map(p => interpreter.execLiteral(p, env), interpreter)
-		return fn.apply(null, evaluatedParams)
-	},
-	fn.length
-)

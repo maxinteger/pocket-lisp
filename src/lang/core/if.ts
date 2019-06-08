@@ -1,11 +1,12 @@
 import { Interpreter } from 'lang/interpreter'
 import { Literal } from 'lang/parser'
-import { assetParamLength, createFn } from 'lang/utils/fn'
+import { assetParamLength} from 'lang/utils/fn'
 import { toJS } from 'stdlib/types'
 import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { Environment } from 'lang/dataTypes/Environment'
+import { createFunction } from 'lang/dataTypes/PLFunction'
 
-export const ifFn = createFn(
+export const ifFn = createFunction(
   (interpreter: Interpreter, env: Environment, args: Literal<unknown>[]) => {
     assetParamLength(args, 3)
 

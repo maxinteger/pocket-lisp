@@ -1,10 +1,11 @@
 import { Interpreter } from 'lang/interpreter'
 import { Literal, LiteralType } from 'lang/parser'
 import { LAMBDA_FN_NAME } from 'lang/utils/constants'
-import { assertParamType, assetParamLength, createFn } from 'lang/utils/fn'
+import { assertParamType, assetParamLength} from 'lang/utils/fn'
 import { Environment } from 'lang/dataTypes/Environment'
+import { createFunction } from 'lang/dataTypes/PLFunction'
 
-export const fn = createFn(
+export const fn = createFunction(
   (_interpreter: Interpreter, env: Environment, args: Literal<unknown>[]) => {
     assetParamLength(args, 2)
 
@@ -17,7 +18,7 @@ export const fn = createFn(
     const fnArgNames = fnArgNamesList.value.slice(1)
     fnArgNames.map(id => assertParamType(id, LiteralType.Identifier))
 
-    return createFn(
+    return createFunction(
       (interpreter: Interpreter, callEnv: Environment, fnArgs: Literal<unknown>[]) => {
         assetParamLength(fnArgs, fnArgNames.length)
 

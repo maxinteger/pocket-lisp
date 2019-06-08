@@ -1,9 +1,10 @@
 import { Interpreter } from 'lang/interpreter'
 import { Literal, LiteralType } from 'lang/parser'
-import { assertParamType, assetParamLength, createFn } from 'lang/utils/fn'
+import { assertParamType, assetParamLength} from 'lang/utils/fn'
 import { Environment } from 'lang/dataTypes/Environment'
+import { createFunction } from 'lang/dataTypes/PLFunction'
 
-export const def = createFn(
+export const def = createFunction(
   (interpreter: Interpreter, env: Environment, args: Literal<unknown>[]) => {
     assetParamLength(args, 2)
 
