@@ -5,8 +5,6 @@ import { ifFn } from 'lang/core/if'
 
 describe('stdlib/core/if', () => {
   it('should fail it parameter number is less or more then 3', () => {
-    expect(() => initInterpret('(if x)', { if: ifFn })).throw('Expected 3 argument(s), but got 1')
-    expect(() => initInterpret('(if x 2)', { if: ifFn })).throw('Expected 3 argument(s), but got 2')
     expect(() => initInterpret('(if x 1 2 4)', { if: ifFn })).throw(
       'Expected 3 argument(s), but got 4'
     )

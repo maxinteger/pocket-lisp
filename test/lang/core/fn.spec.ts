@@ -5,7 +5,6 @@ import { def, fn } from 'lang/core'
 
 describe('stdlib/core/fn', () => {
   it('should fail it parameter number is less or more then 2', () => {
-    expect(() => initInterpret('(fn x)', { fn })).throw('Expected 2 argument(s), but got 1')
     expect(() => initInterpret('(fn x 1 2)', { fn })).throw('Expected 2 argument(s), but got 3')
   })
 
