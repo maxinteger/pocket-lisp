@@ -10,7 +10,7 @@ describe('stdlib/core/if', () => {
     )
   })
 
-  it("should throw error if the firs expression's result is not boolean", () => {
+  it("should throw error if the first expression's result is not boolean", () => {
     expect(() => initInterpret('(if 1 "a" "b")', { if: ifFn })).throw(
       "Expected boolean value in the if condition, but get '1'"
     )

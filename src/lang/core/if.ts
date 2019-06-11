@@ -1,7 +1,6 @@
 import { Interpreter } from 'lang/interpreter'
 import { Literal } from 'lang/parser'
-import { assetParamLength} from 'lang/utils/fn'
-import { toJS } from 'stdlib/types'
+import { assetParamLength } from 'lang/utils/fn'
 import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { Environment } from 'lang/dataTypes/Environment'
 import { createFunction } from 'lang/dataTypes/PLFunction'
@@ -14,7 +13,7 @@ export const ifFn = createFunction(
 
     // TODO fix default list vs std lib differences
     const conditionEval = interpreter.execLiteral(condition, env)
-    const conditionRes = conditionEval[toJS] ? conditionEval[toJS]() : conditionEval
+    const conditionRes = interpreter.options.utils.unboxing(conditionEval)
 
     if (conditionRes === true) {
       return interpreter.execLiteral(thenBranch, env)

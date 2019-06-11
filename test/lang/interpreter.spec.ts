@@ -5,7 +5,7 @@ import { Interpreter } from 'lang/interpreter'
 import { InterpreterOptions } from 'lang/types'
 import { NATIVE_FN_NAME } from 'lang/utils/constants'
 
-const interpret = (src: string, options?: InterpreterOptions) =>
+const interpret = (src: string, options?: Partial<InterpreterOptions>) =>
   new Interpreter(options).interpret(new Parser(new Scanner(src)).parse().program)
 
 describe('interpreter', () => {

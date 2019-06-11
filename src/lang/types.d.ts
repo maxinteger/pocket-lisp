@@ -23,9 +23,12 @@ declare interface PLLiteral {
 }
 
 declare interface InterpreterOptions {
-  globals?: { [key: string]: any }
-  stdout?: (out: string) => void
-  lockedGlobals?: boolean
+  globals: { [key: string]: any }
+  stdout: (out: string) => void
+  lockedGlobals: boolean
+  utils: {
+    unboxing: (x: any) => any
+  }
 }
 
 declare interface PLLiterals {

@@ -6,20 +6,26 @@ import { defaultLiterals } from 'lang/utils/defaultLiterals'
 import { NATIVE_FN_NAME } from 'lang/utils/constants'
 import { def, fn, ifFn } from 'lang/core'
 import { simpleFunction } from 'lang/dataTypes/PLFunction'
+import { identity } from 'lang/utils/fn'
 
 const defaultOptions = {
   stdout: undefined,
   lockedGlobals: true,
-  globals: <any>{}
+  globals: <any>{},
+  utils: {
+    unboxing: identity
+  }
 }
 
 ///
 
 export class Interpreter {
   private readonly globals = new Environment()
+  public readonly options: InterpreterOptions
 
-  constructor(options?: InterpreterOptions, literals?: PLLiterals) {
-    const { stdout, globals, lockedGlobals } = { ...defaultOptions, ...options }
+  constructor(options?: Partial<InterpreterOptions>, literals?: PLLiterals) {
+    this.options = { ...defaultOptions, ...options } as any
+    const { stdout, globals, lockedGlobals } = this.options
     const plLiterals = { ...defaultLiterals, ...literals }
 
     Object.keys(plLiterals).forEach(key => {

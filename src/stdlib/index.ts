@@ -7,6 +7,8 @@ import { plNumber, str2PLNumber } from 'stdlib/data/PLNumber'
 import { plFractionNumber, reciprocal, str2plFractionNumber } from 'stdlib/data/PLFractionNumber'
 import { plString } from 'stdlib/data/PLString'
 import { PLLiterals } from 'lang/types'
+import { unboxing } from 'stdlib/fn/common'
+
 
 export const literals: PLLiterals = {
   bool: {
@@ -44,4 +46,8 @@ export const runtime = {
   and,
   or,
   reciprocal
+}
+
+export const utils = {
+  unboxing
 }

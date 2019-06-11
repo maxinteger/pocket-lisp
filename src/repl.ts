@@ -5,7 +5,7 @@ import { Interpreter } from 'lang/interpreter'
 import { Parser } from 'lang/parser'
 import { Scanner } from 'lang/scanner'
 import { StdoutManager } from 'lang/dataTypes/StdoutManager'
-import { literals, runtime } from 'stdlib/'
+import { literals, runtime, utils } from 'stdlib/'
 import { toJS } from 'stdlib/types'
 
 function createEval() {
@@ -13,7 +13,8 @@ function createEval() {
   const interpreter = new Interpreter(
     {
       globals: runtime,
-      stdout: value => output.cb(value.toString())
+      stdout: value => output.cb(value.toString()),
+      utils
     },
     literals
   )
