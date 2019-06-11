@@ -1,7 +1,6 @@
 import { Scanner, Token, TokenType } from 'lang/scanner'
 import { identity } from 'lang/utils/fn'
 import { defaultLiterals } from 'lang/utils/defaultLiterals'
-import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 
 export enum LiteralType {
   Boolean = 'bool',
@@ -37,10 +36,6 @@ interface ParserResult {
 
 export const VECTOR_IDENTIFIER = new Literal(LiteralType.Identifier, 'vector')
 export const MAP_IDENTIFIER = new Literal(LiteralType.Identifier, 'hashMap')
-
-const missingParser = (name: string) => () => {
-  throw new RuntimeError(`Missing parser '${name}'`)
-}
 
 ///
 
@@ -113,6 +108,9 @@ export class Parser {
     this.errorAt(this.current, message)
   }
 
+  private missingParser = (name: string) => () => {
+    this.errorAtCurrent(`Missing parser '${name}'.`)
+  }
   private errorAt(token: Token, message: string) {
     if (this.panicMode) return
     this._errors.push({
@@ -137,20 +135,20 @@ export class Parser {
 
     switch (token.type) {
       case TokenType.True:
-        return this.makeLiteral(LiteralType.Boolean, bool.parser || missingParser('bool'))
+        return this.makeLiteral(LiteralType.Boolean, bool.parser || this.missingParser('bool'))
       case TokenType.False:
-        return this.makeLiteral(LiteralType.Boolean, bool.parser || missingParser('bool'))
+        return this.makeLiteral(LiteralType.Boolean, bool.parser || this.missingParser('bool'))
       case TokenType.Integer:
-        return this.makeLiteral(LiteralType.Integer, int.parser || missingParser('int'))
+        return this.makeLiteral(LiteralType.Integer, int.parser || this.missingParser('int'))
       case TokenType.Float:
-        return this.makeLiteral(LiteralType.Float, float.parser || missingParser('float'))
+        return this.makeLiteral(LiteralType.Float, float.parser || this.missingParser('float'))
       case TokenType.FractionNumber:
         return this.makeLiteral(
           LiteralType.FractionNumber,
-          fractionNumber.parser || missingParser('plFractionNumber')
+          fractionNumber.parser || this.missingParser('plFractionNumber')
         )
       case TokenType.String:
-        return this.makeLiteral(LiteralType.String, string.parser || missingParser('string'))
+        return this.makeLiteral(LiteralType.String, string.parser || this.missingParser('string'))
       case TokenType.Identifier:
         return this.makeLiteral(LiteralType.Identifier, identity)
       case TokenType.LeftParen:

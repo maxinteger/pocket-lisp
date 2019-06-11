@@ -158,6 +158,20 @@ describe('Parser', () => {
       })
     })
 
+    it('should thrown if missing a literal parser', () => {
+      const parser = new Parser(new Scanner('true'), {
+        ...defaultLiterals,
+        ...({ bool: {} } as any)
+      })
+      const parseRes = parser.parse()
+      expect(parseRes.hasError).equal(true)
+      expect(parseRes.errors.length).equal(1)
+      expect(parseRes.errors[0]).deep.equal({
+        line: 1,
+        message: `Missing parser 'bool'.`
+      })
+    })
+
     it('should thrown if the token is unknown', () => {
       const parser = new Parser(new Scanner(':keyword'), defaultLiterals)
       const parseRes = parser.parse()
