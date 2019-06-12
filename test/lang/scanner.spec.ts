@@ -32,7 +32,7 @@ describe('Scanner', () => {
 
   describe('identifier', () => {
     it('should scanned in generic case', () => {
-      const tests = ['x', 'hello', '+', '/', '_']
+      const tests = ['x', 'hello', '+', '/', '_', ':']
 
       tests.map(src => {
         const scanner = new Scanner(src)

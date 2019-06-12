@@ -44,5 +44,5 @@ export default {
   '-': subtract,
   '*': multiple,
   '/': divide,
-	concat
+	':': concat
 }

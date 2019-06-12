@@ -88,6 +88,9 @@ export class Scanner {
   }
 
   private keyword() {
+    if (!isAlpha(this.peek()) && !isDigit(this.peek())) {
+      return this.makeToken(TokenType.Identifier)
+    }
     while (isAlpha(this.peek()) || isDigit(this.peek())) this.advance()
     return this.makeToken(TokenType.Keyword)
   }
