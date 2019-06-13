@@ -133,8 +133,17 @@ Define the `x` variable
                                         ; function closure 
     (def add (fn [a] ( fn [b] (+ a b) )))
     (def addTo10 (add 10))              ; create reference for the function
-    (print (addto10 1))                 ; print 11
+    (print (addTo10 1))                 ; print 11
 ```
+
+#### Function shortcut
+
+```clojure
+    (def add #(+ %1 %2))
+    (def addTo10 (add 10))
+    (print (addTo10 1))                 ; print 11
+```
+
     
         
 
