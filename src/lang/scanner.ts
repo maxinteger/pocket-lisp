@@ -157,12 +157,12 @@ export class Scanner {
 
     const char = this.advance()
 
-    if ((isAlpha(char) || isSymbol(char)) && !isDigit(this.peek())) {
-      return this.identifier()
-    }
-
     if (isDigit(char) || (char === '-' && isDigit(this.peek()))) {
       return this.number()
+    }
+
+    if ((isAlpha(char) || isSymbol(char)) && !isDigit(char)) {
+      return this.identifier()
     }
 
     switch (char) {
@@ -186,7 +186,7 @@ export class Scanner {
         return this.string()
     }
 
-    return this.errorToken('Unexpected character.')
+    return this.errorToken(`Unexpected character '${char}'.`)
   }
 
   public scanAllToken(): Token[] {

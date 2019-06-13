@@ -1,5 +1,5 @@
 import { Scanner, Token, TokenType } from 'lang/scanner'
-import { identity } from 'lang/utils/fn'
+import { identity, reduceLiterals } from 'lang/utils/fn'
 import { defaultLiterals } from 'lang/utils/defaultLiterals'
 
 export enum LiteralType {
@@ -34,6 +34,7 @@ interface ParserResult {
 
 ///
 
+export const FN_IDENTIFIER = new Literal(LiteralType.Identifier, 'fn')
 export const VECTOR_IDENTIFIER = new Literal(LiteralType.Identifier, 'vector')
 export const MAP_IDENTIFIER = new Literal(LiteralType.Identifier, 'hashMap')
 
@@ -46,6 +47,7 @@ export class Parser {
   private previous = Token.INIT
   private _program: Literal<unknown>[] = []
   private _errors: ParseError[] = []
+  private dispatchMode = false
 
   constructor(private scanner: Scanner, private literals = defaultLiterals) {}
 
@@ -163,6 +165,8 @@ export class Parser {
           MAP_IDENTIFIER,
           ...this.advanceUntil(TokenType.RightBrace)
         ])
+      case TokenType.Dispatch:
+        return this.formatDispatch()
       default:
         return undefined
     }
@@ -185,6 +189,54 @@ export class Parser {
     }
     this.consume(endToken, `Expected '${this.closeParentheses(endToken)}'.`)
     return literals
+  }
+
+  private formatDispatch() {
+    this.advance()
+
+    if (this.dispatchMode) {
+      this.errorAtCurrent(`Nested dispatch expression not allowed.`)
+    }
+
+    this.dispatchMode = true
+    const expression = this.expression()
+    if (!expression || expression.kind !== LiteralType.List) {
+      this.errorAtCurrent(
+        `List expression expected after dispatch, but get '${expression && expression.kind}'.`
+      )
+    }
+    const body = expression as Literal<Literal<any>[]>
+    let newExpression = body
+    switch (body.value[0].value) {
+      case MAP_IDENTIFIER.value:
+        this.errorAtCurrent('Invalid dispatch: #[...}.')
+        break
+      case VECTOR_IDENTIFIER.value:
+        this.errorAtCurrent('Invalid dispatch: #[...].')
+        break
+      default:
+        newExpression = this.anonymousFunction(body)
+    }
+    this.dispatchMode = false
+    return newExpression
+  }
+
+  private anonymousFunction(body: Literal<Literal<any>[]>) {
+    const numberOfArgs = reduceLiterals(body, (acc: number[], l: Literal<any>) => {
+      if (l.kind === LiteralType.Identifier && /^%\d+$/.test(l.value)) {
+        acc.push(parseInt(l.value.substr(1)))
+      }
+      return acc
+    })
+      .sort((a, b) => a - b)
+      .reverse()[0]
+
+    const argsIds = Array.from(
+      { length: numberOfArgs },
+      (_value, key) => new Literal(LiteralType.Identifier, `%${key + 1}`)
+    )
+    const args = new Literal(LiteralType.List, [VECTOR_IDENTIFIER, ...argsIds])
+    return new Literal(LiteralType.List, [FN_IDENTIFIER, args, body])
   }
 
   private closeParentheses(tt: TokenType): string | void {

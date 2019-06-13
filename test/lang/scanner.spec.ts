@@ -12,7 +12,7 @@ describe('Scanner', () => {
   it('should trow error token when find an unexpected char', () => {
     const scanner = new Scanner('Á')
     const actual = scanner.scanToken()
-    const expected = new Token(TokenType.Error, 'Unexpected character.', 1)
+    const expected = new Token(TokenType.Error, `Unexpected character 'Á'.`, 1)
     expect(actual).deep.equal(expected)
   })
 

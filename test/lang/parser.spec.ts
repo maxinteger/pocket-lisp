@@ -195,9 +195,102 @@ describe('Parser', () => {
       expect(parseRes.errors).deep.equal([
         {
           line: 1,
-          message: `Unexpected character.`
+          message: `Unexpected character '@'.`
         }
       ])
+    })
+  })
+
+  describe('dispatch', () => {
+    it('should fail if the dispatch fallowed by other than list expression', () => {
+      const parser = new Parser(new Scanner('#42'), defaultLiterals)
+      const parseRes = parser.parse()
+      expect(parseRes.hasError).equal(true)
+
+      expect(parseRes.errors.length).equal(1)
+      expect(parseRes.errors).deep.equal([
+        {
+          line: 1,
+          message: `List expression expected after dispatch, but get 'int'.`
+        }
+      ])
+    })
+
+    it('should fail if found nexted dispatch', () => {
+      const parser = new Parser(new Scanner('#(1 2 #())'), defaultLiterals)
+      const parseRes = parser.parse()
+      expect(parseRes.hasError).equal(true)
+
+      expect(parseRes.errors.length).equal(1)
+      expect(parseRes.errors).deep.equal([
+        {
+          line: 1,
+          message: `Nested dispatch expression not allowed.`
+        }
+      ])
+    })
+
+    it('should allow multiple dispatches', () => {
+      const parser = new Parser(new Scanner('#(+ 1 2) #(+ 3 4)'), defaultLiterals)
+      const parseRes = parser.parse()
+      expect(parseRes.hasError).equal(false)
+    })
+
+    describe('#()', () => {
+      it('should crete an anonymous function', () => {
+        const parser = new Parser(new Scanner(`#(+ %2 %1)`), defaultLiterals)
+        const parseRes = parser.parse()
+        expect(parseRes.hasError).equal(false)
+
+        const expected = <any>[
+          new Literal(LiteralType.List, [
+            new Literal(LiteralType.Identifier, 'fn'),
+            new Literal(LiteralType.List, [
+              new Literal(LiteralType.Identifier, 'vector'),
+              new Literal(LiteralType.Identifier, '%1'),
+              new Literal(LiteralType.Identifier, '%2')
+            ]),
+            new Literal(LiteralType.List, [
+              new Literal(LiteralType.Identifier, '+'),
+              new Literal(LiteralType.Identifier, '%2'),
+              new Literal(LiteralType.Identifier, '%1')
+            ])
+          ])
+        ]
+        expect(parseRes.program).deep.equals(expected)
+      })
+    })
+
+    describe('#{}', () => {
+      it('should fail because it is not implemented', () => {
+        const parser = new Parser(new Scanner('#{}'), defaultLiterals)
+        const parseRes = parser.parse()
+        expect(parseRes.hasError).equal(true)
+
+        expect(parseRes.errors.length).equal(1)
+        expect(parseRes.errors).deep.equal([
+          {
+            line: 1,
+            message: `Invalid dispatch: #[...}.`
+          }
+        ])
+      })
+    })
+
+    describe('#[]', () => {
+      it('should fail because it is not implemented', () => {
+        const parser = new Parser(new Scanner('#[]'), defaultLiterals)
+        const parseRes = parser.parse()
+        expect(parseRes.hasError).equal(true)
+
+        expect(parseRes.errors.length).equal(1)
+        expect(parseRes.errors).deep.equal([
+          {
+            line: 1,
+            message: `Invalid dispatch: #[...].`
+          }
+        ])
+      })
     })
   })
 })

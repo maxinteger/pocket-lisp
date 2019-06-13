@@ -50,6 +50,16 @@ describe('stdlib/core/fn', () => {
     })
   })
 
+  describe('#() dispatch', () => {
+    it('should create a working anonymous function', () => {
+      initInterpret(`(print (#(+ %1 $2) 1 2)`, {
+        fn,
+        '+': (a: number, b: number) => a + b,
+        print: (output: any) => expect(output).equals(3)
+      })
+    })
+  })
+
   it('should has arity 2', () => {
     expect(fn.arity).equals(2)
   })
