@@ -4,8 +4,8 @@ import { NATIVE_FN_NAME } from 'lang/utils/constants'
 import { def, fn } from 'lang/core'
 
 describe('stdlib/core/fn', () => {
-  it('should fail it parameter number is less or more then 2', () => {
-    expect(() => initInterpret('(fn x 1 2)', { fn })).throw('Expected 2 argument(s), but got 3')
+  it('should fail it parameter number is more then 2', () => {
+    expect(() => initInterpret('(fn [] 1 2)', { fn })).throw('Expected 2 argument(s), but got 3')
   })
 
   it('should throw error if the first parameter is not list of identifier', () => {
@@ -60,8 +60,8 @@ describe('stdlib/core/fn', () => {
     })
   })
 
-  it('should has arity 2', () => {
-    expect(fn.arity).equals(2)
+  it('should has arity 0', () => {
+    expect(fn.arity).equals(0)
   })
 
   it('should has native toString', () => {

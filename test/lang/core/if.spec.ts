@@ -4,8 +4,8 @@ import { NATIVE_FN_NAME } from 'lang/utils/constants'
 import { ifFn } from 'lang/core/if'
 
 describe('stdlib/core/if', () => {
-  it('should fail it parameter number is less or more then 3', () => {
-    expect(() => initInterpret('(if x 1 2 4)', { if: ifFn })).throw(
+  it('should fail it parameter number is more then 3', () => {
+    expect(() => initInterpret('(if true 1 2 4)', { if: ifFn })).throw(
       'Expected 3 argument(s), but got 4'
     )
   })

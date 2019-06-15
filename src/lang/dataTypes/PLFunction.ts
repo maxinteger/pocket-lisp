@@ -26,7 +26,12 @@ class PLFunction implements PLCallable {
       }
       return new PLFunction(curryFn, argDiff, this.toString())
     } else {
-      throw new RuntimeError(`Expected ${this.arity} argument(s), but got ${args.length}`)
+      const result = this._fn(interpreter, env, args.slice(0, this.arity))
+      if (result instanceof PLFunction) {
+        return result.call(interpreter, env, args.slice(this.arity))
+      } else {
+        throw new RuntimeError(`Expected ${this.arity} argument(s), but got ${args.length}`)
+      }
     }
   }
 
