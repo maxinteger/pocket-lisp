@@ -9,6 +9,7 @@ import { plString } from 'stdlib/data/PLString'
 import { PLLiterals } from 'lang/types'
 import { unboxing } from 'stdlib/fn/common'
 
+export const identity: <T>(x: T) => T = x => x
 
 export const literals: PLLiterals = {
   bool: {
@@ -32,9 +33,11 @@ export const literals: PLLiterals = {
     factory: plString
   },
   vector: {
+    parser: identity,
     factory: plVector
   },
   hashMap: {
+    parser: identity,
     factory: plHashMap
   }
 }

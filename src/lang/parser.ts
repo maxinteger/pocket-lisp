@@ -1,23 +1,7 @@
 import { Scanner, Token, TokenType } from 'lang/scanner'
 import { identity, reduceLiterals } from 'lang/utils/fn'
 import { defaultLiterals } from 'lang/utils/defaultLiterals'
-
-export enum LiteralType {
-  Boolean = 'bool',
-  Integer = 'int',
-  Float = 'float',
-  FractionNumber = 'fractionNumber',
-  String = 'string',
-  Keyword = 'keyword',
-  Identifier = 'identifier',
-  List = 'list'
-}
-
-interface Atom {}
-
-export class Literal<T> implements Atom {
-  constructor(public kind: LiteralType, public value: T) {}
-}
+import { Literal, LiteralType, LiteralTypeMap } from 'lang/dataTypes/Literal'
 
 interface ParseError {
   line: number
@@ -27,7 +11,7 @@ interface ParseError {
 }
 
 interface ParserResult {
-  program: Literal<unknown>[]
+  program: Literal<LiteralType>[]
   errors: ParseError[]
   hasError: boolean
 }
@@ -45,7 +29,7 @@ export class Parser {
   private panicMode = false
   private current = Token.INIT
   private previous = Token.INIT
-  private _program: Literal<unknown>[] = []
+  private _program: Literal<LiteralType>[] = []
   private _errors: ParseError[] = []
   private dispatchMode = false
 
@@ -53,6 +37,7 @@ export class Parser {
 
   public parse(): ParserResult {
     try {
+      this.checkLiteralParsers()
       this.advance()
       while (!this.isEnd()) {
         const exp = this.expression()
@@ -72,7 +57,7 @@ export class Parser {
     }
   }
 
-  get program(): Literal<unknown>[] {
+  get program(): Literal<LiteralType>[] {
     return this._program
   }
 
@@ -110,9 +95,6 @@ export class Parser {
     this.errorAt(this.current, message)
   }
 
-  private missingParser = (name: string) => () => {
-    this.errorAtCurrent(`Missing parser '${name}'.`)
-  }
   private errorAt(token: Token, message: string) {
     if (this.panicMode) return
     this._errors.push({
@@ -131,37 +113,34 @@ export class Parser {
     return this.current
   }
 
-  private expression(): Literal<unknown> | undefined {
+  private expression(): Literal<LiteralType> | undefined {
     const token = this.current
     const { bool, fractionNumber, int, float, string } = this.literals
 
     switch (token.type) {
       case TokenType.True:
-        return this.makeLiteral(LiteralType.Boolean, bool.parser || this.missingParser('bool'))
+        return this.makeLiteral(LiteralType.Boolean, bool.parser)
       case TokenType.False:
-        return this.makeLiteral(LiteralType.Boolean, bool.parser || this.missingParser('bool'))
+        return this.makeLiteral(LiteralType.Boolean, bool.parser)
       case TokenType.Integer:
-        return this.makeLiteral(LiteralType.Integer, int.parser || this.missingParser('int'))
+        return this.makeLiteral(LiteralType.Integer, int.parser)
       case TokenType.Float:
-        return this.makeLiteral(LiteralType.Float, float.parser || this.missingParser('float'))
+        return this.makeLiteral(LiteralType.Float, float.parser)
       case TokenType.FractionNumber:
-        return this.makeLiteral(
-          LiteralType.FractionNumber,
-          fractionNumber.parser || this.missingParser('plFractionNumber')
-        )
+        return this.makeLiteral(LiteralType.FractionNumber, fractionNumber.parser)
       case TokenType.String:
-        return this.makeLiteral(LiteralType.String, string.parser || this.missingParser('string'))
+        return this.makeLiteral(LiteralType.String, string.parser)
       case TokenType.Identifier:
         return this.makeLiteral(LiteralType.Identifier, identity)
       case TokenType.LeftParen:
-        return new Literal<unknown>(LiteralType.List, this.advanceUntil(TokenType.RightParen))
+        return new Literal(LiteralType.List, this.advanceUntil(TokenType.RightParen))
       case TokenType.LeftSquare:
-        return new Literal<unknown>(LiteralType.List, [
+        return new Literal(LiteralType.List, [
           VECTOR_IDENTIFIER,
           ...this.advanceUntil(TokenType.RightSquare)
         ])
       case TokenType.LeftBrace:
-        return new Literal<unknown>(LiteralType.List, [
+        return new Literal(LiteralType.List, [
           MAP_IDENTIFIER,
           ...this.advanceUntil(TokenType.RightBrace)
         ])
@@ -171,21 +150,22 @@ export class Parser {
         return undefined
     }
   }
-  private makeLiteral(
-    literalType: LiteralType,
-    parserFn: (val: string) => unknown
-  ): Literal<unknown> {
+
+  private makeLiteral<Kind extends keyof LiteralTypeMap>(
+    literalType: Kind,
+    parserFn: (val: string) => LiteralTypeMap[Kind]
+  ): Literal<Kind> {
     const literal = new Literal(literalType, parserFn(this.current.value))
     this.advance()
     return literal
   }
-
-  private advanceUntil(endToken: TokenType): unknown[] {
-    const literals = []
+  private advanceUntil(endToken: TokenType): Literal<LiteralType>[] {
+    const literals = [] as Literal<LiteralType>[]
     this.advance()
     for (;;) {
       if (this.current.type === endToken || this.isEnd()) break
-      literals.push(this.expression())
+      const exp = this.expression() as any
+      if (exp) literals.push(exp)
     }
     this.consume(endToken, `Expected '${this.closeParentheses(endToken)}'.`)
     return literals
@@ -205,7 +185,7 @@ export class Parser {
         `List expression expected after dispatch, but get '${expression && expression.kind}'.`
       )
     }
-    const body = expression as Literal<Literal<any>[]>
+    const body = expression as Literal<LiteralType.List>
     let newExpression = body
     switch (body.value[0].value) {
       case MAP_IDENTIFIER.value:
@@ -221,10 +201,13 @@ export class Parser {
     return newExpression
   }
 
-  private anonymousFunction(body: Literal<Literal<any>[]>) {
-    const numberOfArgs = reduceLiterals(body, (acc: number[], l: Literal<any>) => {
-      if (l.kind === LiteralType.Identifier && /^%\d+$/.test(l.value)) {
-        acc.push(parseInt(l.value.substr(1)))
+  private anonymousFunction(body: Literal<LiteralType.List>) {
+    const numberOfArgs = reduceLiterals(body, (acc: number[], l: Literal<LiteralType>) => {
+      if (l.kind === LiteralType.Identifier) {
+        const ll = l as Literal<LiteralType.Identifier>
+        if (/^%\d+$/.test(ll.value)) {
+          acc.push(parseInt(ll.value.substr(1)))
+        }
       }
       return acc
     })
@@ -248,5 +231,19 @@ export class Parser {
       case TokenType.RightSquare:
         return ']'
     }
+  }
+
+  private missingParser = (name: string) => {
+    this.errorAtCurrent(`Missing parser '${name}'.`)
+  }
+
+  private checkLiteralParsers() {
+    const { bool, fractionNumber, int, float, string } = this.literals
+    bool.parser || this.missingParser('bool')
+    bool.parser || this.missingParser('bool')
+    int.parser || this.missingParser('int')
+    float.parser || this.missingParser('float')
+    fractionNumber.parser || this.missingParser('fractionNumber')
+    string.parser || this.missingParser('string')
   }
 }

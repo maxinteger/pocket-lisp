@@ -1,12 +1,12 @@
 import { Interpreter } from 'lang/interpreter'
-import { Literal } from 'lang/parser'
 import { assetParamLength } from 'lang/utils/fn'
 import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { Environment } from 'lang/dataTypes/Environment'
 import { createFunction } from 'lang/dataTypes/PLFunction'
+import { Literal, LiteralType } from 'lang/dataTypes/Literal'
 
 export const ifFn = createFunction(
-  (interpreter: Interpreter, env: Environment, args: Literal<unknown>[]) => {
+  (interpreter: Interpreter, env: Environment, args: Literal<LiteralType>[]) => {
     assetParamLength(args, 3)
 
     const [condition, thenBranch, elseBranch] = args

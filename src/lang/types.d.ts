@@ -1,15 +1,15 @@
 import { Interpreter } from 'lang/interpreter'
-import { Literal } from 'lang/parser'
 import { Environment } from 'lang/dataTypes/Environment'
+import { Literal, LiteralType } from 'lang/dataTypes/Literal'
 
 declare interface PLCallable {
-  call: (interpreter: Interpreter, env: Environment, args: Literal<unknown>[]) => unknown
+  call: (interpreter: Interpreter, env: Environment, args: Literal<LiteralType>[]) => unknown
   arity: number
   toString: () => string
 }
 
 declare interface PrimitiveLiteralParseFn {
-  (str: string): unknown
+  (str: string): any
 }
 
 declare interface LiteralFactoryFn<T, R> {
@@ -18,7 +18,7 @@ declare interface LiteralFactoryFn<T, R> {
 }
 
 declare interface PLLiteral {
-  parser?: PrimitiveLiteralParseFn
+  parser: PrimitiveLiteralParseFn
   factory: any // TODO: fix factory type
 }
 

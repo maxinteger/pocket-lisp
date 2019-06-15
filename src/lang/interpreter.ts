@@ -1,5 +1,4 @@
 import { Environment } from 'lang/dataTypes/Environment'
-import { Literal, LiteralType } from 'lang/parser'
 import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { InterpreterOptions, PLLiterals } from 'lang/types'
 import { defaultLiterals } from 'lang/utils/defaultLiterals'
@@ -7,6 +6,7 @@ import { NATIVE_FN_NAME } from 'lang/utils/constants'
 import { def, fn, ifFn } from 'lang/core'
 import { simpleFunction } from 'lang/dataTypes/PLFunction'
 import { identity } from 'lang/utils/fn'
+import { Literal, LiteralType } from 'lang/dataTypes/Literal'
 
 const defaultOptions = {
   stdout: undefined,
@@ -44,7 +44,7 @@ export class Interpreter {
     })
   }
 
-  public interpret(program: Literal<unknown>[]) {
+  public interpret(program: Literal<LiteralType>[]) {
     let returnVal: unknown = undefined
     try {
       for (let literal of program) {
@@ -56,7 +56,7 @@ export class Interpreter {
     return returnVal
   }
 
-  public execLiteral = (literal: Literal<any>, env: Environment) => {
+  public execLiteral = (literal: Literal<LiteralType>, env: Environment) => {
     switch (literal.kind) {
       case LiteralType.Boolean:
       case LiteralType.Integer:
@@ -66,13 +66,13 @@ export class Interpreter {
         return literal.value
       case LiteralType.Keyword:
       case LiteralType.Identifier:
-        return env.get(literal.value)
+        return env.get((literal as Literal<LiteralType.Identifier>).value)
       case LiteralType.List:
-        return this.execList(literal, env)
+        return this.execList(literal as Literal<LiteralType.List>, env)
     }
   }
 
-  private execList(literal: Literal<Literal<unknown>[]>, env: Environment): unknown {
+  private execList(literal: Literal<LiteralType.List>, env: Environment): unknown {
     const [fnId, ...args] = literal.value
     const fn: any = this.execLiteral(fnId, env)
 

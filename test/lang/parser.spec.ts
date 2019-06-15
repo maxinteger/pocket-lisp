@@ -1,7 +1,8 @@
 import { expect } from 'chai'
 import { Scanner } from 'lang/scanner'
-import { VECTOR_IDENTIFIER, Literal, LiteralType, Parser } from 'lang/parser'
+import { VECTOR_IDENTIFIER, Parser } from 'lang/parser'
 import { defaultLiterals } from 'lang/utils/defaultLiterals'
+import { Literal, LiteralType } from 'lang/dataTypes/Literal'
 
 describe('Parser', () => {
   it('should parse empty source', () => {
@@ -167,7 +168,7 @@ describe('Parser', () => {
       expect(parseRes.hasError).equal(true)
       expect(parseRes.errors.length).equal(1)
       expect(parseRes.errors[0]).deep.equal({
-        line: 1,
+        line: 0,
         message: `Missing parser 'bool'.`
       })
     })

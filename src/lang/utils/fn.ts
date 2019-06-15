@@ -1,5 +1,5 @@
 import { RuntimeError } from 'lang/dataTypes/RuntimeError'
-import { Literal, LiteralType } from 'lang/parser'
+import { Literal, LiteralType } from 'lang/dataTypes/Literal'
 
 export const identity: <T>(x: T) => T = x => x
 
@@ -16,19 +16,19 @@ export const assetParamLength = (args: any[], expected: number, msg?: string) =>
     msg || `Expected ${expected} argument(s), but got ${args.length}`
   )
 
-export const assertParamType = (literal: Literal<unknown>, ...types: LiteralType[]) =>
+export const assertParamType = (literal: Literal<any>, ...types: LiteralType[]) =>
   assert(
     types.find(t => t === literal.kind) === undefined,
     `Invalid function parameter, actual: '${literal.kind}', expected: '${types.join(' or ')}'`
   )
 
 export function reduceLiterals<T>(
-  literal: Literal<any>,
-  fn: (acc: T[], l: Literal<any>) => T[]
+  literal: Literal<LiteralType>,
+  fn: (acc: T[], l: Literal<LiteralType>) => T[]
 ): T[] {
   let acc: T[] = []
 
-  const walk = (literal: Literal<any>) => {
+  const walk = (literal: Literal<LiteralType>) => {
     switch (literal.kind) {
       case LiteralType.Boolean:
       case LiteralType.Integer:
@@ -39,8 +39,8 @@ export function reduceLiterals<T>(
       case LiteralType.Identifier:
         return (acc = fn(acc, literal))
       case LiteralType.List:
-        (acc = fn(acc, literal))
-        return literal.value.map(walk)
+        (literal as Literal<LiteralType.List>).value.map(walk)
+        return acc = fn(acc, literal)
     }
   }
 

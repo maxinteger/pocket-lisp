@@ -2,8 +2,8 @@ import { PLCallable } from 'lang/types'
 import { NATIVE_FN_NAME } from 'lang/utils/constants'
 import { Interpreter } from 'lang/interpreter'
 import { Environment } from 'lang/dataTypes/Environment'
-import { Literal } from 'lang/parser'
 import { RuntimeError } from 'lang/dataTypes/RuntimeError'
+import { Literal, LiteralType } from 'lang/dataTypes/Literal'
 
 class PLFunction implements PLCallable {
   constructor(
@@ -12,16 +12,20 @@ class PLFunction implements PLCallable {
     private _toString?: string
   ) {}
 
-  call(interpreter: Interpreter, env: Environment, args: Literal<unknown>[]): unknown {
+  call(interpreter: Interpreter, env: Environment, args: Literal<LiteralType>[]): unknown {
     const argDiff = this.arity - args.length
-    if (this.arity === 0 || argDiff === 0){
+    if (this.arity === 0 || argDiff === 0) {
       return this._fn(interpreter, env, args)
     } else if (argDiff > 0) {
-      const curryFn: PLCallable['call'] = (interpreter: Interpreter, env: Environment, argsRest: Literal<unknown>[]) => {
+      const curryFn: PLCallable['call'] = (
+        interpreter: Interpreter,
+        env: Environment,
+        argsRest: Literal<LiteralType>[]
+      ) => {
         return this._fn(interpreter, env, [...args, ...argsRest])
       }
       return new PLFunction(curryFn, argDiff, this.toString())
-    } else  {
+    } else {
       throw new RuntimeError(`Expected ${this.arity} argument(s), but got ${args.length}`)
     }
   }
