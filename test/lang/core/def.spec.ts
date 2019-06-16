@@ -4,7 +4,7 @@ import { def } from 'lang/core/def'
 import { NATIVE_FN_NAME } from 'lang/utils/constants'
 
 describe('stdlib/core/def', () => {
-  it('should fail it parameter number is less or more then 2', () => {
+  it('should fail it parameter number or more then 2', () => {
     expect(() => initInterpret('(def x 1 2)', { def })).throw('Expected 2 argument(s), but got 3')
   })
 
