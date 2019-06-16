@@ -43,11 +43,6 @@ The identifier
 -  must be start with latin alphabetic character or the fallowing symbols `=+-*\&%$_!<>?`
 - can continue with latin alphabetic or numeric characters or the fallowing symbols `=+-*\&%$_!<>?`
 
-```clojure 
-    x
-    +                                   ; completely valid
-```
-
 ### Keywords
 
 Keywords are special identifiers which are
@@ -55,9 +50,9 @@ Keywords are special identifiers which are
 - must continue with at least 1 latin alphabetic or numeric characters or the fallowing symbols `=+-*\&%$_!<>?`
 
 ```clojure
-    :keyword
-    :t1
-    :x
+:keyword
+:t1
+:x
 ```
 
 ## Literals
@@ -102,8 +97,8 @@ The rest of the list will be the parameters of the function
 Print value to the standard output. It accepts any amount fo parameters.
 
 ```clojure
-    (print Hello world)
-    (print 42 1/2 1.5)
+(print Hello world)
+(print 42 1/2 1.5)
 ```
 
 ### define variable - `def` 
@@ -116,11 +111,11 @@ The function has 2 parameter:
 Define the `x` variable
 
 ```clojure
-    (def x 42)
-    (print x)                           ; print 42
+(def x 42)
+(print x)                           ; print 42
 ```
 
-### Lambda function
+### Lambda function - `fn`
 
 `fn` define a lambda function. It has 2 parameters:
 - arguments vector, where the items must be identifiers, empty vector allowed
@@ -128,24 +123,33 @@ Define the `x` variable
 
 
 ```clojure
-    (fn [] 42)
-    (fn [] (+ 1 2))
-                                        ; function closure 
-    (def add (fn [a] ( fn [b] (+ a b) )))
-    (def addTo10 (add 10))              ; create reference for the function
-    (print (addTo10 1))                 ; print 11
+(fn [] 42)
+(fn [] (+ 1 2))
+                                    ; function closure 
+(def add (fn [a] ( fn [b] (+ a b) )))
+(def addTo10 (add 10))              ; create reference for the function
+(print (addTo10 1))                 ; print 11
 ```
 
-#### Function shortcut
+#### Function shortcut - `#()`
 
 ```clojure
-    (def add #(+ %1 %2))
-    (def addTo10 (add 10))
-    (print (addTo10 1))                 ; print 11
+(def add #(+ %1 %2))
+(def addTo10 (add 10))
+(print (addTo10 1))                 ; print 11
 ```
 
-    
-        
+### Define function - `defn`
+
+`defn` function is a shortcut for the often used `def` and `fn` combination. 
+
+The fallowing two definitions are equivalent:
+
+```clojure
+(def add (fn [a b] (+ a b))
+
+(defn add [a b] (+ a b)
+```  
 
 ### If "statement"
 
