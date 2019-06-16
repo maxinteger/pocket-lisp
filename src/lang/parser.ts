@@ -28,7 +28,6 @@ export class Parser {
   private hadError = false
   private panicMode = false
   private current = Token.INIT
-  private previous = Token.INIT
   private _program: Literal<LiteralType>[] = []
   private _errors: ParseError[] = []
   private dispatchMode = false
@@ -41,9 +40,7 @@ export class Parser {
       this.advance()
       while (!this.isEnd()) {
         const exp = this.expression()
-        if (exp === undefined) {
-          this.error('Unknown token')
-        } else {
+        if (exp) {
           this._program.push(exp)
         }
       }
@@ -68,8 +65,6 @@ export class Parser {
   ///
 
   private advance() {
-    this.previous = this.current
-
     while (true) {
       this.current = this.scanner.scanToken()
       if (this.current.type !== TokenType.Error) break
@@ -85,10 +80,6 @@ export class Parser {
     }
 
     this.errorAtCurrent(message)
-  }
-
-  private error(message: string) {
-    this.errorAt(this.previous, message)
   }
 
   private errorAtCurrent(message: string) {
@@ -147,6 +138,7 @@ export class Parser {
       case TokenType.Dispatch:
         return this.formatDispatch()
       default:
+        this.errorAtCurrent(`Unknown token: '${token.value}'.`)
         return undefined
     }
   }
@@ -165,7 +157,7 @@ export class Parser {
     for (;;) {
       if (this.current.type === endToken || this.isEnd()) break
       const exp = this.expression() as any
-      if (exp) literals.push(exp)
+      literals.push(exp)
     }
     this.consume(endToken, `Expected '${this.closeParentheses(endToken)}'.`)
     return literals
@@ -239,7 +231,6 @@ export class Parser {
 
   private checkLiteralParsers() {
     const { bool, fractionNumber, int, float, string } = this.literals
-    bool.parser || this.missingParser('bool')
     bool.parser || this.missingParser('bool')
     int.parser || this.missingParser('int')
     float.parser || this.missingParser('float')

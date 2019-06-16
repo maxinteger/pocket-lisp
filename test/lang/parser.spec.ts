@@ -160,16 +160,19 @@ describe('Parser', () => {
     })
 
     it('should thrown if missing a literal parser', () => {
-      const parser = new Parser(new Scanner('true'), {
-        ...defaultLiterals,
-        ...({ bool: {} } as any)
-      })
-      const parseRes = parser.parse()
-      expect(parseRes.hasError).equal(true)
-      expect(parseRes.errors.length).equal(1)
-      expect(parseRes.errors[0]).deep.equal({
-        line: 0,
-        message: `Missing parser 'bool'.`
+      const tests = ['bool', 'int', 'float', 'fractionNumber', 'string']
+      tests.map(type => {
+        const parser = new Parser(new Scanner('[true 42 42.5 1/2 "hello world"]'), {
+          ...defaultLiterals,
+          ...({ [type]: {} } as any)
+        })
+        const parseRes = parser.parse()
+        expect(parseRes.hasError).equal(true)
+        expect(parseRes.errors.length).equal(1)
+        expect(parseRes.errors[0]).deep.equal({
+          line: 0,
+          message: `Missing parser '${type}'.`
+        })
       })
     })
 
@@ -181,14 +184,28 @@ describe('Parser', () => {
       expect(parseRes.errors.length).equal(1)
       expect(parseRes.errors).deep.equal([
         {
-          line: 0,
-          message: `Unknown token`
+          line: 1,
+          message: `Unknown token: ':keyword'.`
         }
       ])
     })
 
     it('should thrown if the token is unknown', () => {
       const parser = new Parser(new Scanner('@'), defaultLiterals)
+      const parseRes = parser.parse()
+      expect(parseRes.hasError).equal(true)
+
+      expect(parseRes.errors.length).equal(1)
+      expect(parseRes.errors).deep.equal([
+        {
+          line: 1,
+          message: `Unexpected character '@'.`
+        }
+      ])
+    })
+
+    it('should raise the first error and skip the rest', () => {
+      const parser = new Parser(new Scanner('@ ) ['), defaultLiterals)
       const parseRes = parser.parse()
       expect(parseRes.hasError).equal(true)
 
