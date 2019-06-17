@@ -6,5 +6,6 @@ install:
 cache: npm
 
 script:
+  - npm run lint
   - npm test
   - npm run report-coverage
