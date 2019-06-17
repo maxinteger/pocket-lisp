@@ -16,47 +16,48 @@ import {
 import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { plBool } from 'stdlib/data/PLBool'
 
+// @ts-ignore
 @staticImplements<SApplicative<number, PLNumber>>()
 export class PLNumber implements SerializeToJS<number>, Setoid<PLNumber>, BaseNumberOp<PLNumber> {
-  static [of](value: number) {
+  public static [of](value: number) {
     return plNumber(value)
   }
 
-  constructor(private _value: number) {}
+  public constructor(private _value: number) {}
 
-  get value() {
+  public get value() {
     return this._value
   }
 
-  [equals](a: PLNumber) {
+  public [equals](a: PLNumber) {
     return plBool(this._value === a.value)
   }
 
-  [negate]() {
+  public [negate]() {
     return new PLNumber(-this._value)
   }
 
-  [add](a: PLNumber) {
+  public [add](a: PLNumber) {
     return new PLNumber(this._value + a.value)
   }
 
-  [subtract](a: PLNumber) {
+  public [subtract](a: PLNumber) {
     return new PLNumber(this._value - a.value)
   }
 
-  [multiple](a: PLNumber) {
+  public [multiple](a: PLNumber) {
     return new PLNumber(this._value * a.value)
   }
 
-  [divide](a: PLNumber) {
+  public [divide](a: PLNumber) {
     return new PLNumber(this._value / a.value)
   }
 
-  [toJS]() {
+  public [toJS]() {
     return this._value
   }
 
-  toString() {
+  public toString() {
     return this._value.toString()
   }
 }

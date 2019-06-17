@@ -4,9 +4,9 @@ export class Environment {
   private values = Object.create(null)
   private locked = Object.create(null)
 
-  constructor(private enclosing: Environment | null = null) {}
+  public constructor(private enclosing: Environment | null = null) {}
 
-  public define(name: string, value: unknown, locked = false) {
+  public define(name: string, value: unknown, locked = false): void {
     if (!this.locked[name]) {
       this.values[name] = value
       if (locked) this.locked[name] = true

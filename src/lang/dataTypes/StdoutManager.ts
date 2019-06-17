@@ -1,11 +1,11 @@
 export class StdoutManager {
 	private data = ''
 
-	cb = (out: string) => {
+	public cb = (out: string): void => {
 		this.data += out
 	}
 
-	read() {
+	public read(): unknown {
 		const data = this.data
 		this.data = ''
 		return data

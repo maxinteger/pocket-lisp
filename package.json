@@ -21,8 +21,12 @@
     "@types/chai": "4.1.7",
     "@types/mocha": "5.2.7",
     "@types/node": "12.0.8",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
     "chai": "4.2.0",
     "codecov": "3.5.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^5.0.0",
     "husky": "^2.4.1",
     "mocha": "6.1.4",
     "nyc": "14.1.1",
@@ -35,28 +39,19 @@
     "typescript": "3.5.2"
   },
   "scripts": {
+    "lint": "eslint \"src/**/*.ts\" --fix --max-warnings=0",
     "test": "nyc mocha",
     "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build": "rollup -c",
     "watch": "rollup -cw",
     "repl": "ts-node -r tsconfig-paths/register src/repl.ts",
-    "start": "npm run repl",
-    "precommit": "mocha"
+    "start": "npm run repl"
   },
   "prettier": {
     "semi": false,
     "singleQuote": true,
     "trailingComma": "none",
-    "printWidth": 100,
-    "overrides": [
-      {
-        "files": "*.css",
-        "options": {
-          "semi": true,
-          "printWidth": 120
-        }
-      }
-    ]
+    "printWidth": 100
   },
   "nyc": {
     "extension": [
@@ -73,5 +68,10 @@
       "html"
     ],
     "all": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && mocha"
+    }
   }
 }

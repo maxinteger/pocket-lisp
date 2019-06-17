@@ -21,6 +21,6 @@ export interface LiteralTypeMap {
 }
 
 export class Literal<Kind extends keyof LiteralTypeMap> {
-  constructor(public kind: Kind, public value: LiteralTypeMap[Kind]) {}
+  public constructor(public kind: Kind, public value: LiteralTypeMap[Kind]) {}
 }
 

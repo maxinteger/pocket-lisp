@@ -8,27 +8,28 @@ import {
   toJS
 } from 'stdlib/types'
 
+// @ts-ignore
 @staticImplements<SApplicative<any[], PLVector<any>> | Semigroup<PLVector<any>>>()
 export class PLVector<T> implements SerializeToJS<any[]> {
-  static [of](value: any[]) {
+  public static [of](value: any[]) {
     return plVector(value)
   }
 
-  constructor(private _value: T[]) {}
+  public constructor(private _value: T[]) {}
 
-  get value() {
+  public get value() {
     return this._value
   }
 
-  [concat](a: PLVector<any>) {
+  public [concat](a: PLVector<any>) {
     return plVector(...this._value.concat(a.value))
   }
 
-  [toJS]() {
+  public [toJS]() {
     return this._value.map((x: any) => x[toJS]())
   }
 
-  toString() {
+  public toString() {
     return `[${this._value.join()}]`
   }
 }

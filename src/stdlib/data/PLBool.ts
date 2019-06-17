@@ -2,32 +2,33 @@ import { equals, lte, of, Ord, SApplicative, SerializeToJS, Setoid, staticImplem
 import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { typeCheck } from 'stdlib/utils'
 
+// @ts-ignore
 @staticImplements<SApplicative<boolean, PLBool>>()
 export class PLBool
   implements SerializeToJS<boolean>, Setoid<PLBool>, Ord<PLBool> {
-  static [of](value: boolean): PLBool {
+  public static [of](value: boolean): PLBool {
     return new PLBool(value)
   }
 
-  constructor(private _value: boolean) {}
+  public constructor(private _value: boolean) {}
 
-  get value() {
+  public get value() {
     return this._value
   }
 
-  [equals](a: PLBool) {
+  public [equals](a: PLBool) {
     return PLBool[of](this._value === a.value)
   }
 
-  [lte](a: PLBool) {
+  public [lte](a: PLBool) {
     return PLBool[of](this._value <= a.value)
   }
 
-  [toJS]() {
+  public [toJS]() {
     return this._value
   }
 
-  toString() {
+  public toString() {
     return this._value.toString()
   }
 }

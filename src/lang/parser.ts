@@ -32,7 +32,7 @@ export class Parser {
   private _errors: ParseError[] = []
   private dispatchMode = false
 
-  constructor(private scanner: Scanner, private literals = defaultLiterals) {}
+  public constructor(private scanner: Scanner, private literals = defaultLiterals) {}
 
   public parse(): ParserResult {
     try {
@@ -54,17 +54,17 @@ export class Parser {
     }
   }
 
-  get program(): Literal<LiteralType>[] {
+  public get program(): Literal<LiteralType>[] {
     return this._program
   }
 
-  get errors(): ParseError[] {
+  public get errors(): ParseError[] {
     return this._errors
   }
 
   ///
 
-  private advance() {
+  private advance(): void {
     while (true) {
       this.current = this.scanner.scanToken()
       if (this.current.type !== TokenType.Error) break
@@ -73,7 +73,7 @@ export class Parser {
     }
   }
 
-  private consume(type: TokenType, message: string) {
+  private consume(type: TokenType, message: string): void {
     if (this.current.type == type) {
       this.advance()
       return
@@ -82,11 +82,11 @@ export class Parser {
     this.errorAtCurrent(message)
   }
 
-  private errorAtCurrent(message: string) {
+  private errorAtCurrent(message: string): void {
     this.errorAt(this.current, message)
   }
 
-  private errorAt(token: Token, message: string) {
+  private errorAt(token: Token, message: string): void {
     if (this.panicMode) return
     this._errors.push({
       line: token.line,
@@ -96,11 +96,11 @@ export class Parser {
     throw new Error(message)
   }
 
-  private isEnd() {
+  private isEnd(): boolean {
     return this.peek().type === TokenType.EOF
   }
 
-  private peek() {
+  private peek(): Token {
     return this.current
   }
 
@@ -163,7 +163,7 @@ export class Parser {
     return literals
   }
 
-  private formatDispatch() {
+  private formatDispatch(): Literal<LiteralType.List> {
     this.advance()
 
     if (this.dispatchMode) {
@@ -193,7 +193,7 @@ export class Parser {
     return newExpression
   }
 
-  private anonymousFunction(body: Literal<LiteralType.List>) {
+  private anonymousFunction(body: Literal<LiteralType.List>): Literal<LiteralType.List> {
     const numberOfArgs = reduceLiterals(body, (acc: number[], l: Literal<LiteralType>) => {
       if (l.kind === LiteralType.Identifier) {
         const ll = l as Literal<LiteralType.Identifier>
@@ -225,11 +225,11 @@ export class Parser {
     }
   }
 
-  private missingParser = (name: string) => {
+  private missingParser = (name: string): void => {
     this.errorAtCurrent(`Missing parser '${name}'.`)
   }
 
-  private checkLiteralParsers() {
+  private checkLiteralParsers(): void {
     const { bool, fractionNumber, int, float, string } = this.literals
     bool.parser || this.missingParser('bool')
     int.parser || this.missingParser('int')

@@ -25,6 +25,7 @@ interface JSFractionNumber {
 
 ///
 
+// @ts-ignore
 @staticImplements<SApplicative<JSFractionNumber, PLFractionNumber>>()
 export class PLFractionNumber
   implements
@@ -34,11 +35,11 @@ export class PLFractionNumber
   private readonly _n: number
   private readonly _d: number
 
-  static [of](value: JSFractionNumber) {
+  public static [of](value: JSFractionNumber) {
     return plFractionNumber(value.numerator, value.denominator)
   }
 
-  constructor(numerator: number, denominator: number) {
+  public constructor(numerator: number, denominator: number) {
     if (!isValid(numerator, denominator)) {
       throw new Error('Invalid fraction number parameters!')
     }
@@ -53,47 +54,47 @@ export class PLFractionNumber
     this._d = denominator / divisor
   }
 
-  get numerator() {
+  public get numerator() {
     return this._n
   }
 
-  get denominator() {
+  public get denominator() {
     return this._d
   }
 
-  [equals](a: PLFractionNumber) {
+  public [equals](a: PLFractionNumber) {
     return plBool(this.numerator === a.numerator && this.denominator === a.denominator)
   }
 
-  [negate]() {
+  public [negate]() {
     return new PLFractionNumber(-this._n, this._d)
   }
 
-  [add](a: PLFractionNumber) {
+  public [add](a: PLFractionNumber) {
     const numerator = this.numerator * a.denominator + this.denominator * a.numerator
     const denominator = this.denominator * a.denominator
     return new PLFractionNumber(numerator, denominator)
   }
 
-  [subtract](a: PLFractionNumber) {
+  public [subtract](a: PLFractionNumber) {
     const numerator = this.numerator * a.denominator - this.denominator * a.numerator
     const denominator = this.denominator * a.denominator
     return new PLFractionNumber(numerator, denominator)
   }
 
-  [multiple](a: PLFractionNumber) {
+  public [multiple](a: PLFractionNumber) {
     const numerator = this.numerator * a.numerator
     const denominator = this.denominator * a.denominator
     return new PLFractionNumber(numerator, denominator)
   }
 
-  [divide](a: PLFractionNumber) {
+  public [divide](a: PLFractionNumber) {
     const numerator = this.numerator * a.denominator
     const denominator = this.denominator * a.numerator
     return new PLFractionNumber(numerator, denominator)
   }
 
-  [toJS]() {
+  public [toJS]() {
     return {
       numerator: this._n,
       denominator: this._d
@@ -103,6 +104,12 @@ export class PLFractionNumber
   public toString() {
     return `${this._n}/${this._d}`
   }
+}
+
+///
+
+const isValid = (n: number, d: number) => {
+  return Number.isInteger(n) && Number.isInteger(d) && d !== 0
 }
 
 ///
@@ -123,10 +130,4 @@ export const str2plFractionNumber = (str: string) => {
 export const reciprocal = (fn: PLFractionNumber): PLFractionNumber => {
   typeCheck(PLFractionNumber, fn)
   return plFractionNumber(fn.denominator, fn.numerator)
-}
-
-///
-
-const isValid = (n: number, d: number) => {
-  return Number.isInteger(n) && Number.isInteger(d) && d !== 0
 }

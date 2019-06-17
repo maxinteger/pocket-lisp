@@ -1,3 +1,5 @@
+import { isAlpha, isDigit, isSymbol } from 'lang/utils/string'
+
 export enum TokenType {
   Init,
   LeftParen,
@@ -20,9 +22,9 @@ export enum TokenType {
 }
 
 export class Token {
-  constructor(public type: TokenType, public value: string, public line: number) {}
+  public constructor(public type: TokenType, public value: string, public line: number) {}
 
-  static INIT = new Token(TokenType.Init, '', 0)
+  public static INIT = new Token(TokenType.Init, '', 0)
 }
 
 export class Scanner {
@@ -30,39 +32,39 @@ export class Scanner {
   private current = 0
   private line = 1
 
-  constructor(private source: string) {}
+  public constructor(private source: string) {}
 
-  private isEnd() {
+  private isEnd(): boolean {
     return this.source.length === this.current
   }
 
-  private advance() {
+  private advance(): string {
     this.current += 1
     return this.source[this.current - 1]
   }
 
-  private peek() {
+  private peek(): string {
     return this.source[this.current]
   }
 
-  private peekNext() {
+  private peekNext(): string {
     return this.source[this.current + 1]
   }
 
-  private makeToken(type: TokenType) {
+  private makeToken(type: TokenType): Token {
     const { start, line, current, source } = this
     return new Token(type, source.substring(start, current), line)
   }
-  private makeStringToken() {
+  private makeStringToken(): Token {
     const { start, line, current, source } = this
     return new Token(TokenType.String, source.substring(start + 1, current - 1), line)
   }
 
-  private errorToken(message: string) {
+  private errorToken(message: string): Token {
     return new Token(TokenType.Error, message, this.line)
   }
 
-  private identifier() {
+  private identifier(): Token {
     for (;;) {
       const peek = this.peek()
       if (!(peek && (isAlpha(peek) || isDigit(peek) || isSymbol(peek)))) {
@@ -73,7 +75,7 @@ export class Scanner {
     return this.makeIdentifierToken()
   }
 
-  makeIdentifierToken() {
+  private makeIdentifierToken(): Token {
     const { start, current, source } = this
     const id = source.substring(start, current)
 
@@ -87,7 +89,7 @@ export class Scanner {
     }
   }
 
-  private keyword() {
+  private keyword(): Token {
     if (!isAlpha(this.peek()) && !isDigit(this.peek())) {
       return this.makeToken(TokenType.Identifier)
     }
@@ -95,7 +97,7 @@ export class Scanner {
     return this.makeToken(TokenType.Keyword)
   }
 
-  private number() {
+  private number(): Token {
     while (isDigit(this.peek())) this.advance()
 
     if (this.peek() === '.' && isDigit(this.peekNext())) {
@@ -114,7 +116,7 @@ export class Scanner {
     return this.makeToken(TokenType.Integer)
   }
 
-  private string() {
+  private string(): Token {
     while (this.peek() !== '"' && !this.isEnd()) {
       if (this.peek() === '\n') this.line += 1
       this.advance()
@@ -124,7 +126,7 @@ export class Scanner {
     return this.makeStringToken()
   }
 
-  private skipWhitespace() {
+  private skipWhitespace(): void {
     while (true) {
       const c = this.peek()
       switch (c) {
@@ -197,11 +199,3 @@ export class Scanner {
     return tokens
   }
 }
-
-///
-
-const isDigit = (c: string | undefined) => c !== undefined && c >= '0' && c <= '9'
-
-const isAlpha = (c: string) => (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
-
-const isSymbol = (c: string) => '=+-*/\\&%$_!<>?'.includes(c)

@@ -2,9 +2,10 @@ import { PLBool } from 'stdlib/data/PLBool'
 import { PLString } from 'stdlib/data/PLString'
 import { PLNumber } from 'stdlib/data/PLNumber'
 
-export function staticImplements<T>() {
+export function staticImplements<T>(): void {
   // @ts-ignore
-  return (constructor: T) => {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (constructor: T): any => {}
 }
 
 export const toJS = Symbol('toJS')
@@ -226,6 +227,7 @@ export interface SChainRec<m, a> /* extends Cain */ {
  * M.of(a).chain(f) is equivalent to f(a) (left identity)
  * m.chain(M.of) is equivalent to m (right identity)
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Monad<m, a> extends Chain<m, a> /*, Applicative */ {}
 
 export const extend = Symbol('extend')

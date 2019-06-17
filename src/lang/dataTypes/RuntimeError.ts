@@ -1,5 +1,5 @@
 export class RuntimeError extends Error {
-  constructor(error: Error | string) {
+  public constructor(error: Error | string) {
     if (typeof error === 'string') {
   		super(error)
     } else {

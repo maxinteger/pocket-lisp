@@ -7,11 +7,12 @@ import { def, fn, ifFn } from 'lang/core'
 import { simpleFunction } from 'lang/dataTypes/PLFunction'
 import { identity } from 'lang/utils/fn'
 import { Literal, LiteralType } from 'lang/dataTypes/Literal'
+import { doFn } from 'lang/core/do'
 
 const defaultOptions = {
   stdout: undefined,
   lockedGlobals: true,
-  globals: <any>{},
+  globals: {} as any,
   utils: {
     unboxing: identity
   }
@@ -23,7 +24,7 @@ export class Interpreter {
   private readonly globals = new Environment()
   public readonly options: InterpreterOptions
 
-  constructor(options?: Partial<InterpreterOptions>, literals?: PLLiterals) {
+  public constructor(options?: Partial<InterpreterOptions>, literals?: PLLiterals) {
     this.options = { ...defaultOptions, ...options } as any
     const { stdout, globals, lockedGlobals } = this.options
     const plLiterals = { ...defaultLiterals, ...literals }
@@ -36,6 +37,7 @@ export class Interpreter {
     this.globals.define('def', def)
     this.globals.define('if', ifFn)
     this.globals.define('fn', fn)
+    this.globals.define('do', doFn)
 
     Object.keys(globals).forEach(key => {
       const value = globals[key]
@@ -44,7 +46,7 @@ export class Interpreter {
     })
   }
 
-  public interpret(program: Literal<LiteralType>[]) {
+  public interpret(program: Literal<LiteralType>[]): any {
     let returnVal: unknown = undefined
     try {
       for (let literal of program) {

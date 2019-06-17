@@ -6,13 +6,13 @@ import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { Literal, LiteralType } from 'lang/dataTypes/Literal'
 
 class PLFunction implements PLCallable {
-  constructor(
+  public constructor(
     private _fn: PLCallable['call'],
     private _arity: number,
     private _toString?: string
   ) {}
 
-  call(interpreter: Interpreter, env: Environment, args: Literal<LiteralType>[]): unknown {
+  public call(interpreter: Interpreter, env: Environment, args: Literal<LiteralType>[]): unknown {
     const argDiff = this.arity - args.length
     if (this.arity === 0 || argDiff === 0) {
       return this._fn(interpreter, env, args)
@@ -35,11 +35,11 @@ class PLFunction implements PLCallable {
     }
   }
 
-  get arity() {
+  public get arity() {
     return this._arity
   }
 
-  toString() {
+  public toString() {
     return this._toString || NATIVE_FN_NAME
   }
 }

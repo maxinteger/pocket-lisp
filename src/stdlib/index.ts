@@ -9,7 +9,7 @@ import { plString } from 'stdlib/data/PLString'
 import { PLLiterals } from 'lang/types'
 import { unboxing } from 'stdlib/fn/common'
 
-export const identity: <T>(x: T) => T = x => x
+export const identity: <T>(x: T) => T = (x: any): any => x
 
 export const literals: PLLiterals = {
   bool: {
