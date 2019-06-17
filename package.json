@@ -70,7 +70,7 @@
       "test/**/*"
     ],
     "reporter": [
-      "text"
+      "html"
     ],
     "all": true
   }

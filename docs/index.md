@@ -151,7 +151,7 @@ The fallowing two definitions are equivalent:
 (defn add [a b] (+ a b)
 ```  
 
-### If "statement"
+### If function - `if`
 
 `if` function has 3 parameters and if the first expression value is `true` then evaluate and return with the second parameter otherwise does the same with the third parameter
 
@@ -160,5 +160,14 @@ The fallowing two definitions are equivalent:
 - false branch
 
 ```clojure
-    (print (if true 1 2))               ; print 1
+(print (if true 1 2))               ; print 1
+```
+
+### Do function - `do`
+
+`do` run sequentially all the passed parameters and return with the values of the last expression. It must be called with at least 1 parameter
+
+```clojure
+(print (do 1 2 42))                 ;pritn 42
+(defn x [] (do (+ 1 2) 10))
 ```
