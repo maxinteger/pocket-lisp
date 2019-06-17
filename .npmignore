@@ -1,6 +1,9 @@
 .*
 tsconfig.json
 codecov.yml
-src
-test
+src/
+test/
 bin
+.idea/
+coverage/
+docs/
