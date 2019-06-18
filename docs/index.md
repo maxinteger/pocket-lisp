@@ -12,16 +12,21 @@ Pocket Lisp a simple and configurable generic script language.
 
 ## Try it!
 
+### Sandbox
+
 The easiest way the try the language is open the sandbox version in your browser:
 
 [Pocket-lisp sandbox](https://maxinteger.github.io/pocket-lisp/sandbox.html)
 
 _Note_: It using JS modules
 
+### REPL
+
 But you can clone the project and run as a REPL (Read-eval-print loop) in your terminal.
 For that check out the repository, install the dependencies, then run the fallowing command:
 
     npm start
+
 
 # Usage
 
