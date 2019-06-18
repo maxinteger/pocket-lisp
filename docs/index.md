@@ -10,43 +10,93 @@ Pocket Lisp a simple and configurable generic script language.
 - Sandbox - no access to the native runtime environment (ex. Browser, NodeJS, etc.) API
 - Zero dependencies
 
-# Usage
+## Try it!
 
-## Package 
+The easiest way the try the language is open the sandbox version in your browser:
 
-_coming soon_
+[Pocket-lisp sandbox](https://maxinteger.github.io/pocket-lisp/sandbox.html)
 
-## Repl
+_Note_: It using JS modules
 
-The easiest way the try the language is to run it in your terminal in REPL 
-(Read-eval-print loop) mode. For that check out the repository, install the dependencies, 
-then run the fallowing command:
+But you can clone the project and run as a REPL (Read-eval-print loop) in your terminal.
+For that check out the repository, install the dependencies, then run the fallowing command:
 
     npm start
 
+# Usage
+
+```js
+import { Scanner, Parser, Interpreter } from 'index.es.js'
+import { literals, runtime, utils } from 'stdlib.es.js'
+
+const run = sourceCode => {
+  const interpreter = new Interpreter(
+    {
+      globals: runtime,
+      // our you can overwrite the print function in the globals 
+      stdout: value => writeOutput(value, false),
+      utils
+    },
+    literals
+  )
+
+  // tokenize
+  const scanner = new Scanner(sourceCode)
+  // parse, you need to pass provide the literals if you ar using the stdlib
+  const parser = new Parser(scanner, literals)
+  const parserResult = parser.parse()
+
+  // check parser errors
+  if (parserResult.hasError) {
+    for (let err of parserResult.errors) {
+      writeOutput(`line: ${err.line} - ${err.message}`, true)
+    }
+  } else {
+    try {
+      // Execute
+      interpreter.interpret(parserResult.program)
+    } catch (err) {
+      // Handle runtime errors
+      writeOutput(err.message, true)
+    }
+  }
+}
+
+run('(print (+ 1 2))')
+```
+
+## Package
+
+On NPM: https://www.npmjs.com/package/pocket-lisp
+
+It contains both **ES5** and **ES6** packages with typescript type definitions
+
+- Pocket lisp interpreter: `index.js` and `index.es.js`
+- Pocket lisp standard library: `stdlib.js` and `stdlib.es.js`
 
 # Pocket lisp syntax
 
 The syntax very similar to the closure script language
 
-
 ## Basics
 
 - space like (space, newline, comma, etc.) characters are ignored.
-  For example: `[ 1 2 3 ]` equivalent with `[ 1, 2, 3 ]` 
+  For example: `[ 1 2 3 ]` equivalent with `[ 1, 2, 3 ]`
 - single line comment star with: `;`
 - no multi line comment
 
 ### Identifiers
 
 The identifier
--  must be start with latin alphabetic character or the fallowing symbols `=+-*\&%$_!<>?`
+
+- must be start with latin alphabetic character or the fallowing symbols `=+-*\&%$_!<>?`
 - can continue with latin alphabetic or numeric characters or the fallowing symbols `=+-*\&%$_!<>?`
 
 ### Keywords
 
 Keywords are special identifiers which are
-- must be start with colon (`:`) and 
+
+- must be start with colon (`:`) and
 - must continue with at least 1 latin alphabetic or numeric characters or the fallowing symbols `=+-*\&%$_!<>?`
 
 ```clojure
@@ -58,17 +108,18 @@ Keywords are special identifiers which are
 ## Literals
 
 ### boolean
+
 - `true` and `false`
- 
+
 ### Number
 
 - Integer: `42`
 - float: `42.5`
-- friction: `1/2` *numerator and denominator must be integer*
+- friction: `1/2` _numerator and denominator must be integer_
 
 ### String
 
-- string `"Hello world"` 
+- string `"Hello world"`
 
 ### Vector
 
@@ -80,13 +131,13 @@ Array like structure
 
 Key value pairs
 
-- hashMap: `{ key1 value1 key2 value2}` *must be pairs*
+- hashMap: `{ key1 value1 key2 value2}` _must be pairs_
 
 ## List / Function calls
 
-List a special structure which is very similar to an array, 
-except the first item must be callable (lambda function, or function reference). 
-The rest of the list will be the parameters of the function 
+List a special structure which is very similar to an array,
+except the first item must be callable (lambda function, or function reference).
+The rest of the list will be the parameters of the function
 
 - list: `(print 1 2 3)`
 
@@ -101,10 +152,11 @@ Print value to the standard output. It accepts any amount fo parameters.
 (print 42 1/2 1.5)
 ```
 
-### define variable - `def` 
+### define variable - `def`
 
 `def` function can create a new variable in the current scope.
 The function has 2 parameter:
+
 - the variable name, it must be an identifier
 - the initial value of the variable, it can be anything and it is mandatory
 
@@ -118,14 +170,14 @@ Define the `x` variable
 ### Lambda function - `fn`
 
 `fn` define a lambda function. It has 2 parameters:
+
 - arguments vector, where the items must be identifiers, empty vector allowed
 - function body, can be anything
-
 
 ```clojure
 (fn [] 42)
 (fn [] (+ 1 2))
-                                    ; function closure 
+                                    ; function closure
 (def add (fn [a] ( fn [b] (+ a b) )))
 (def addTo10 (add 10))              ; create reference for the function
 (print (addTo10 1))                 ; print 11
@@ -141,7 +193,7 @@ Define the `x` variable
 
 ### Define function - `defn`
 
-`defn` function is a shortcut for the often used `def` and `fn` combination. 
+`defn` function is a shortcut for the often used `def` and `fn` combination.
 
 The fallowing two definitions are equivalent:
 
@@ -149,7 +201,7 @@ The fallowing two definitions are equivalent:
 (def add (fn [a b] (+ a b))
 
 (defn add [a b] (+ a b)
-```  
+```
 
 ### If function - `if`
 
