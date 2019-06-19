@@ -21,20 +21,12 @@ We needed a very simple and configurable domain specific language to add a littl
 - Sandbox - no access to the native runtime environment (ex. Browser, NodeJS, etc.) API
 - Zero dependencies
 
-## Usage
+## Details
 
-### Package 
+You can find the details like usage and syntax, on the project website:
 
-_coming soon_
+[https://maxinteger.github.io/pocket-lisp/](https://maxinteger.github.io/pocket-lisp/)
 
-### Repl
-
-The easiest way the try the language is to run it in your terminal in REPL 
-(Read-eval-print loop) mode. For that check out the repository, install the dependencies, 
-then run the fallowing command:
-
-    npm start
-     
 ## For contributors
 
 You can build packages locally with

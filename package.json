@@ -48,7 +48,12 @@
     "build": "rollup -c",
     "watch": "rollup -cw",
     "repl": "ts-node -r tsconfig-paths/register src/repl.ts",
-    "start": "npm run repl"
+    "start": "npm run repl",
+    "pre-publish": "npm run lint && npm run test && npm run build",
+    "publish": "npm publish --access=public",
+    "publish-patch": "npm run pre-publish && npm version patch && npm run publish",
+    "publish-minor": "npm run pre-publish && npm version minor && npm run publish",
+    "publish-major": "npm run pre-publish && npm version major && npm run publish"
   },
   "prettier": {
     "semi": false,
