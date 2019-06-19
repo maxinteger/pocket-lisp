@@ -80,7 +80,7 @@
       </form>
     </div>
     <script type="module">
-      import { Scanner, Parser, Interpreter } from 'https://unpkg.com/pocket-lisp/dist/index.es.js'
+      import { PocketLisp } from 'https://unpkg.com/pocket-lisp/dist/index.es.js'
       import { literals, runtime, utils } from 'https://unpkg.com/pocket-lisp/dist/stdlib.es.js'
 
       const textArea = document.getElementById('code')
@@ -102,7 +102,7 @@
         output.append(div)
       }
 
-      const interpreter = new Interpreter(
+      const pocketLisp = new PocketLisp(
         {
           globals: runtime,
           stdout: value => writeOutput(value, false),
@@ -111,20 +111,14 @@
         literals
       )
 
-      const run = () => {
+      const run = async () => {
         const src = cm.doc.getValue()
-        const scanner = new Scanner(src)
-        const parser = new Parser(scanner, literals)
-        const parserResult = parser.parse()
-        if (parserResult.hasError) {
-          for (let err of parserResult.errors) {
-            writeOutput(`line: ${err.line} - ${err.message}`, true)
-          }
-        } else {
-          try {
-            interpreter.interpret(parserResult.program)
-          } catch (err) {
-            writeOutput(err.message, true)
+        try {
+          await pocketLisp.execute(src)
+        } catch (e) {
+          for (let err of e.errors) {
+            const msg = e.type === 'Parser' ? `line: ${err.line} - ${err.message}` : err.message
+            writeOutput(msg, true)
           }
         }
       }
