@@ -27,42 +27,29 @@ For that check out the repository, install the dependencies, then run the fallow
 
     npm start
 
-
 # Usage
 
+The fallowing example shows how you can init Pocket lisp with the stdlib:
+
 ```js
-import { Scanner, Parser, Interpreter } from 'index.es.js'
+import { PocketLisp } from 'index.es.js'
 import { literals, runtime, utils } from 'stdlib.es.js'
+const pocketLisp = new PocketLisp(
+  {
+    globals: runtime,
+    stdout: value => writeOutput(value, false),
+    utils
+  },
+  literals
+)
 
-const run = sourceCode => {
-  const interpreter = new Interpreter(
-    {
-      globals: runtime,
-      // our you can overwrite the print function in the globals 
-      stdout: value => writeOutput(value, false),
-      utils
-    },
-    literals
-  )
-
-  // tokenize
-  const scanner = new Scanner(sourceCode)
-  // parse, you need to pass provide the literals if you ar using the stdlib
-  const parser = new Parser(scanner, literals)
-  const parserResult = parser.parse()
-
-  // check parser errors
-  if (parserResult.hasError) {
-    for (let err of parserResult.errors) {
-      writeOutput(`line: ${err.line} - ${err.message}`, true)
-    }
-  } else {
-    try {
-      // Execute
-      interpreter.interpret(parserResult.program)
-    } catch (err) {
-      // Handle runtime errors
-      writeOutput(err.message, true)
+const run = async sourceCode => {
+  try {
+    await pocketLisp.execute(src)
+  } catch (e) {
+    for (let err of e.errors) {
+      const msg = e.type === 'Parser' ? `line: ${err.line} - ${err.message}` : err.message
+      writeOutput(msg, true)
     }
   }
 }
