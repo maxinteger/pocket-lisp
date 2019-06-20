@@ -2,12 +2,12 @@ import { RuntimeError } from 'lang/dataTypes/RuntimeError'
 import { PLLiteral, PLLiterals } from 'lang/types'
 
 const notImplementedFactory = (name: string) => () => {
-  throw new RuntimeError(`${name} is not implemented`)
+  throw new RuntimeError(`${name} is not implemented.`)
 }
 
 const notImplementedLiteral = (name: string): PLLiteral => ({
   parser: () => {
-    throw new RuntimeError(`${name} is not implemented`)
+    throw new RuntimeError(`${name} is not implemented.`)
   },
   factory: notImplementedFactory(name)
 })

@@ -54,6 +54,11 @@ describe('interpreter', () => {
     })
   })
 
+  it('should fail if we try to use vector or HashMap with builtin types', () => {
+    expect (() => interpret('(print [1 2 3])')).throw('Vector is not implemented.')
+    expect (() => interpret('(print {"a" 1, "b" 2})')).throw('HashMap is not implemented.')
+  })
+
   it('should throw runtime error if the first item of the list expression is not a function', () => {
     expect(() => interpret('(1 + 2)')).throw(`'1' is not a function`)
   })

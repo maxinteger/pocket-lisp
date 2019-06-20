@@ -35,6 +35,16 @@ describe('stdlib/core/fn', () => {
     })
   })
 
+  describe('chained function call', () => {
+    it('should work', () => {
+      initInterpret(`(print ((fn [a] (fn [b] (+ a b))) 1 2))`, {
+        fn,
+        '+': (a: number, b: number) => a + b,
+        print: (output: any) => expect(output).equals(3)
+      })
+    })
+  })
+
   describe('closure', () => {
     it('should work', () => {
       initInterpret(`

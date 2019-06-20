@@ -3,8 +3,6 @@ import { Literal, LiteralType } from 'lang/dataTypes/Literal'
 
 export const identity: <T>(x: T) => T = x => x
 
-export const always: <T>(x: T) => () => T = x => () => x
-
 export const assert = (val: boolean, msg: string) => {
   if (val) throw new RuntimeError(msg)
   return true
