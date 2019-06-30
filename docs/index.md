@@ -12,20 +12,9 @@ Pocket Lisp a simple and configurable generic script language.
 
 ## Try it!
 
-### Sandbox
+In your browser as a **Sandbox**: [Pocket-lisp sandbox](https://maxinteger.github.io/pocket-lisp/sandbox.html)
 
-The easiest way the try the language is open the sandbox version in your browser:
-
-[Pocket-lisp sandbox](https://maxinteger.github.io/pocket-lisp/sandbox.html)
-
-_Note_: It using JS modules
-
-### REPL
-
-But you can clone the project and run as a REPL (Read-eval-print loop) in your terminal.
-For that check out the repository, install the dependencies, then run the fallowing command:
-
-    npm start
+In your terminal as a **REPL**, with the `npm start` command
 
 # Usage
 
@@ -57,16 +46,22 @@ const run = async sourceCode => {
 run('(print (+ 1 2))')
 ```
 
+## API
+
+- `new(options?: Partial<InterpreterOptions>, literals?: PLLiterals)` - create a new Pocket lisp interpreter instance.
+- `execute(source: string)` - execute the Pocket lisp source code
+- `evalFn(fn: PLCallable, args: anyp[])` - evaluate `fn` with the passed arguments in the current execution environment.
+
 ## Package
 
-On NPM: https://www.npmjs.com/package/pocket-lisp
+On NPM: [https://www.npmjs.com/package/pocket-lisp](https://www.npmjs.com/package/pocket-lisp)
 
 It contains both **ES5** and **ES6** packages with typescript type definitions
 
 - Pocket lisp interpreter: `index.js` and `index.es.js`
 - Pocket lisp standard library: `stdlib.js` and `stdlib.es.js`
 
-# Pocket lisp syntax
+# Syntax
 
 The syntax very similar to the closure script language
 
