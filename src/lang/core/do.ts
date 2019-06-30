@@ -9,5 +9,5 @@ export const doFn = createFunction(
     assert(args.length < 1, `Expected at least 1 argument, but got ${args.length}.`)
     return args.map(literal => interpreter.execLiteral(literal, env)).pop()
   },
-  0
+  -1
 )

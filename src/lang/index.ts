@@ -1,7 +1,7 @@
 import { Scanner } from 'lang/scanner'
 import { Parser } from 'lang/parser'
 import { Interpreter } from 'lang/interpreter'
-import { InterpreterOptions, PLLiterals } from 'lang/types'
+import { InterpreterOptions, PLCallable, PLLiterals } from 'lang/types'
 
 export { Scanner } from 'lang/scanner'
 export { Parser } from 'lang/parser'
@@ -35,5 +35,9 @@ export class PocketLisp {
         throw { type: ErrorTypes.Runtime, errors: [{ message: error.message }] }
       }
     }
+  }
+
+  public evalFn(fn: PLCallable, args: any[]) {
+    return this.interpreter.evalFn(fn, args)
   }
 }

@@ -37,4 +37,17 @@ describe('Pocket Lisp', () => {
       }).execute('(print (+ 1 2))')
     })
   })
+
+  describe('evalFn', () => {
+    it('should evaluate a PL callable', async () => {
+      const pl = new PocketLisp({
+        globals: {
+          '+': add,
+          op: (fn: any, a: any, b: any) => pl.evalFn(fn, [a, b]),
+          print: (val: any) => expect(val).equals(3)
+        }
+      })
+      await pl.execute('(print (op + 1 2))')
+    })
+  })
 })

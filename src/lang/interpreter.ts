@@ -1,6 +1,6 @@
 import { Environment } from 'lang/dataTypes/Environment'
 import { RuntimeError } from 'lang/dataTypes/RuntimeError'
-import { InterpreterOptions, PLLiterals } from 'lang/types'
+import { InterpreterOptions, PLCallable, PLLiterals } from 'lang/types'
 import { defaultLiterals } from 'lang/utils/defaultLiterals'
 import { NATIVE_FN_NAME } from 'lang/utils/constants'
 import { def, fn, ifFn } from 'lang/core'
@@ -22,6 +22,7 @@ const defaultOptions = {
 
 export class Interpreter {
   private readonly globals = new Environment()
+  private currentEnv: Environment = this.globals
   public readonly options: InterpreterOptions
 
   public constructor(options?: Partial<InterpreterOptions>, literals?: PLLiterals) {
@@ -33,7 +34,7 @@ export class Interpreter {
       this.globals.define(key, simpleFunction((plLiterals as any)[key].factory))
     })
 
-    this.globals.define('print', simpleFunction(stdout || console.log))
+    this.globals.define('print', simpleFunction(stdout || console.log, -1))
     this.globals.define('def', def)
     this.globals.define('if', ifFn)
     this.globals.define('fn', fn)
@@ -59,6 +60,7 @@ export class Interpreter {
   }
 
   public execLiteral = (literal: Literal<LiteralType>, env: Environment) => {
+    this.currentEnv = env
     switch (literal.kind) {
       case LiteralType.Boolean:
       case LiteralType.Integer:
@@ -71,7 +73,13 @@ export class Interpreter {
         return env.get((literal as Literal<LiteralType.Identifier>).value)
       case LiteralType.List:
         return this.execList(literal as Literal<LiteralType.List>, env)
+      default:
+        return literal
     }
+  }
+
+  public evalFn(fn: PLCallable, args: any[]) {
+    return fn.call(this, this.currentEnv, args)
   }
 
   private execList(literal: Literal<LiteralType.List>, env: Environment): unknown {

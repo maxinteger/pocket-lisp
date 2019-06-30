@@ -33,5 +33,5 @@ export const fn = createFunction(
       LAMBDA_FN_NAME
     )
   },
-  0
+  -1
 )

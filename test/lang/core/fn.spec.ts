@@ -47,16 +47,36 @@ describe('stdlib/core/fn', () => {
 
   describe('closure', () => {
     it('should work', () => {
-      initInterpret(`
+      initInterpret(
+        `
       (def add (fn [a] ( fn [b] (+ a b) )))
       (def addTo10 (add 10))
       (print (addTo10 1))
-      `, {
-        fn,
-        def,
-        '+': (a: number, b: number) => a + b,
-        print: (output: any) => expect(output).equals(11)
-      })
+      `,
+        {
+          fn,
+          def,
+          '+': (a: number, b: number) => a + b,
+          print: (output: any) => expect(output).equals(11)
+        }
+      )
+    })
+
+    it('should hide internal variables', () => {
+      const test = () =>
+        initInterpret(
+          `
+      (def add (fn [a] ( do (def x 10) )))
+      (print x)
+      `,
+          {
+            fn,
+            def,
+            print: (a: any) => a
+          }
+        )
+
+      expect(test).throw(`Undefined identifier: 'x'.`)
     })
   })
 
@@ -71,7 +91,7 @@ describe('stdlib/core/fn', () => {
   })
 
   it('should has arity 0', () => {
-    expect(fn.arity).equals(0)
+    expect(fn.arity).equals(-1)
   })
 
   it('should has native toString', () => {

@@ -14,9 +14,11 @@ class PLFunction implements PLCallable {
 
   public call(interpreter: Interpreter, env: Environment, args: Literal<LiteralType>[]): unknown {
     const argDiff = this.arity - args.length
-    if (this.arity === 0 || argDiff === 0) {
+    if (this.arity === -1 || argDiff === 0) {
+      // Function accept arbitrary amount of arguments (-1) or got the right number of args
       return this._fn(interpreter, env, args)
     } else if (argDiff > 0) {
+      // Got less args -> create a new function with the remaining args
       const curryFn: PLCallable['call'] = (
         interpreter: Interpreter,
         env: Environment,
@@ -26,6 +28,8 @@ class PLFunction implements PLCallable {
       }
       return new PLFunction(curryFn, argDiff, this.toString())
     } else {
+      // Got more args
+      // the return value must be callable otherwise it will fails
       const result = this._fn(interpreter, env, args.slice(0, this.arity))
       if (result instanceof PLFunction) {
         return result.call(interpreter, env, args.slice(this.arity))
@@ -54,8 +58,11 @@ export const createFunction = (
   return new PLFunction(fn, arity, representation)
 }
 
-export const simpleFunction = (fn: (...args: any[]) => any): PLCallable =>
-  createFunction((interpreter, env, parameters) => {
-    const evaluatedParams = parameters.map(p => interpreter.execLiteral(p, env), interpreter)
-    return fn.apply(null, evaluatedParams)
-  }, fn.length)
+export const simpleFunction = (fn: (...args: any[]) => any, arity?: number): PLCallable =>
+  createFunction(
+    (interpreter, env, parameters) => {
+      const evaluatedParams = parameters.map(p => interpreter.execLiteral(p, env), interpreter)
+      return fn.apply(null, evaluatedParams)
+    },
+    arity === undefined ? fn.length : arity
+  )

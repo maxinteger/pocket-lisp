@@ -11,7 +11,6 @@ export const ifFn = createFunction(
 
     const [condition, thenBranch, elseBranch] = args
 
-    // TODO fix default list vs std lib differences
     const conditionEval = interpreter.execLiteral(condition, env)
     const conditionRes = interpreter.options.utils.unboxing(conditionEval)
 

@@ -40,7 +40,7 @@ describe('stdlib/core/defn', () => {
   })
 
   it('should has arity 0', () => {
-    expect(defn.arity).equals(0)
+    expect(defn.arity).equals(-1)
   })
 
   it('should has native toString', () => {
