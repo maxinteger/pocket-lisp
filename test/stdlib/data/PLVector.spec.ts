@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { PLVector, plVector } from 'stdlib/data/PLVector'
-import { concat, of, toJS } from 'stdlib/types'
+import { concat, map, of, toJS } from 'stdlib/types'
 import { plNumber } from 'stdlib/data/PLNumber'
 
 describe('stdlib/core/PLVector', () => {
@@ -27,7 +27,19 @@ describe('stdlib/core/PLVector', () => {
       const actual = plVector(...[1])
         [concat](plVector(...[2]))
         [concat](plVector(...[3]))
-      expect(actual.value).deep.equal([1, 2, 3])
+      expect(actual).deep.equal(plVector(...[1, 2, 3]))
+    })
+  })
+
+  describe('map', () => {
+    it('should exec a function on all array item', () => {
+      const actual = plVector(...[1, 2, 3])[map](a => a * 10)
+      expect(actual).deep.equal(plVector(...[10, 20, 30]))
+    })
+
+    it('should work with empty input', () => {
+      const actual = plVector(...[])[map](a => a * 10)
+      expect(actual).deep.equal(plVector(...[]))
     })
   })
 

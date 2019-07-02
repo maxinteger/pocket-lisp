@@ -1,6 +1,8 @@
-import { BaseNumberOp, Semigroup } from 'stdlib/types'
+import { BaseNumberOp, Functor, Semigroup } from 'stdlib/types'
 import { assertType } from 'stdlib/utils'
 import * as op from 'stdlib/types'
+import { PLCallable } from 'lang/types'
+import { Interpreter } from 'lang'
 
 type BinaryBaseNumberOp = <a extends BaseNumberOp<any>>(
   a: BaseNumberOp<a>,
@@ -31,6 +33,10 @@ export const divide: BinaryBaseNumberOp = (a, b) => {
   return a[op.divide](b)
 }
 
+export function map<a, b>(this: Interpreter, fn: PLCallable, f: Functor<a>): Functor<b> {
+  return f[op.map](x => this.evalFn(fn, [x]) as b)
+}
+
 ///
 
 export const concat: <a extends Semigroup<any>>(a: a, b: a) => a = (a, b) => {
@@ -44,5 +50,6 @@ export default {
   '-': subtract,
   '*': multiple,
   '/': divide,
-	':': concat
+  ':': concat,
+  map
 }

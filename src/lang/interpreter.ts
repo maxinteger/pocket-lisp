@@ -31,7 +31,9 @@ export class Interpreter {
     const plLiterals = { ...defaultLiterals, ...literals }
 
     Object.keys(plLiterals).forEach(key => {
-      this.globals.define(key, simpleFunction((plLiterals as any)[key].factory))
+      const fn = (plLiterals as any)[key].factory
+      const arity = key === 'vector' || key === 'hashMap' ? -1 : fn.length
+      this.globals.define(key, simpleFunction(fn, arity))
     })
 
     this.globals.define('print', simpleFunction(stdout || console.log, -1))

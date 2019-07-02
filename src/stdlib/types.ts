@@ -129,9 +129,9 @@ export const map = Symbol('map')
  * u.map(a => a) is equivalent to u (identity)
  * u.map(x => f(g(x))) is equivalent to u.map(g).map(f) (composition)
  */
-export interface Functor<f, a> {
+export interface Functor<a> {
   // Functor f => f a ~> (a -> b) -> f b
-  [map]<b>(f: (a: a) => b): f
+  [map]<b>(f: (a: a) => b): Functor<b>
 }
 
 export const contramap = Symbol('contramap')
@@ -148,7 +148,7 @@ export const ap = Symbol('ap')
 /**
  * v.ap(u.ap(a.map(f => g => x => f(g(x))))) is equivalent to v.ap(u).ap(a) (composition)
  */
-export interface Apply<f, a> extends Functor<f, a> {
+export interface Apply<f, a> extends Functor<a> {
   // Apply f => f a ~> f (a -> b) -> f b
   [ap]<b>(f: Apply<f, (a: a) => b>): Apply<f, b>
 }
@@ -169,7 +169,7 @@ export const alt = Symbol('alt')
  * a.alt(b).alt(c) is equivalent to a.alt(b.alt(c)) (associativity)
  * a.alt(b).map(f) is equivalent to a.map(f).alt(b.map(f)) (distributivity)
  */
-export interface Alt<f, a> extends Functor<f, a> {
+export interface Alt<f, a> extends Functor<a> {
   // Alt f => f a ~> f a -> f a
   [alt](b: a): Alt<f, a>
 }
@@ -254,7 +254,7 @@ export const bimap = Symbol('bimap')
  * p.bimap(a => a, b => b) is equivalent to p (identity)
  * p.bimap(a => f(g(a)), b => h(i(b)) is equivalent to p.bimap(g, i).bimap(f, h) (composition)
  */
-export interface Bifunctor<f, a, c> extends Functor<f, a> {
+export interface Bifunctor<f, a, c> extends Functor<a> {
   // Bifunctor f => f a c ~> (a -> b, c -> d) -> f b d
   [bimap]<b, d>(f: (a: a) => b, g: (c: c) => d): Bifunctor<f, b, d>
 }
@@ -264,7 +264,7 @@ export const promap = Symbol('promap')
  * p.promap(a => a, b => b) is equivalent to p (identity)
  * p.promap(a => f(g(a)), b => h(i(b))) is equivalent to p.promap(f, i).promap(g, h) (composition)
  */
-export interface Profunctor<p, b, c> extends Functor<p, b> {
+export interface Profunctor<p, b, c> extends Functor<b> {
   // Profunctor p => p b c ~> (a -> b, c -> d) -> p a d
   [promap]<a, d>(f: (a: a) => b, g: (c: c) => d): Bifunctor<p, a, d>
 }

@@ -1,5 +1,7 @@
 import {
   concat,
+  Functor,
+  map,
   of,
   SApplicative,
   Semigroup,
@@ -10,7 +12,7 @@ import {
 
 // @ts-ignore
 @staticImplements<SApplicative<any[], PLVector<any>> | Semigroup<PLVector<any>>>()
-export class PLVector<T> implements SerializeToJS<any[]> {
+export class PLVector<T> implements SerializeToJS<any[]>, Functor<T> {
   public static [of](value: any[]) {
     return plVector(value)
   }
@@ -23,6 +25,10 @@ export class PLVector<T> implements SerializeToJS<any[]> {
 
   public [concat](a: PLVector<any>) {
     return plVector(...this._value.concat(a.value))
+  }
+
+  public [map]<b>(fn: (a: T) => b): Functor<b> {
+    return plVector(...this.value.map(fn))
   }
 
   public [toJS]() {

@@ -62,7 +62,7 @@ export const simpleFunction = (fn: (...args: any[]) => any, arity?: number): PLC
   createFunction(
     (interpreter, env, parameters) => {
       const evaluatedParams = parameters.map(p => interpreter.execLiteral(p, env), interpreter)
-      return fn.apply(null, evaluatedParams)
+      return fn.apply(interpreter, evaluatedParams)
     },
     arity === undefined ? fn.length : arity
   )
