@@ -1,9 +1,10 @@
 import { expect } from 'chai'
 import { add, concat, divide, multiple, negate, subtract } from 'stdlib/fn/typeClass'
-import { plNumber } from 'stdlib/data/PLNumber'
+import { PLNumber, plNumber } from 'stdlib/data/PLNumber'
 import { plString } from 'stdlib/data/PLString'
 import { PocketLisp } from 'lang'
 import { literals, runtime, utils } from 'stdlib/index'
+import { plVector } from 'stdlib/data/PLVector'
 
 describe('stdlib/fn/typeClass', () => {
   describe('basic math functions', () => {
@@ -53,18 +54,14 @@ describe('stdlib/fn/typeClass', () => {
   })
 
   describe('map', () => {
-    it('should work any Functor type', () => {
-      const tests = [{ code: `(print (map #(%1 * 10) [1 2 3]))`, res: [plNumber(10), plNumber(20), plNumber(30)] }]
+    it('should work any Functor type', async () => {
+      const code = `(print (map #(* %1 10) [1 2 3]))`
+      const expected = plVector(plNumber(10), plNumber(20), plNumber(30))
 
-      tests.map(async ({ code, res }) => {
-        try {
-          const print = (out: any) => expect(out).deep.equals(res)
-          const pl = new PocketLisp({ globals: { ...runtime, print }, utils }, literals)
-          await pl.execute(code)
-        } catch (e) {
-          console.log(e)
-        }
-      })
+      const print = (out: any) => expect(out).deep.equals(expected)
+      const multiple = (a: PLNumber, b: PLNumber) => a.value * b.value
+      const pl = new PocketLisp({ globals: { ...runtime, print, multiple }, utils }, literals)
+      await pl.execute(code)
     })
   })
 })

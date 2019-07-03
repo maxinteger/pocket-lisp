@@ -14,6 +14,10 @@ export interface SerializeToJS<T> {
   [toJS](): T
 }
 
+export interface BoxedValue<T> extends SerializeToJS<T> {
+  toString: () => string
+}
+
 export const negate = Symbol('negate')
 export const add = Symbol('add')
 export const subtract = Symbol('subtract')
