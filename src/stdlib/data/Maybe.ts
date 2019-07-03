@@ -52,7 +52,7 @@ class NothingClass implements SerializeToJS<undefined>, Functor<undefined> {
   }
 
 
-  public [map]<b>(_fn: (a: any) => b): Functor<b> {
+  public [map]<b>(): Functor<b> {
     return Nothing
   }
 
