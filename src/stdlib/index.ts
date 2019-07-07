@@ -3,6 +3,7 @@ import { plVector } from 'stdlib/data/PLVector'
 import { plHashMap } from 'stdlib/data/PLHashMap'
 import { and, not, or, plBool, str2plBool } from 'stdlib/data/PLBool'
 import * as math from 'stdlib/fn/math'
+import * as modules from 'stdlib/module'
 import { plNumber, str2PLNumber } from 'stdlib/data/PLNumber'
 import { plFractionNumber, reciprocal, str2plFractionNumber } from 'stdlib/data/PLFractionNumber'
 import { plString } from 'stdlib/data/PLString'
@@ -48,7 +49,8 @@ export const runtime = {
   not,
   and,
   or,
-  reciprocal
+  reciprocal,
+  ...modules
 }
 
 export const utils = {
