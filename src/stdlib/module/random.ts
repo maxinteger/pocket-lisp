@@ -22,5 +22,14 @@ export const randomInt = (a: PLNumber, b: PLNumber) => {
  * Shuffle vector
  */
 export const shuffle = (v: PLVector<any>) => {
-  return plVector(...[...v.value].sort(() => Math.round(rand() - 0.5)))
+  const vv = [...v.value]
+  // based on: https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+  let j, x, i
+  for (i = vv.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1))
+    x = vv[i]
+    vv[i] = vv[j]
+    vv[j] = x
+  }
+  return plVector(...vv)
 }
