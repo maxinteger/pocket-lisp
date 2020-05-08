@@ -1,0 +1,5 @@
+export { def } from './def'
+export { defn } from './defn'
+export { ifFn } from './if'
+export { fn } from './fn'
+export { doFn } from './do'

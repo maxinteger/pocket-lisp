@@ -1,10 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "lib": ["es6"],
-    "sourceMap": true,
+    "rootDir": ".",
     "outDir": "./bin",
+
+    "target": "es6",
+    "lib": ["es6"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
 
     "strict": true,
     "noImplicitAny": true,
@@ -14,52 +17,14 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-
-    "moduleResolution": "node",
-    "baseUrl": "src",
-    "esModuleInterop": true,
     "declaration": true,
-    "declarationDir": "./dist",
-    "paths": {
-      "stdlib": ["stdlib/*"]
-    },
+    "esModuleInterop": true,
     "experimentalDecorators": true
-    // "outFile": "./",
-    // "allowJs": true,
-    // "checkJs": true,
-    // "jsx": "preserve",
-    // "declarationMap": true,
-    // "rootDir": "./",
-    // "composite": true,
-    // "incremental": true,
-    // "tsBuildInfoFile": "./",
-    // "removeComments": true,
-    // "noEmit": true,
-    // "importHelpers": true,
-    // "downlevelIteration": true,
-    // "isolatedModules": true,
-    // "rootDirs": [],
-    // "typeRoots": [],
-    // "dataTypes": [],
-    // "allowSyntheticDefaultImports": true,
-    // "preserveSymlinks": true,
-
-    // "sourceRoot": ""
-    // "mapRoot": "",
-    // "inlineSourceMap": true,
-    // "inlineSources": true,
-
-    // "experimentalDecorators": true,
-    // "emitDecoratorMetadata": true,
   },
-  "include": [
-    "src/**/*",
-    "test/**/*"
-  ],
+  "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules"]
 }

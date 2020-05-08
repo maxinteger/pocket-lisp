@@ -1,24 +1,9 @@
-import typescript from 'rollup-plugin-typescript2'
+import ts from '@wessberg/rollup-plugin-ts'
 import pkg from './package.json'
-
-const baseConfig = {
-  external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
-  plugins: [
-    typescript({
-      typescript: require('typescript'),
-      tsconfigOverride: {
-        compilerOptions: {
-          module: 'esnext'
-        },
-        exclude: ['test/**/*', 'src/repl.ts']
-      }
-    })
-  ]
-}
 
 export default [
   {
-    input: 'src/lang/index.ts',
+    input: 'src/index.ts',
 
     output: [
       {
@@ -30,21 +15,12 @@ export default [
         format: 'es'
       }
     ],
-    ...baseConfig
-  },
-  {
-    input: 'src/stdlib/index.ts',
-
-    output: [
-      {
-        file: pkg.main.replace('index', 'stdlib'),
-        format: 'cjs'
-      },
-      {
-        file: pkg.module.replace('index', 'stdlib'),
-        format: 'es'
-      }
-    ],
-    ...baseConfig
+    external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
+    plugins: [
+      ts({
+        tsconfig: 'tsconfig.json',
+        exclude: ['test/**/*', '*.spec.ts', 'src/repl.ts']
+      })
+    ]
   }
 ]
