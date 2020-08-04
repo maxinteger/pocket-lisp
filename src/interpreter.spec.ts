@@ -84,10 +84,10 @@ describe('interpreter', () => {
   })
 
   it('should work with keywords', () => {
-    interpret('(def :key 10)(print :key)', {
+    interpret('(print :key)', {
       globals: {
         print: (output: string) => {
-          expect(output).equals('10')
+          expect(output).equals(':key')
         }
       }
     })

@@ -29,7 +29,7 @@ export class Interpreter {
     const { stdout, globals, lockedGlobals } = this.options
     const plLiterals = { ...defaultLiterals, ...literals }
 
-    Object.keys(plLiterals).forEach(key => {
+    Object.keys(plLiterals).forEach((key) => {
       const fn = (plLiterals as any)[key].factory
       const arity = key === 'vector' || key === 'hashMap' ? -1 : fn.length
       this.globals.define(key, simpleFunction(fn, arity))
@@ -41,7 +41,7 @@ export class Interpreter {
     this.globals.define('fn', fn)
     this.globals.define('do', doFn)
 
-    Object.keys(globals).forEach(key => {
+    Object.keys(globals).forEach((key) => {
       const value = globals[key]
       let item = value
       if (typeof value === 'function' && value.toString() !== NATIVE_FN_NAME) {
@@ -71,8 +71,8 @@ export class Interpreter {
       case LiteralType.Float:
       case LiteralType.FractionNumber:
       case LiteralType.String:
-        return literal.value
       case LiteralType.Keyword:
+        return literal.value
       case LiteralType.Identifier:
         return env.get((literal as Literal<LiteralType.Identifier>).value)
       case LiteralType.List:

@@ -123,6 +123,8 @@ export class Parser {
         return this.makeLiteral(LiteralType.String, string.parser)
       case TokenType.Identifier:
         return this.makeLiteral(LiteralType.Identifier, identity)
+      case TokenType.Keyword:
+        return this.makeLiteral(LiteralType.Keyword, string.parser)
       case TokenType.LeftParen:
         return new Literal(LiteralType.List, this.advanceUntil(TokenType.RightParen))
       case TokenType.LeftSquare:
@@ -151,6 +153,7 @@ export class Parser {
     this.advance()
     return literal
   }
+
   private advanceUntil(endToken: TokenType): Literal<LiteralType>[] {
     const literals = [] as Literal<LiteralType>[]
     this.advance()

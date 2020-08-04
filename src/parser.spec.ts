@@ -145,7 +145,10 @@ describe('Parser', () => {
 
   describe('error', () => {
     it('should thrown if parentheses is not closed', () => {
-      const tests = [{ src: '(+ 1 2', error: ')' }, { src: '[1 2', error: ']' }]
+      const tests = [
+        { src: '(+ 1 2', error: ')' },
+        { src: '[1 2', error: ']' }
+      ]
       tests.map(({ src, error }) => {
         const parser = new Parser(new Scanner(src), defaultLiterals)
         const parseRes = parser.parse()
@@ -161,7 +164,7 @@ describe('Parser', () => {
 
     it('should thrown if missing a literal parser', () => {
       const tests = ['bool', 'int', 'float', 'fractionNumber', 'string']
-      tests.map(type => {
+      tests.map((type) => {
         const parser = new Parser(new Scanner('[true 42 42.5 1/2 "hello world"]'), {
           ...defaultLiterals,
           ...({ [type]: {} } as any)
@@ -177,7 +180,7 @@ describe('Parser', () => {
     })
 
     it('should thrown if the token is unknown', () => {
-      const parser = new Parser(new Scanner(':keyword'), defaultLiterals)
+      const parser = new Parser(new Scanner(')'), defaultLiterals)
       const parseRes = parser.parse()
       expect(parseRes.hasError).equal(true)
 
@@ -185,7 +188,7 @@ describe('Parser', () => {
       expect(parseRes.errors).deep.equal([
         {
           line: 1,
-          message: `Unknown token: ':keyword'.`
+          message: `Unknown token: ')'.`
         }
       ])
     })

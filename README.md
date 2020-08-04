@@ -25,7 +25,7 @@ We needed a very simple and configurable domain specific language to add a littl
 
 You can find the details like usage and syntax, on the project website:
 
-[https://maxinteger.github.io/pocket-lisp/](https://maxinteger.github.io/pocket-lisp/)
+[https://maxinteger.github.io/pocket-lisp/](https://maxinteger.github.io/pocket-lisp-page/)
 
 ## For contributors
 
