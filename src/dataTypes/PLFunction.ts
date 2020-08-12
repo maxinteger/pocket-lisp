@@ -46,6 +46,10 @@ class PLFunction implements PLCallable {
   public toString() {
     return this._toString || NATIVE_FN_NAME
   }
+
+  public toJS() {
+    return `<<${this.toString()}>>`
+  }
 }
 
 ///
@@ -59,7 +63,10 @@ export const createFunction = (
 }
 
 export const simpleFunction = (fn: (...args: any[]) => any, arity?: number): PLCallable =>
-  createFunction((interpreter, env, parameters) => {
-    const evaluatedParams = parameters.map(p => interpreter.execLiteral(p, env), interpreter)
-    return fn.apply(interpreter, evaluatedParams)
-  }, arity === undefined ? fn.length : arity)
+  createFunction(
+    (interpreter, env, parameters) => {
+      const evaluatedParams = parameters.map((p) => interpreter.execLiteral(p, env), interpreter)
+      return fn.apply(interpreter, evaluatedParams)
+    },
+    arity === undefined ? fn.length : arity
+  )
