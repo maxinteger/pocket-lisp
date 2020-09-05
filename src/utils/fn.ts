@@ -1,7 +1,7 @@
 import { RuntimeError } from '../dataTypes/RuntimeError'
 import { Literal, LiteralType } from '../dataTypes/Literal'
 
-export const identity: <T>(x: T) => T = x => x
+export const identity: <T>(x: T) => T = (x) => x
 
 export const assert = (val: boolean, msg: string) => {
   if (val) throw new RuntimeError(msg)
@@ -16,7 +16,7 @@ export const assetParamLength = (args: any[], expected: number, msg?: string) =>
 
 export const assertParamType = (literal: Literal<any>, ...types: LiteralType[]) =>
   assert(
-    types.find(t => t === literal.kind) === undefined,
+    types.find((t) => t === literal.kind) === undefined,
     `Invalid function parameter, actual: '${literal.kind}', expected: '${types.join(' or ')}'`
   )
 
