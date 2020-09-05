@@ -4,9 +4,8 @@ import { Interpreter } from '../interpreter'
 import { Environment } from '../dataTypes/Environment'
 import { RuntimeError } from '../dataTypes/RuntimeError'
 import { Literal, LiteralType } from '../dataTypes/Literal'
-import { plString, PLString } from '../../../pocket-lisp-stdlib/src'
 
-class PLFunction implements PLCallable {
+export class PLFunction implements PLCallable {
   public constructor(
     private _fn: PLCallable['call'],
     private _arity: number,
@@ -52,8 +51,8 @@ class PLFunction implements PLCallable {
     return this.toString()
   }
 
-  public debugTypeOf(): PLString {
-    return plString('Function')
+  public debugTypeOf(): string {
+    return 'Function'
   }
 }
 
