@@ -13,38 +13,36 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/index.mjs"
+  },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "engines": {
     "node": ">= 10.0.0"
   },
-  "dependencies": {},
   "devDependencies": {
-    "@types/chai": "^4.2.11",
-    "@types/mocha": "^7.0.2",
-    "@types/node": "^13.13.4",
-    "@typescript-eslint/eslint-plugin": "^2.30.0",
-    "@typescript-eslint/parser": "^2.30.0",
-    "@wessberg/rollup-plugin-ts": "^1.2.24",
-    "chai": "^4.2.0",
-    "codecov": "^3.6.5",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.11.0",
-    "husky": "^4.2.5",
-    "mocha": "7.1.2",
-    "npm-dts": "^1.2.1",
-    "nyc": "15.0.1",
-    "prettier": "2.0.5",
-    "rollup": "2.7.6",
-    "source-map-support": "0.5.19",
-    "ts-node": "8.9.1",
-    "tsconfig-paths": "3.9.0",
-    "typescript": "^3.8.3"
+    "@types/node": "^14.14.6",
+    "@typescript-eslint/eslint-plugin": "^4.6.1",
+    "@typescript-eslint/parser": "^4.6.1",
+    "@wessberg/rollup-plugin-ts": "^1.3.7",
+    "jest": "^26.6.3",
+    "eslint": "^7.12.1",
+    "eslint-config-prettier": "^6.15.0",
+    "husky": "^4.3.0",
+    "npm-dts": "1.3.4",
+    "prettier": "^2.1.2",
+    "rollup": "^2.33.1",
+    "ts-jest": "^26.4.4",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.0.5"
   },
   "scripts": {
     "lint": "eslint \"src/**/*.ts\" --fix --max-warnings=0",
-    "test": "nyc mocha",
+    "format": "prettier --write src/**/*.ts",
+    "test": "jest",
     "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build": "rollup -c",
     "watch": "rollup -cw",
@@ -53,33 +51,5 @@
     "publish-patch": "npm run ::pre-publish && npm version patch && npm run ::publish",
     "publish-minor": "npm run ::pre-publish && npm version minor && npm run ::publish",
     "publish-major": "npm run ::pre-publish && npm version major && npm run ::publish"
-  },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true,
-    "trailingComma": "none",
-    "printWidth": 100
-  },
-  "nyc": {
-    "extension": [
-      ".ts",
-      ".tsx"
-    ],
-    "exclude": [
-      "**/*.d.ts",
-      "**/*.js",
-      "**/*.js.map",
-      "**/*.spec.ts",
-      "test/**/*"
-    ],
-    "reporter": [
-      "html"
-    ],
-    "all": true
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && mocha"
-    }
   }
 }

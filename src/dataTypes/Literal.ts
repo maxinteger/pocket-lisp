@@ -1,3 +1,5 @@
+import { SnippetPosition } from './SnippetPosition'
+
 export enum LiteralType {
   Boolean = 'bool',
   Integer = 'int',
@@ -6,7 +8,7 @@ export enum LiteralType {
   String = 'string',
   Keyword = 'keyword',
   Identifier = 'identifier',
-  List = 'list'
+  List = 'list',
 }
 
 export interface LiteralTypeMap {
@@ -21,5 +23,5 @@ export interface LiteralTypeMap {
 }
 
 export class Literal<Kind extends keyof LiteralTypeMap> {
-  public constructor(public kind: Kind, public value: LiteralTypeMap[Kind]) {}
+  public constructor(public kind: Kind, public value: LiteralTypeMap[Kind], public position: SnippetPosition) {}
 }

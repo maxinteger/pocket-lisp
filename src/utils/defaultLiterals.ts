@@ -9,30 +9,30 @@ const notImplementedLiteral = (name: string): PLLiteral => ({
   parser: () => {
     throw new RuntimeError(`${name} is not implemented.`)
   },
-  factory: notImplementedFactory(name)
+  factory: notImplementedFactory(name),
 })
 
 export const defaultLiterals: PLLiterals = {
-  bool: {
-    parser: (x: string) => x === 'true',
-    factory: Boolean
+  Bool: {
+    parser: (x: string): boolean => x === 'true',
+    factory: Boolean,
   },
-  int: {
-    parser: (x: string) => parseInt(x, 10),
-    factory: Number
+  Int: {
+    parser: (x: string): number => parseInt(x, 10),
+    factory: Number,
   },
-  float: {
+  Float: {
     parser: parseFloat,
-    factory: Number
+    factory: Number,
   },
-  string: {
-    parser: (str: string) => str,
-    factory: String
+  String: {
+    parser: (str: string): string => str,
+    factory: String,
   },
-  fractionNumber: {
-    parser: (str: string) => str,
-    factory: () => undefined
+  FractionNumber: {
+    parser: (str: string): string => str,
+    factory: (): void => undefined,
   },
-  vector: notImplementedLiteral('Vector'),
-  hashMap: notImplementedLiteral('HashMap')
+  Vector: notImplementedLiteral('Vector'),
+  HashMap: notImplementedLiteral('HashMap'),
 }

@@ -1,5 +1,8 @@
+export { constFn } from './const'
 export { def } from './def'
 export { defn } from './defn'
 export { ifFn } from './if'
+export { caseFn } from './case'
 export { fn } from './fn'
 export { doFn } from './do'
+export { effFn } from './eff'

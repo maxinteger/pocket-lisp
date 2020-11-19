@@ -5,8 +5,10 @@ import { Environment } from '../dataTypes/Environment'
 import { createFunction } from '../dataTypes/PLFunction'
 import { Literal, LiteralType } from '../dataTypes/Literal'
 
-export const ifFn = createFunction(
-  (interpreter: Interpreter, env: Environment, args: Literal<LiteralType>[]) => {
+export const ifFn = createFunction({
+  name: 'if',
+  arity: 3,
+  fn: (interpreter: Interpreter, env: Environment, args: Literal<LiteralType>[]) => {
     assetParamLength(args, 3)
 
     const [condition, thenBranch, elseBranch] = args
@@ -24,5 +26,4 @@ export const ifFn = createFunction(
 
     throw new RuntimeError(`Expected boolean value in the if condition, but get '${conditionRes}'`)
   },
-  3
-)
+})

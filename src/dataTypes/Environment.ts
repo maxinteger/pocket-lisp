@@ -1,4 +1,4 @@
-import { RuntimeError } from '../dataTypes/RuntimeError'
+import { RuntimeError } from './RuntimeError'
 
 export class Environment {
   private values = Object.create(null)
@@ -35,7 +35,11 @@ export class Environment {
     }
   }
 
-  public getNames() {
+  public getNames(): string[] {
     return Object.keys(this.values)
+  }
+
+  public get parent(): Environment | null {
+    return this.enclosing
   }
 }

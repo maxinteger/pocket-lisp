@@ -3,27 +3,24 @@ import { Literal, LiteralType } from '../dataTypes/Literal'
 
 export const identity: <T>(x: T) => T = (x) => x
 
-export const assert = (val: boolean, msg: string) => {
+export const assert = (val: boolean, msg: string): boolean => {
   if (val) throw new RuntimeError(msg)
   return true
 }
 
-export const assetParamLength = (args: any[], expected: number, msg?: string) =>
+export const assetParamLength = (args: unknown[], expected: number, msg?: string): boolean =>
   assert(
     args.length !== expected,
-    msg || `Expected ${expected} argument(s), but got ${args.length}`
+    msg || `Expected ${expected} argument${expected > 1 ? 's' : ''}, but got ${args.length}.`,
   )
 
-export const assertParamType = (literal: Literal<any>, ...types: LiteralType[]) =>
+export const assertParamType = (literal: Literal<any>, ...types: LiteralType[]): boolean =>
   assert(
     types.find((t) => t === literal.kind) === undefined,
-    `Invalid function parameter, actual: '${literal.kind}', expected: '${types.join(' or ')}'`
+    `Invalid function parameter, actual: '${literal.kind}', expected: '${types.join(' or ')}'.`,
   )
 
-export function reduceLiterals<T>(
-  literal: Literal<LiteralType>,
-  fn: (acc: T[], l: Literal<LiteralType>) => T[]
-): T[] {
+export function reduceLiterals<T>(literal: Literal<LiteralType>, fn: (acc: T[], l: Literal<LiteralType>) => T[]): T[] {
   let acc: T[] = []
 
   const walk = (literal: Literal<LiteralType>) => {

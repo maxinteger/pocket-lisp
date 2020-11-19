@@ -1,4 +1,3 @@
-import { expect } from 'chai'
 import { Environment } from './Environment'
 
 describe('Environment', () => {
@@ -8,7 +7,7 @@ describe('Environment', () => {
       env.define('var', 42)
       const actual = env.get('var')
       const expected = 42
-      expect(actual).equals(expected)
+      expect(actual).toBe(expected)
     })
 
     it('should overwrite the previous definition', () => {
@@ -17,7 +16,7 @@ describe('Environment', () => {
       env.define('var', 43)
       const actual = env.get('var')
       const expected = 43
-      expect(actual).equals(expected)
+      expect(actual).toBe(expected)
     })
 
     it('should throw error if the variable defined and it is locked', () => {
@@ -25,7 +24,7 @@ describe('Environment', () => {
         const env = new Environment()
         env.define('var', 42, true)
         env.define('var', 43)
-      }).throw(`'var' is locked and it is not re-definable.`)
+      }).toThrow(`'var' is locked and it is not re-definable.`)
     })
   })
 
@@ -35,7 +34,7 @@ describe('Environment', () => {
       env.define('var', 42)
       const actual = env.get('var')
       const expected = 42
-      expect(actual).equals(expected)
+      expect(actual).toBe(expected)
     })
 
     it('should check the enclosed environment for the value', () => {
@@ -44,13 +43,13 @@ describe('Environment', () => {
       global.define('var', 42)
       const actual = env.get('var')
       const expected = 42
-      expect(actual).equals(expected)
+      expect(actual).toBe(expected)
     })
 
     it('should throw error if the key is not defined in any environment', () => {
       const env = new Environment()
       const actual = () => env.get('var')
-      expect(actual).throw("Undefined identifier: 'var'.")
+      expect(actual).toThrow("Undefined identifier: 'var'.")
     })
   })
 
@@ -61,7 +60,7 @@ describe('Environment', () => {
       env.assign('var', 43)
       const actual = env.get('var')
       const expected = 43
-      expect(actual).equals(expected)
+      expect(actual).toBe(expected)
     })
 
     it('should change the value in the enclosed environment', () => {
@@ -71,13 +70,13 @@ describe('Environment', () => {
       env.assign('var', 43)
       const actual = env.get('var')
       const expected = 43
-      expect(actual).equals(expected)
+      expect(actual).toBe(expected)
     })
 
     it('should throw error if the key is not defined in any environment', () => {
       const env = new Environment()
       const actual = () => env.assign('var', 42)
-      expect(actual).throw("Undefined identifier: 'var'.")
+      expect(actual).toThrow("Undefined identifier: 'var'.")
     })
   })
 })

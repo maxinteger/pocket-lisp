@@ -11,7 +11,7 @@ export * from './types'
 
 enum ErrorTypes {
   Parser = 'Parser',
-  Runtime = 'Runtime'
+  Runtime = 'Runtime',
 }
 
 export class PocketLisp {
@@ -34,12 +34,15 @@ export class PocketLisp {
       try {
         this.interpreter.interpret(parserResult.program)
       } catch (error) {
-        throw { type: ErrorTypes.Runtime, errors: [{ message: error.message }] }
+        throw {
+          type: ErrorTypes.Runtime,
+          errors: [{ message: error.message, position: error.position }],
+        }
       }
     }
   }
 
-  public evalFn(fn: PLCallable, args: any[]) {
+  public evalFn(fn: PLCallable, args: any[]): unknown {
     return this.interpreter.evalFn(fn, args)
   }
 }

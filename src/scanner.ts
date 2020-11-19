@@ -1,31 +1,6 @@
 import { isAlpha, isDigit, isSymbol } from './utils/string'
-
-export enum TokenType {
-  Init,
-  LeftParen,
-  RightParen,
-  LeftBrace,
-  RightBrace,
-  LeftSquare,
-  RightSquare,
-  Dispatch,
-  True,
-  False,
-  Identifier,
-  Keyword,
-  String,
-  Integer,
-  Float,
-  FractionNumber,
-  Error,
-  EOF
-}
-
-export class Token {
-  public constructor(public type: TokenType, public value: string, public line: number) {}
-
-  public static INIT = new Token(TokenType.Init, '', 0)
-}
+import { Token, TokenType } from './dataTypes/Token'
+import { SnippetPosition } from './dataTypes/SnippetPosition'
 
 export class Scanner {
   private start = 0
@@ -53,15 +28,22 @@ export class Scanner {
 
   private makeToken(type: TokenType): Token {
     const { start, line, current, source } = this
-    return new Token(type, source.substring(start, current), line)
+    return new Token(type, source.substring(start, current), new SnippetPosition(source, start, current, line))
   }
   private makeStringToken(): Token {
     const { start, line, current, source } = this
-    return new Token(TokenType.String, source.substring(start + 1, current - 1), line)
+    const str = source
+      .substring(start + 1, current - 1)
+      .replace(/\\n/g, '\n')
+      .replace(/\\\\/g, '\\')
+      .replace(/\\"/g, '"')
+
+    return new Token(TokenType.String, str, new SnippetPosition(source, start, current, line))
   }
 
   private errorToken(message: string): Token {
-    return new Token(TokenType.Error, message, this.line)
+    const { start, line, current, source } = this
+    return new Token(TokenType.Error, message, new SnippetPosition(source, start, current, line))
   }
 
   private identifier(): Token {
@@ -119,6 +101,7 @@ export class Scanner {
   private string(): Token {
     while (this.peek() !== '"' && !this.isEnd()) {
       if (this.peek() === '\n') this.line += 1
+      if (this.peek() === '\\') this.advance()
       this.advance()
     }
     if (this.isEnd()) return this.errorToken('Unterminated string')
@@ -141,7 +124,18 @@ export class Scanner {
           this.advance()
           break
         case ';':
-          while (this.peek() !== '\n' && !this.isEnd()) this.advance()
+          if (this.peekNext() === '#') {
+            this.advance()
+            this.advance()
+            while (this.peek() !== '#' && this.peekNext() !== ';' && !this.isEnd()) {
+              if (this.peek() === '\n') this.line += 1
+              this.advance()
+            }
+            this.advance()
+            this.advance()
+          } else {
+            while (this.peek() !== '\n' && !this.isEnd()) this.advance()
+          }
           break
         default:
           return

@@ -1,11 +1,14 @@
 import { Interpreter } from './interpreter'
 import { Environment } from './dataTypes/Environment'
 import { Literal, LiteralType } from './dataTypes/Literal'
+import { SnippetPosition } from './dataTypes/SnippetPosition'
 
 export interface PLCallable {
   call: (interpreter: Interpreter, env: Environment, args: Literal<LiteralType>[]) => unknown
   arity: number
   toString: () => string
+  toJS: () => string
+  debugTypeOf: () => string
 }
 
 export interface PrimitiveLiteralParseFn {
@@ -24,7 +27,7 @@ export interface PLLiteral {
 
 export interface InterpreterOptions {
   globals: { [key: string]: any }
-  stdout: (out: string) => void
+  stdout: (out: string, position?: SnippetPosition) => void
   lockedGlobals: boolean
   utils: {
     unboxing: (x: any) => any
@@ -32,11 +35,11 @@ export interface InterpreterOptions {
 }
 
 export interface PLLiterals {
-  bool: PLLiteral
-  int: PLLiteral
-  float: PLLiteral
-  fractionNumber: PLLiteral
-  string: PLLiteral
-  vector: PLLiteral
-  hashMap: PLLiteral
+  Bool: PLLiteral
+  Int: PLLiteral
+  Float: PLLiteral
+  FractionNumber: PLLiteral
+  String: PLLiteral
+  Vector: PLLiteral
+  HashMap: PLLiteral
 }
