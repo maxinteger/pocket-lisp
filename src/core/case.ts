@@ -23,10 +23,14 @@ export const caseFn = createFunction({
       const [caseLiteral, caseResult] = listContent
       const caseFn = interpreter.execLiteral(caseLiteral, env) as any
 
-      assert(!(caseFn === ':else' || caseFn instanceof PLFunction), 'Case branch must start with a function or :else.')
+      const unboxedCaseFn = interpreter.options.utils.unboxing(caseFn)
+      assert(
+        !(unboxedCaseFn === ':else' || caseFn instanceof PLFunction),
+        'Case branch must start with a function or :else.',
+      )
 
       let caseValue = false
-      if (caseFn === ':else') {
+      if (unboxedCaseFn === ':else') {
         caseValue = true
       } else {
         const caseFnValue = interpreter.evalFn(caseFn as PLFunction, [conditionValue])

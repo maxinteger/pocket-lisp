@@ -1,21 +1,25 @@
 import { initInterpret } from '../../test/testUtils'
-import { effFn } from './eff'
+import { sideEffectFn } from './side-effect'
 import { PLFunction } from '../dataTypes/PLFunction'
 import { def } from './def'
 
 describe('stdlib/core/eff', () => {
   it('should fails when got less then 1 parameter', () => {
-    expect(() => initInterpret('(eff)', { eff: effFn })).toThrow('Eff expected at least 1 argument, but got 0.')
+    expect(() => initInterpret('(side-effect)', { ['side-effect']: sideEffectFn })).toThrow(
+      'Eff expected at least 1 argument, but got 0.',
+    )
   })
 
   it('should fails when got non-function first parameter', () => {
-    expect(() => initInterpret('(eff "hello")', { eff: effFn })).toThrow('Eff first parameter must be a function.')
+    expect(() => initInterpret('(side-effect "hello")', { ['side-effect']: sideEffectFn })).toThrow(
+      'Eff first parameter must be a function.',
+    )
   })
 
   it('should return with an infinite args function', () => {
     expect(
-      initInterpret('(print (eff fn))', {
-        eff: effFn,
+      initInterpret('(print (side-effect fn))', {
+        ['side-effect']: sideEffectFn,
         fn: () => 0,
         print: (fn: any) => {
           expect(fn instanceof PLFunction).toBe(true)
@@ -26,8 +30,8 @@ describe('stdlib/core/eff', () => {
   })
   it('should call the passed fn', () => {
     expect(
-      initInterpret('(print ((eff fn)))', {
-        eff: effFn,
+      initInterpret('(print ((side-effect fn)))', {
+        ['side-effect']: sideEffectFn,
         fn: () => 42,
         print: (output: unknown) => expect(output).toBe(42),
       }),
@@ -36,8 +40,8 @@ describe('stdlib/core/eff', () => {
 
   it('should accept arguments and pass them to the function', () => {
     expect(
-      initInterpret('(print ((eff fn "hello")))', {
-        eff: effFn,
+      initInterpret('(print ((side-effect fn "hello")))', {
+        ['side-effect']: sideEffectFn,
         fn: (x: unknown) => x,
         print: (output: unknown) => expect(output).toBe('hello'),
       }),
@@ -49,12 +53,12 @@ describe('stdlib/core/eff', () => {
     expect(
       initInterpret(
         `
-      (def side-effect-fn (eff fn 5))
+      (def side-effect-fn (side-effect fn 5))
       (print1 (side-effect-fn))
       (print2 (side-effect-fn))
       `,
         {
-          eff: effFn,
+          ['side-effect']: sideEffectFn,
           def: def,
           fn: (inc: number) => (i += inc),
           print1: (output: unknown) => expect(output).toBe(5),
@@ -65,12 +69,12 @@ describe('stdlib/core/eff', () => {
   })
 
   it('should has arity infinite', () => {
-    expect(effFn.arity).toBe(-1)
+    expect(sideEffectFn.arity).toBe(-1)
   })
 
   it('should has native toString', () => {
-    expect(effFn.toString()).toBe('<<eff function>>')
-    expect(effFn.toJS()).toBe('<<eff function>>')
-    expect(effFn.debugTypeOf()).toBe('Function')
+    expect(sideEffectFn.toString()).toBe('<<side-effect function>>')
+    expect(sideEffectFn.toJS()).toBe('<<side-effect function>>')
+    expect(sideEffectFn.debugTypeOf()).toBe('Function')
   })
 })

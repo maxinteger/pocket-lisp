@@ -1,4 +1,4 @@
-import { def, fn, ifFn, doFn, defn, caseFn, constFn, effFn } from './core'
+import { def, fn, ifFn, doFn, defn, caseFn, constFn, sideEffectFn } from './core'
 import { Environment } from './dataTypes/Environment'
 import { RuntimeError } from './dataTypes/RuntimeError'
 import { simpleFunction } from './dataTypes/PLFunction'
@@ -51,7 +51,7 @@ export class Interpreter {
     this.globals.define('case', caseFn)
     this.globals.define('fn', fn)
     this.globals.define('do', doFn)
-    this.globals.define('eff', effFn)
+    this.globals.define('side-effect', sideEffectFn)
 
     Object.keys(globals).forEach((key) => {
       const value = globals[key]

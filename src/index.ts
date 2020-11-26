@@ -7,6 +7,7 @@ export { Scanner } from './scanner'
 export { Parser } from './parser'
 export { Interpreter } from './interpreter'
 export { RuntimeError } from './dataTypes/RuntimeError'
+export { SnippetPosition } from './dataTypes/SnippetPosition'
 export * from './types'
 
 enum ErrorTypes {

@@ -4,8 +4,8 @@ import { Environment } from '../dataTypes/Environment'
 import { Literal, LiteralType } from '../dataTypes/Literal'
 import { assert } from '../utils/fn'
 
-export const effFn = createFunction({
-  name: 'eff',
+export const sideEffectFn = createFunction({
+  name: 'side-effect',
   arity: -1,
   fn: (interpreter: Interpreter, env: Environment, args: Literal<LiteralType>[]) => {
     assert(args.length < 1, `Eff expected at least 1 argument, but got ${args.length}.`)
@@ -16,7 +16,7 @@ export const effFn = createFunction({
     assert(!(fnEval instanceof PLFunction), 'Eff first parameter must be a function.')
 
     return createFunction({
-      name: 'eff',
+      name: 'side-effect',
       arity: -1,
       fn: (interpreter) => {
         return interpreter.evalFn(fnEval as PLFunction, fnArgs)

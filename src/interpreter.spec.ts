@@ -80,7 +80,7 @@ describe('interpreter', () => {
       'case',
       'fn',
       'do',
-      'eff',
+      'side-effect',
       'hello-world',
     ])
   })
