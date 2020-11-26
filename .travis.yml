@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - 12
+  - node
 
 install:
   - npm install
@@ -8,6 +8,6 @@ install:
 cache: npm
 
 script:
-  - npm run lint
-  - npm test
+  - npm run lint:ci
+  - npm run test:ci
   - npm run report-coverage
