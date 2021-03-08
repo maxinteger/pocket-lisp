@@ -7,6 +7,7 @@ describe('SnippetPosition', () => {
     expect(sp.startIndex).toBe(2)
     expect(sp.endIndex).toBe(3)
     expect(sp.line).toBe(1)
+    expect(sp.length).toBe(1)
   })
 
   it('should calculate line start index', () => {

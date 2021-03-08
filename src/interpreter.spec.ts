@@ -89,7 +89,7 @@ describe('interpreter', () => {
     interpret('(print :key)', {
       globals: {
         print: (output: string) => {
-          expect(output).toBe(':key')
+          expect(output).toBe('key')
         },
       },
     })

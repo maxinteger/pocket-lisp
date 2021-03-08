@@ -366,7 +366,7 @@ describe('Parser', () => {
         expect(parseRes.errors.length).toBe(1)
         expect(parseRes.errors).toEqual([
           {
-            message: `Invalid dispatch: #[...}.`,
+            message: `Invalid dispatch: #{...}.`,
             position: new SnippetPosition(source, 3, 3, 1),
           },
         ])

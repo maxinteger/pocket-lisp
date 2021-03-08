@@ -191,7 +191,7 @@ describe('Scanner', () => {
     const source = ':keyword'
     const scanner = new Scanner(source)
     const actual = scanner.scanToken()
-    const expected = new Token(TokenType.Keyword, ':keyword', new SnippetPosition(source, 0, source.length, 1))
+    const expected = new Token(TokenType.Keyword, 'keyword', new SnippetPosition(source, 0, source.length, 1))
     expect(actual).toEqual(expected)
   })
 

@@ -28,7 +28,9 @@ export class Scanner {
 
   private makeToken(type: TokenType): Token {
     const { start, line, current, source } = this
-    return new Token(type, source.substring(start, current), new SnippetPosition(source, start, current, line))
+    const isKeyword = type === TokenType.Keyword
+    const value = source.substring(isKeyword ? start + 1 : start, current)
+    return new Token(type, value, new SnippetPosition(source, start, current, line))
   }
   private makeStringToken(): Token {
     const { start, line, current, source } = this
@@ -75,7 +77,9 @@ export class Scanner {
     if (!isAlpha(this.peek()) && !isDigit(this.peek())) {
       return this.makeToken(TokenType.Identifier)
     }
-    while (isAlpha(this.peek()) || isDigit(this.peek())) this.advance()
+    while (isAlpha(this.peek()) || isDigit(this.peek())) {
+      this.advance()
+    }
     return this.makeToken(TokenType.Keyword)
   }
 

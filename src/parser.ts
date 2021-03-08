@@ -191,7 +191,7 @@ export class Parser {
     let newExpression = body
     switch (body.value[0].value) {
       case MAP_IDENTIFIER:
-        this.errorAtCurrent('Invalid dispatch: #[...}.')
+        this.errorAtCurrent('Invalid dispatch: #{...}.')
         break
       case VECTOR_IDENTIFIER:
         this.errorAtCurrent('Invalid dispatch: #[...].')
