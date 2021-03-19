@@ -38,8 +38,8 @@ describe('stdlib/core/do', () => {
   })
 
   it('should has native toString', () => {
-    expect(doFn.toString()).toBe('<<do function>>')
-    expect(doFn.toJS()).toBe('<<do function>>')
+    expect(doFn.toString()).toBe('<do function>')
+    expect(doFn.toJS()).toBe('<do function>')
     expect(doFn.debugTypeOf()).toBe('Function')
   })
 })

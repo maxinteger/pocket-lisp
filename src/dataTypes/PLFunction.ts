@@ -52,7 +52,7 @@ export class PLFunction implements PLCallable {
   }
 
   public toString(): string {
-    return this._toString === NATIVE_FN_NAME ? NATIVE_FN_NAME : `<<${this._toString} function>>`
+    return this._toString === NATIVE_FN_NAME ? NATIVE_FN_NAME : `<${this._toString} function>`
   }
 
   public toJS(): string {

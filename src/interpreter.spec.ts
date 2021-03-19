@@ -46,7 +46,7 @@ describe('interpreter', () => {
       globals: {
         print: (output: any) => {
           expect(output.arity).toBe(1)
-          expect(output.toString()).toBe('<<print function>>')
+          expect(output.toString()).toBe('<print function>')
         },
       },
     })

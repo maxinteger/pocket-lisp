@@ -109,8 +109,8 @@ describe('stdlib/core/fn', () => {
   })
 
   it('should has native toString', () => {
-    expect(fn.toString()).toBe('<<fn function>>')
-    expect(fn.toJS()).toBe('<<fn function>>')
+    expect(fn.toString()).toBe('<fn function>')
+    expect(fn.toJS()).toBe('<fn function>')
     expect(fn.debugTypeOf()).toBe('Function')
   })
 })

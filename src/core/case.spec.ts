@@ -61,8 +61,8 @@ describe('stdlib/core/case', () => {
   })
 
   it('should has native toString', () => {
-    expect(caseFn.toString()).toBe('<<case function>>')
-    expect(caseFn.toJS()).toBe('<<case function>>')
+    expect(caseFn.toString()).toBe('<case function>')
+    expect(caseFn.toJS()).toBe('<case function>')
     expect(caseFn.debugTypeOf()).toBe('Function')
   })
 })

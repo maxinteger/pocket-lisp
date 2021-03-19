@@ -39,6 +39,6 @@ describe('stdlib/core/defn', () => {
   })
 
   it('should has native toString', () => {
-    expect(defn.toString()).toBe('<<defn function>>')
+    expect(defn.toString()).toBe('<defn function>')
   })
 })

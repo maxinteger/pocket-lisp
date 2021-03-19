@@ -4,6 +4,8 @@
   "author": {
     "name": "Laszlo Vadasz"
   },
+  "homepage": "https://maxinteger.github.io/pocket-lisp-page/",
+  "repository": "https://github.com/maxinteger/pocket-lisp",
   "license": "MIT",
   "description": "Simple, lisp/closure like interpreter for sandbox scripting in browser",
   "keywords": [

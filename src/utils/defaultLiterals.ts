@@ -1,7 +1,8 @@
 import { RuntimeError } from '../dataTypes/RuntimeError'
 import { PLLiteral, PLLiterals } from '../types'
+import { identity } from './fn'
 
-const notImplementedFactory = (name: string) => () => {
+const notImplementedConstructor = (name: string) => () => {
   throw new RuntimeError(`${name} is not implemented.`)
 }
 
@@ -9,29 +10,35 @@ const notImplementedLiteral = (name: string): PLLiteral => ({
   parser: () => {
     throw new RuntimeError(`${name} is not implemented.`)
   },
-  factory: notImplementedFactory(name),
+  nativeConstructor: notImplementedConstructor(name),
+  langConstructor: notImplementedConstructor(name),
 })
 
 export const defaultLiterals: PLLiterals = {
   Bool: {
     parser: (x: string): boolean => x === 'true',
-    factory: Boolean,
+    nativeConstructor: Boolean,
+    langConstructor: identity,
   },
   Int: {
     parser: (x: string): number => parseInt(x, 10),
-    factory: Number,
+    nativeConstructor: Number,
+    langConstructor: identity,
   },
   Float: {
     parser: parseFloat,
-    factory: Number,
+    nativeConstructor: Number,
+    langConstructor: identity,
   },
   String: {
     parser: (str: string): string => str,
-    factory: String,
+    nativeConstructor: String,
+    langConstructor: identity,
   },
   FractionNumber: {
     parser: (str: string): string => str,
-    factory: (): void => undefined,
+    nativeConstructor: notImplementedConstructor('FractionNumber'),
+    langConstructor: notImplementedConstructor('FractionNumber'),
   },
   Vector: notImplementedLiteral('Vector'),
   HashMap: notImplementedLiteral('HashMap'),

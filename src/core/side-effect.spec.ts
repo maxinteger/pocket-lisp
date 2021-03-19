@@ -73,8 +73,8 @@ describe('stdlib/core/eff', () => {
   })
 
   it('should has native toString', () => {
-    expect(sideEffectFn.toString()).toBe('<<side-effect function>>')
-    expect(sideEffectFn.toJS()).toBe('<<side-effect function>>')
+    expect(sideEffectFn.toString()).toBe('<side-effect function>')
+    expect(sideEffectFn.toJS()).toBe('<side-effect function>')
     expect(sideEffectFn.debugTypeOf()).toBe('Function')
   })
 })

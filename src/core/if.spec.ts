@@ -34,8 +34,8 @@ describe('stdlib/core/if', () => {
   })
 
   it('should has native toString', () => {
-    expect(ifFn.toString()).toBe('<<if function>>')
-    expect(ifFn.toJS()).toBe('<<if function>>')
+    expect(ifFn.toString()).toBe('<if function>')
+    expect(ifFn.toJS()).toBe('<if function>')
     expect(ifFn.debugTypeOf()).toBe('Function')
   })
 })

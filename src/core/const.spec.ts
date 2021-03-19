@@ -53,8 +53,8 @@ describe('stdlib/core/const', () => {
   })
 
   it('should has native toString', () => {
-    expect(constFn.toString()).toBe('<<const function>>')
-    expect(constFn.toJS()).toBe('<<const function>>')
+    expect(constFn.toString()).toBe('<const function>')
+    expect(constFn.toJS()).toBe('<const function>')
     expect(constFn.debugTypeOf()).toBe('Function')
   })
 })

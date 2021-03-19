@@ -22,7 +22,8 @@ export interface LiteralFactoryFn<T, R> {
 
 export interface PLLiteral {
   parser: PrimitiveLiteralParseFn
-  factory: any // TODO: fix factory type
+  nativeConstructor: any // TODO: fix type
+  langConstructor: any // TODO: fix type
 }
 
 export interface InterpreterOptions {
