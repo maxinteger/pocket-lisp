@@ -35,7 +35,7 @@ export class Interpreter {
     const plLiterals = { ...defaultLiterals, ...literals }
 
     Object.keys(plLiterals).forEach((key) => {
-      const fn = (plLiterals as any)[key].langConstructor
+      const fn = (plLiterals as any)[key].nativeConstructor
       const arity = DATA_STRUCT_CONSTRUCTORS.includes(key) ? -1 : fn.length
       this.globals.define(key, simpleFunction(fn, arity))
     })
