@@ -1,4 +1,4 @@
-import ts from '@wessberg/rollup-plugin-ts'
+import typescript from '@rollup/plugin-typescript'
 import pkg from './package.json'
 
 export default [
@@ -8,19 +8,21 @@ export default [
     output: [
       {
         file: pkg.main,
-        format: 'cjs'
+        format: 'cjs',
+        sourcemap: true,
       },
       {
         file: pkg.module,
-        format: 'es'
-      }
+        format: 'es',
+        sourcemap: true,
+      },
     ],
     external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
     plugins: [
-      ts({
+      typescript({
         tsconfig: 'tsconfig.json',
-        exclude: ['test/**/*', '*.spec.ts', 'src/repl.ts']
-      })
-    ]
-  }
+        exclude: ['test/**/*', '*.spec.ts', 'src/repl.ts'],
+      }),
+    ],
+  },
 ]

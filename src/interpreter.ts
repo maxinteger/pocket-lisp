@@ -20,7 +20,7 @@ const defaultOptions = {
 
 ///
 
-const DATA_STRUCT_CONSTRUCTORS = [VECTOR_IDENTIFIER, MAP_IDENTIFIER]
+const DATA_STRUCT_CONSTRUCTORS: string[] = [VECTOR_IDENTIFIER, MAP_IDENTIFIER]
 
 export class Interpreter {
   private readonly globals = new Environment()
@@ -72,7 +72,7 @@ export class Interpreter {
         this.lastLiteral = literal
         returnVal = this.execLiteral(literal, this.globals)
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error['king'] === RuntimeError.kind) {
         throw error
       } else {

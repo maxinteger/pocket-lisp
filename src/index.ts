@@ -34,7 +34,7 @@ export class PocketLisp {
     } else {
       try {
         this.interpreter.interpret(parserResult.program)
-      } catch (error) {
+      } catch (error: any) {
         throw {
           type: ErrorTypes.Runtime,
           errors: [{ message: error.message, position: error.position }],
